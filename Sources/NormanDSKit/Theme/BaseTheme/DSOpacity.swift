@@ -6,7 +6,7 @@
 //
 
 // MARK: - DSOpacity
-public struct DSOpacity {
+public struct DSOpacity: Sendable {
     public let disabled: Double
     public let pressed: Double
     public let overlay: Double

@@ -8,8 +8,7 @@
 import SwiftUI
 
 // MARK: - Dynamic Color Wrapper
-
-public struct DSDynamicColor {
+public struct DSDynamicColor: Sendable {
     public let light: Color
     public let dark: Color
     

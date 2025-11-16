@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-public struct DSSpacing {
+public struct DSSpacing: Sendable {
     public let zero: CGFloat
-    public let xs: CGFloat    // 4
-    public let sm: CGFloat    // 8
-    public let md: CGFloat    // 12
-    public let lg: CGFloat    // 16
-    public let xl: CGFloat    // 24
-    public let xxl: CGFloat   // 32
-    public let xxxl: CGFloat  // 40
+    public let xs: CGFloat
+    public let sm: CGFloat
+    public let md: CGFloat
+    public let lg: CGFloat
+    public let xl: CGFloat
+    public let xxl: CGFloat
+    public let xxxl: CGFloat
 
     public init(
         zero: CGFloat,
@@ -30,7 +30,7 @@ public struct DSSpacing {
         self.zero = zero
         self.xs = xs
         self.sm = sm
-               self.md = md
+        self.md = md
         self.lg = lg
         self.xl = xl
         self.xxl = xxl

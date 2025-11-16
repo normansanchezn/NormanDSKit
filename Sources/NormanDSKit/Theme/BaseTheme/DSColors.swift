@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - DS Colors
-public struct DSColors {
+public struct DSColors: Sendable {
     // Brand
     public let primary: DSDynamicColor
     public let secondary: DSDynamicColor

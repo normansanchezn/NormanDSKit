@@ -8,8 +8,8 @@ import SwiftUI
 
 
 // MARK: - Typography
-public struct DSTypography {
-    public struct TextStyle {
+public struct DSTypography: Sendable {
+    public struct TextStyle: Sendable {
         public let font: Font
         public let color: DSDynamicColor
         

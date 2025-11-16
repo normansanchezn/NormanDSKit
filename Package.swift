@@ -27,7 +27,7 @@ let package = Package(
         .package(
             url: "https://github.com/lukaskubanek/LoremSwiftum.git",
             from: "2.3.0"
-        )
+        ),
     ],
     targets: [
         .target(

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: - DSTheme (Final)
+// MARK: - DSTheme
 public struct DSTheme {
     public let colors: DSColors
     public let typography: DSTypography

@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - DSRadius
-public struct DSRadius {
+public struct DSRadius: Sendable {
     public let none: CGFloat
     public let xs: CGFloat
     public let sm: CGFloat

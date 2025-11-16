@@ -7,19 +7,23 @@
 
 import SwiftUI
 
-// MARK: - Environment Support  
+// MARK: - EnvironmentKey
 private struct DSThemeKey: EnvironmentKey {
-    public static var defaultValue: DSTheme = DSTheme()
+    nonisolated(unsafe) static var defaultValue: DSTheme = DSTheme()
 }
 
+// MARK: - EnvironmentValues
 public extension EnvironmentValues {
+    @MainActor
     var dsTheme: DSTheme {
         get { self[DSThemeKey.self] }
         set { self[DSThemeKey.self] = newValue }
     }
 }
 
+// MARK: - View Modifier to inject theme
 public extension View {
+    @MainActor
     func dsTheme(_ theme: DSTheme) -> some View {
         environment(\.dsTheme, theme)
     }
