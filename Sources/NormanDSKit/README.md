@@ -1,21 +1,14 @@
-//
-//  README.md
-//  DSKit
-//
-//  Created by Norman Sanchez on 16/11/25.
-//
-
-# DSKit
+# DSKit  
 ### 🍏 A modern Design System for SwiftUI — Liquid Glass Ready, Token-Driven, Modular and Scalable
 
-DSKit is a **fully modular SwiftUI Design System** built for iOS using **Swift 6.2**, designed to offer a cohesive, scalable and elegant UI foundation for modern apps.
+DSKit is a fully modular SwiftUI Design System built for iOS using Swift 6.2, designed to offer a cohesive, scalable and elegant UI foundation for modern apps.
 It provides:
 
-- 🎨 **Design Tokens** (Colors, Typography, Spacing, Radius, Opacity)
-- 🧩 **Reusable Components** (Buttons, Fields, Headers, Carousels, Cards, Dialogs, Toggles, etc.)
-- 🧱 **Foundations** based on Apple’s **Human Interface Guidelines / Liquid Glass**
-- 🪞 Native support for **Dynamic Color + Dark/Light mode**
-- 🎬 Built-in support for **Lottie animations**
+- 🎨 Design Tokens (Colors, Typography, Spacing, Radius, Opacity)
+- 🧩 Reusable Components (Buttons, Fields, Headers, Carousels, Cards, Dialogs, Toggles, etc.)
+- 🧱 Foundations based on Apple’s Human Interface Guidelines / Liquid Glass
+- 🪞 Native support for Dynamic Color + Dark/Light mode
+- 🎬 Built-in support for Lottie animations
 - 🧪 Preview-friendly components
 
 ---
@@ -25,14 +18,14 @@ It provides:
 Add the package using Swift Package Manager:
 
 1. In Xcode:
-   **File → Add Packages…**
+   File → Add Packages…
 2. Use this repository URL:
 
 ```
 https://github.com/<your-user>/DSKit.git
 ```
 
-3. Select the latest version (tagged release).
+3. Select the latest version.
 4. Import it:
 
 ```swift
@@ -41,259 +34,67 @@ import DSKit
 
 ---
 
-# 🧱 Design System Overview
+## 🧱 Design System Overview
 
-DSKit is built around **design tokens**—atomic values that keep your interface consistent across all screens.
-
----
-
-# 🎨 Design Tokens
-
-## 🎨 Colors — `DSColors`
-
-All colors support automatic Light/Dark mode via `DSDynamicColor`.
-
-| Token | Description |
-|-------|-------------|
-| `primary` | Main brand color |
-| `secondary` | Accent or supporting color |
-| `tertiary` | Reinforcement color |
-| `background` | App background |
-| `surface` | Cards, panels |
-| `surfaceSecondary` | Secondary surfaces |
-| `textTitle` | Title text |
-| `textSubtitle` | Subtitle text |
-| `textBody` | Body text |
-| `textCaption` | Caption/footnote |
-| `success` | System success color |
-| `warning` | Alerts/warnings |
-| `error` | Error/destructive |
-
-**Usage:**
-
-```swift
-theme.colors.primary.resolved(colorScheme)
-```
+DSKit is built around design tokens—atomic values that keep your interface consistent across all screens.
 
 ---
 
-## 🔠 Typography — `DSTypography`
+## 🎨 Design Tokens
 
-Consistent typographic scale based on Apple’s HIG.
+### DSColors
+A complete brand color palette with automatic dark/light resolution.
 
-| Token | Font |
-|-------|------|
-| `largeTitle` |
-| `title` |
-| `headline` |
-| `subheadline` |
-| `body` |
-| `caption` |
-| `regular` |
+### DSTypography
+A consistent typographic scale based on Apple HIG.
 
-Example:
+### DSSpacing
+Semantic spacing tokens (xs, sm, md, etc.)
 
-```swift
-Text("Hello")
-    .font(theme.typography.title.font)
-```
+### DSRadius
+Corner radius scale.
+
+### DSOpacity
+Glass effects & subtle UI transparencies.
 
 ---
 
-## 📏 Spacing — `DSSpacing`
+## 🧩 Components
 
-Semantic layout spacing values:
+### DSButton
+Primary, Secondary, Tertiary, Outline, Destructive.
 
-| Token | Value |
-|-------|--------|
-| `xs` | 4 |
-| `sm` | 8 |
-| `md` | 12 |
-| `lg` | 16 |
-| `xl` | 24 |
-| `xxl` | 32 |
+### DSField
+Modern text field with focus animations.
 
-Usage:
+### DSMultilineField
+A multiline field for long content.
 
-```swift
-.padding(theme.spacing.lg)
-```
+### DSLabel
+Typography-driven text component.
 
----
+### DSHeader
+Reusable page header.
 
-## 🟦 Radius — `DSRadius`
+### Images
+DSCircularImage  
+DSRoundedImage
 
-| Token | Value |
-|-------|--------|
-| `xs` | 6 |
-| `sm` | 12 |
-| `md` | 16 |
-| `lg` | 24 |
-| `pill` | 999 |
+### Layouts
+DSHorizontalCarousel  
+DSVerticalCarousel  
+DSGridVertical  
+DSGridVerticalWithSections
 
-Usage:
+### Dialogs
+DSDialog
 
-```swift
-.cornerRadius(theme.radius.md)
-```
+### Animations
+DSLottie
 
 ---
 
-## 🌫️ Opacity — `DSOpacity`
-
-Includes Liquid Glass effects:
-
-| Token | Value |
-|--------|-------|
-| `glassBackground` |
-| `subtle` |
-| `medium` |
-| `strong` |
-
----
-
-# 🧩 Components
-
-## 🔘 Buttons — `DSButton`
-
-DSKit includes:
-
-- **Primary**
-- **Secondary**
-- **Tertiary**
-- **Destructive**
-- **Outline**
-
-Usage:
-
-```swift
-DSButton.primary("Continue") {
-    // Action
-}
-```
-
----
-
-## ✏️ Text Field — `DSField`
-
-Modern field with focus state, border animation, Liquid Glass header.
-
-```swift
-DSField(
-    text: $username,
-    placeholder: DSLabelModel(text: "Email", style: .subtitle)
-)
-```
-
----
-
-## 📝 Multiline Field — `DSMultilineField`
-
-```swift
-DSMultilineField(
-    text: $bio,
-    placeholder: DSLabelModel(text: "About you", style: .subtitle)
-)
-```
-
----
-
-## 🏷️ Label — `DSLabel`
-
-Supports different styles:
-
-```swift
-DSLabel(
-    DSLabelModel(text: "Mentorship Program", style: .title)
-)
-```
-
----
-
-## 🧭 Header — `DSHeader`
-
-Reusable per-screen header. Supports title, subtitle, actions.
-
-```swift
-DSHeader(model: DSHeaderModel(
-    title: "Profile",
-    subtitle: "Update your information",
-    trailingIcon: "gearshape.fill",
-    onTrailingTap: { }
-))
-```
-
----
-
-## 🖼️ Image Components
-
-### `DSCircularImage`
-### `DSRoundedImage`
-
----
-
-## 🎡 Carousels
-
-### Horizontal
-
-```swift
-DSHorizontalCarousel(items: myItems) { item in
-    MyCard(item)
-}
-```
-
-### Vertical
-
-```swift
-DSVerticalCarousel(items: items) { item in
-    MyRow(item)
-}
-```
-
----
-
-## 🗂️ Grids
-
-### `DSGridVertical`
-### `DSGridVerticalWithSections`
-
-```swift
-DSGridVertical(items: myItems) { item in
-    MyGridCell(item)
-}
-```
-
----
-
-## 🎤 Dialog — `DSDialog`
-
-Modal-like dialog with image, subtitle, actions.
-
----
-
-## 🎬 Animations — `DSLottie`
-
-Wrapper for Lottie animations:
-
-```swift
-DSLottie(
-    animation: "success-check",
-    height: 240
-)
-```
-
----
-
-# 🛠 Architecture
-
-- Fully SwiftUI-based
-- Uses dependency injection via environment keys (`.dsTheme`)
-- Zero UIKit dependency except optional video backgrounds
-- Supports Liquid Glass using `.ultraThinMaterial`
-
----
-
-# 🚀 Getting Started Example
+## 🚀 Getting Started Example
 
 ```swift
 struct ContentView: View {
@@ -301,7 +102,6 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: theme.spacing.lg) {
-
             DSHeader(model: .init(title: "Welcome"))
 
             DSField(
@@ -309,7 +109,7 @@ struct ContentView: View {
                 placeholder: .init(text: "Email")
             )
 
-            DSButton.primary("Continue") { }
+            DSButton.primary("Continue") {}
         }
         .padding(theme.spacing.lg)
     }
@@ -318,25 +118,22 @@ struct ContentView: View {
 
 ---
 
-# 🗺 Roadmap
+## 🗺 Roadmap
 
-- [ ] DSList component
-- [ ] DSCard V2 (multiple sizes)
-- [ ] DSTable view
-- [ ] DSNavigationBar (Liquid Glass native)
-- [ ] Motion animation tokens
-- [ ] DSModal / DSDrawer
-- [ ] Full Markdown documentation site
+- DSList
+- DSModal
+- DSNavigationBar
+- DSCard V2
+- Documentation site
 
 ---
 
-# 🤝 Contributing
+## 🤝 Contributing
 
 Pull requests are welcome!
-For major changes, please open an issue first.
+For major changes, open an issue first.
 
 ---
 
-# 📄 License
-
-DSKit is released under the **MIT License**.
+## 📄 License
+DSKit is released under the MIT License.
