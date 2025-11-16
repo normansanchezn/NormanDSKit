@@ -1,0 +1,72 @@
+//
+//  DSIconCard.swift
+//  NormanDSKit
+//
+//  Created by Norman Sanchez on 16/11/25.
+//
+
+import SwiftUI
+
+public struct DSIconCard: View {
+    
+    @Environment(\.dsTheme) private var theme
+    @Environment(\.colorScheme) private var scheme
+    
+    @State private var isPressed = false
+    
+    private let model: DSIconCardModel
+    
+    public init(model: DSIconCardModel) {
+        self.model = model
+    }
+    
+    private var side: CGFloat {
+        switch model.size {
+        case .small:  return 56
+        case .medium: return 72
+        case .large:  return 96
+        }
+    }
+    
+    public var body: some View {
+        Button {
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            model.action()
+        } label: {
+            VStack(spacing: theme.spacing.xs) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
+                        .fill(
+                            theme.colors.primary
+                                .resolved(scheme)
+                                .opacity(theme.opacity.glassBackground + 0.05)
+                        )
+                        .frame(width: side, height: side)
+                        .shadow(
+                            color: theme.colors.onBackground
+                                .resolved(scheme)
+                                .opacity(isPressed ? 0.08 : 0.16),
+                            radius: isPressed ? 4 : 8,
+                            y: isPressed ? 2 : 4
+                        )
+                    
+                    Image(systemName: model.systemImage)
+                        .font(.system(size: side * 0.38, weight: .medium))
+                        .foregroundColor(
+                            theme.colors.surface.resolved(scheme)
+                        )
+                }
+                
+                Text(model.title)
+                    .font(theme.typography.caption.font)
+                    .foregroundColor(
+                        theme.colors.textTitle.resolved(scheme)
+                    )
+                    .lineLimit(1)
+            }
+            .scaleEffect(isPressed ? 0.97 : 1)
+            .animation(.spring(response: 0.25, dampingFraction: 0.8), value: isPressed)
+        }
+        .buttonStyle(DSPressableStyle(isPressed: $isPressed))
+    }
+}

@@ -5,22 +5,47 @@ import PackageDescription
 
 let package = Package(
     name: "NormanDSKit",
+    defaultLocalization: "en",
+    platforms: [
+        .iOS(.v17),
+        .macOS(.v14)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "NormanDSKit",
             targets: ["NormanDSKit"]
+        )
+    ],
+    dependencies: [
+        // Lottie (Airbnb)
+        .package(
+            url: "https://github.com/airbnb/lottie-spm.git",
+            from: "4.5.0"
         ),
+        
+        // LoremSwiftum (faker generator)
+        .package(
+            url: "https://github.com/lukaskubanek/LoremSwiftum.git",
+            from: "2.3.0"
+        )
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "NormanDSKit"
+            name: "NormanDSKit",
+            dependencies: [
+                .product(name: "Lottie", package: "lottie-spm"),
+                .product(name: "LoremSwiftum", package: "loremswiftum")
+            ],
+            path: "Sources/NormanDSKit",
+            resources: [
+                // Añadir assets si los tienes
+                // .process("Resources")
+            ]
         ),
         .testTarget(
-            name: "NormanDSKitTests",
-            dependencies: ["NormanDSKit"]
-        ),
+            name: "DNormanDSKitTests",
+            dependencies: ["NormanDSKit"],
+            path: "Tests/NormanDSKitTests"
+        )
     ]
 )
