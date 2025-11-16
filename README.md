@@ -22,7 +22,7 @@ Add the package using Swift Package Manager:
 2. Use this repository URL:
 
 ```
-https://github.com/<your-user>/DSKit.git
+[https://github.com/<your-user>/DSKit.git](https://github.com/normansanchezn/NormanDSKit.git)
 ```
 
 3. Select the latest version.
