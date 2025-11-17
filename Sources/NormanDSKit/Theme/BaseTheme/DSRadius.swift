@@ -15,7 +15,7 @@ public struct DSRadius: Sendable {
     public let md: CGFloat
     public let lg: CGFloat
     public let xl: CGFloat
-    public let full: CGFloat     // completamente redondo (chips, avatars)
+    public let full: CGFloat
 
     public init(
         none: CGFloat,
@@ -44,7 +44,7 @@ public extension DSRadius {
         md: 12,
         lg: 16,
         xl: 24,
-        full: 999 // para redondo total como Image().clipShape(Circle())
+        full: 999
     )
 }
 

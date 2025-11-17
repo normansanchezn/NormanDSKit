@@ -67,70 +67,71 @@ public struct DSColors: Sendable {
 // MARK: - Default Vibrant + Professional Palette
 public extension DSColors {
     static let `default` = DSColors(
-        // Brand
+        // MARK: - Brand
         primary: DSDynamicColor(
-            light: Color(hex: "#0066FF"),
-            dark: Color(hex: "#66AFFF")
+            light: Color(hex: "#007FFF"), // accent azul
+            dark:  Color(hex: "#339DFF")  // un poco más brillante en dark
         ),
         secondary: DSDynamicColor(
-            light: Color(hex: "#7C3AED"),
-            dark: Color(hex: "#C4A8FF")
+            light: Color(hex: "#111827"), // gris-azulado oscuro (chips / tags)
+            dark:  Color(hex: "#020F24")  // panel intermedio
         ),
         tertiary: DSDynamicColor(
-            light: Color(hex: "#10D7AE"),
-            dark: Color(hex: "#93F2DB")
+            light: Color(hex: "#00C2FF"), // azul celeste / detalle
+            dark:  Color(hex: "#4FD5FF")  // celeste brillante
         ),
         
-        // Backgrounds
+        // MARK: - Backgrounds
         background: DSDynamicColor(
-            light: Color(hex: "#F8FAFC"),
-            dark: Color(hex: "#020617")
+            light: Color(hex: "#F5F7FB"), // fondo casi blanco suave
+            dark:  Color(hex: "#000A17")  // navy casi negro
         ),
         surface: DSDynamicColor(
-            light: Color(hex: "#FFFFFF"),
-            dark: Color(hex: "#020617")
+            light: Color(hex: "#FFFFFF"), // cards claras
+            dark:  Color(hex: "#020F24")  // cards/paneles sobre #000A17
         ),
         surfaceSecondary: DSDynamicColor(
-            light: Color(hex: "#F1F5F9"),
-            dark: Color(hex: "#111827")
+            light: Color(hex: "#E4ECF7"), // contenedores secundarios
+            dark:  Color(hex: "#062446")  // contenedores secundarios dark
         ),
         onBackground: DSDynamicColor(
-            light: Color(hex: "#0F172A"),
-            dark: Color(hex: "#E5E7EB")
+            light: Color(hex: "#050816"), // texto principal en light
+            dark:  Color(hex: "#F5F7FF")  // texto principal en dark
         ),
         
-        // Text
+        // MARK: - Text
         textTitle: DSDynamicColor(
-            light: Color(hex: "#0F172A"),
-            dark: Color(hex: "#F9FAFB")
+            light: Color(hex: "#050816"), // títulos en light
+            dark:  Color(hex: "#F5F7FF")  // títulos en dark
         ),
         textSubtitle: DSDynamicColor(
-            light: Color(hex: "#4B5563"),
-            dark: Color(hex: "#D1D5DB")
+            light: Color(hex: "#4B5563"), // subtítulos en light
+            dark:  Color(hex: "#C7D2F5")  // subtítulos gris-azulado en dark
         ),
         textBody: DSDynamicColor(
-            light: Color(hex: "#111827"),
-            dark: Color(hex: "#E5E7EB")
+            light: Color(hex: "#111827"), // cuerpo en light
+            dark:  Color(hex: "#E5E7EB")  // cuerpo en dark
         ),
         textCaption: DSDynamicColor(
-            light: Color(hex: "#6B7280"),
-            dark: Color(hex: "#9CA3AF")
+            light: Color(hex: "#6B7280"), // caption light
+            dark:  Color(hex: "#9CA3AF")  // caption dark
         ),
         
-        // States
+        // MARK: - States (pueden quedarse como estaban, ya son buenos)
         success: DSDynamicColor(
             light: Color(hex: "#22C55E"),
-            dark: Color(hex: "#4ADE80")
+            dark:  Color(hex: "#4ADE80")
         ),
         warning: DSDynamicColor(
             light: Color(hex: "#F59E0B"),
-            dark: Color(hex: "#FBBF24")
+            dark:  Color(hex: "#FBBF24")
         ),
         error: DSDynamicColor(
             light: Color(hex: "#EF4444"),
-            dark: Color(hex: "#FCA5A5")
+            dark:  Color(hex: "#FCA5A5")
         )
     )
+
 }
 
 public extension Color {
