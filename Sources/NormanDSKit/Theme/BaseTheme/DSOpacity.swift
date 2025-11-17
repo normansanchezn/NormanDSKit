@@ -46,15 +46,15 @@ public struct DSOpacity: Sendable {
 
 public extension DSOpacity {
     static let `default` = DSOpacity(
-        disabled: 0.38,           // Texto o elementos desactivados
-        pressed: 0.12,            // Estados "isPressed"
-        overlay: 0.20,            // Backdrops/blur overlays
-        glassBackground: 0.15,    // Fondo de glass effect
-        glassBorder: 0.30,        // Borde de cristal
-        elevatedSurface: 0.06,    // Tarjetas elevadas
-        focus: 0.24,              // Indicadores de foco
-        subtle: 0.08,             // Líneas, hairlines, dividers suaves
-        strong: 0.16,             // Dividers fuertes o strokes
-        tinted: 0.12
+        disabled: 0.38,           // Elementos deshabilitados (texto, iconos)
+        pressed: 0.12,            // Botones o contenedores presionados
+        overlay: 0.20,            // Dimmed overlays / backdrops
+        glassBackground: 0.14,    // Fondo difuminado estilo "glass"
+        glassBorder: 0.28,        // Bordes cristalinos
+        elevatedSurface: 0.08,    // Tarjetas elevadas/light reflection
+        focus: 0.24,              // Indicadores de foco accesibles
+        subtle: 0.06,             // Dividers muy suaves / hairlines
+        strong: 0.16,             // Dividers fuertes o strokes nítidos
+        tinted: 0.12              // Para overlays de color (pills, chips)
     )
 }
