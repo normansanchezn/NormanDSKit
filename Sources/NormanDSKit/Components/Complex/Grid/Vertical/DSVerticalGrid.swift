@@ -1,5 +1,5 @@
 //
-//  MentorConnectVerticalGrid.swift
+//  DSVerticalGrid.swift
 //  NormanDSKit
 //
 //  Created by Norman Sanchez on 12/11/25.
@@ -14,6 +14,7 @@ public struct DSVerticalGrid<Element, Content: View>: View {
     private let items: [Element]
     private let content: (Element) -> Content
     private let columns: [GridItem]
+    private let spacing: CGFloat
     
     public init(
         items: [Element],
@@ -25,6 +26,7 @@ public struct DSVerticalGrid<Element, Content: View>: View {
         self.content = content
         
         let spacingValue = spacing ?? DSSpacing.default.md
+        self.spacing = spacingValue
         
         self.columns = Array(
             repeating: GridItem(.flexible(), spacing: spacingValue),
@@ -33,16 +35,14 @@ public struct DSVerticalGrid<Element, Content: View>: View {
     }
     
     public var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVGrid(columns: columns, spacing: theme.spacing.lg) {
-                ForEach(Array(items.enumerated()), id: \.offset) { _, element in
-                    content(element)
-                }
+        LazyVGrid(
+            columns: columns,
+            spacing: spacing
+        ) {
+            ForEach(Array(items.enumerated()), id: \.offset) { _, element in
+                content(element)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(.horizontal, theme.spacing.lg)
-            .padding(.vertical, theme.spacing.lg)
         }
-        .scrollClipDisabled()
     }
 }
-

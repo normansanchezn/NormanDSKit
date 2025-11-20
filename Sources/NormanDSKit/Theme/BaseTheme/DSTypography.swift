@@ -59,15 +59,15 @@ public extension DSTypography {
         
         return DSTypography(
             h1: .init(
-                font: .system(size: 32, weight: .bold, design: .rounded),
+                font: .system(size: 32, weight: .bold, design: .default),
                 color: colors.textTitle
             ),
             h2: .init(
-                font: .system(size: 28, weight: .semibold, design: .rounded),
+                font: .system(size: 28, weight: .semibold, design: .default),
                 color: colors.textTitle
             ),
             h3: .init(
-                font: .system(size: 24, weight: .semibold, design: .rounded),
+                font: .system(size: 24, weight: .semibold, design: .default),
                 color: colors.textTitle
             ),
             title: .init(
