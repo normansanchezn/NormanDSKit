@@ -14,23 +14,25 @@ public struct DSBackground: View {
     private let doodles = ["book.fill", "person.2.fill", "lightbulb.fill", "graduationcap.fill", "star.fill", "brain.head.profile", "bubble.left.and.bubble.right.fill", "hand.raised.fill"]
     
     @State private var doodlePositions: [DoodleData] = []
-    
-    public init(
-        doodleColor: Color = .white,
-        doodleCount: Int = 300
-    ) {
-        self.doodleColor = doodleColor
-        self.doodleCount = doodleCount
-    }
 
     struct DoodleData: Identifiable {
         let id = UUID()
         let name: String
         let position: CGPoint
         let rotation: Double
+        let size: CGFloat
+    }
+    
+    public init(
+        doodleColor: Color,
+        doodleCount: Int
+    ) {
+        self.doodleColor = doodleColor
+        self.doodleCount = doodleCount
     }
 
-    var body: some View {
+    public var body: some View {
+        // Usamos un GeometryProxy que ignore el safe area
         GeometryReader { geometry in
             ZStack {
                 Color.black.ignoresSafeArea()
@@ -39,36 +41,55 @@ public struct DSBackground: View {
                     Image(systemName: doodle.name)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 40, height: 40)
+                        .frame(width: doodle.size, height: doodle.size)
                         .foregroundColor(doodleColor)
                         .rotationEffect(.degrees(doodle.rotation))
                         .position(doodle.position)
-                        .opacity(0.6)
+                        .opacity(0.5)
                 }
             }
             .onAppear {
-                generateDoodles(in: geometry.size)
+                generateNonOverlappingDoodles(in: geometry.frame(in: .global).size)
             }
         }
+        .ignoresSafeArea() // Esto hace que el componente use los pixeles de borde a borde
     }
 
-    private func generateDoodles(in size: CGSize) {
-        var newPositions: [DoodleData] = []
-        let padding: CGFloat = 30
+    private func generateNonOverlappingDoodles(in size: CGSize) {
+        var placedDoodles: [DoodleData] = []
+        let doodleSize: CGFloat = 45
+        let minDistance = doodleSize * 1.2 // Espacio mínimo entre centros
         
+        // Intentamos colocar la cantidad deseada, pero con un límite de intentos para evitar bucles infinitos
         for _ in 0..<doodleCount {
-            let randomX = CGFloat.random(in: padding...(size.width - padding))
-            let randomY = CGFloat.random(in: padding...(size.height - padding))
-            let randomRotation = Double.random(in: 0...360)
-            let randomIcon = doodles.randomElement() ?? "star.fill"
+            var attempts = 0
+            var placed = false
             
-            newPositions.append(DoodleData(
-                name: randomIcon,
-                position: CGPoint(x: randomX, y: randomY),
-                rotation: randomRotation
-            ))
+            while !placed && attempts < 50 {
+                let randomX = CGFloat.random(in: 0...size.width)
+                let randomY = CGFloat.random(in: 0...size.height)
+                let newPos = CGPoint(x: randomX, y: randomY)
+                
+                // Verificar si choca con alguno ya colocado
+                let collision = placedDoodles.contains { existing in
+                    let distance = sqrt(pow(existing.position.x - newPos.x, 2) + pow(existing.position.y - newPos.y, 2))
+                    return distance < minDistance
+                }
+                
+                if !collision {
+                    let newDoodle = DoodleData(
+                        name: doodles.randomElement() ?? "star.fill",
+                        position: newPos,
+                        rotation: Double.random(in: 0...360),
+                        size: doodleSize
+                    )
+                    placedDoodles.append(newDoodle)
+                    placed = true
+                }
+                attempts += 1
+            }
         }
-        doodlePositions = newPositions
+        doodlePositions = placedDoodles
     }
 }
 
