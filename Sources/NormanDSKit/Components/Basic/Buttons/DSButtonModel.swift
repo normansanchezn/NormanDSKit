@@ -21,7 +21,7 @@ public struct DSButtonModel {
         variant: DSButtonVariant,
         isFullWidth: Bool = true,
         isEnabled: Bool = true,
-        minHeight: CGFloat = 44
+        minHeight: CGFloat = 30
     ) {
         self.title = title
         self.systemImage = systemImage

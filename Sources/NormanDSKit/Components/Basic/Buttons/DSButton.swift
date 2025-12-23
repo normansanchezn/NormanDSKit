@@ -14,7 +14,12 @@ public struct DSButton: View {
     
     private let model: DSButtonModel
     private let action: () -> Void
+    private let opacityDefaulButton: Double = 0.85
+    private let opacityDefaultLegacyButton: Double = 1.0
+    private let borderSizeDefault: Double = 0.9
+    private let minHightDefault: CGFloat = 30
     
+    // MARK: - Init
     public init(
         model: DSButtonModel,
         action: @escaping () -> Void
@@ -23,42 +28,118 @@ public struct DSButton: View {
         self.action = action
     }
     
+    // MARK: - Body
     public var body: some View {
-        Button(action: action) {
-            HStack(spacing: theme.spacing.xs) {
-                if let systemImage = model.systemImage, !systemImage.isEmpty {
-                    Image(systemName: systemImage)
-                }
-                
-                Text(model.title)
-                    .font(theme.typography.body.font.weight(.semibold))
-                    .lineLimit(1)
+        Group {
+            if #available(iOS 26.0, *) {
+                glassButton
+            } else {
+                legacyButton
             }
-            .frame(maxWidth: model.isFullWidth ? .infinity : nil)
-            .frame(minHeight: model.minHeight)
-            .padding(.horizontal, theme.spacing.lg)
-            .foregroundColor(foregroundColor)
-            .background(
-                RoundedRectangle(cornerRadius: theme.radius.md)
-                    .fill(backgroundColor)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.radius.md)
-                    .stroke(borderColor, lineWidth: borderWidth)
-            )
-            .opacity(model.isEnabled ? 1.0 : theme.opacity.disabled)
         }
         .disabled(!model.isEnabled)
     }
+
+    // MARK: - Label
+    private var label: some View {
+        HStack(spacing: theme.spacing.xs) {
+            if let systemImage = model.systemImage, !systemImage.isEmpty {
+                Image(systemName: systemImage)
+            }
+
+            Text(model.title)
+                .font(theme.typography.body.font.weight(.semibold))
+                .lineLimit(1)
+        }
+        .frame(maxWidth: model.isFullWidth ? .infinity : nil)
+        .frame(minHeight: model.minHeight)
+        .padding(.horizontal, theme.spacing.lg)
+    }
+
+    // MARK: - Button glass effect
+    @available(iOS 26.0, *)
+    @ViewBuilder
+    private var glassButton: some View {
+        switch model.variant {
+        case .primary:
+            Button(action: action) { label }
+                .buttonStyle(.glassProminent)
+                .tint(
+                    theme.colors.primary.resolved(scheme).opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
+
+        case .secondary:
+            Button(action: action) { label }
+                .buttonStyle(.glass)
+                .tint(
+                    theme.colors.primary.resolved(scheme)
+                        .opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
+
+        case .tertiary:
+            Button(action: action) { label }
+                .buttonStyle(.plain)
+                .foregroundStyle(theme.colors.primary.resolved(scheme).opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
+
+        }
+    }
+    
+    // MARK: - Legacy button
+    private var legacyButton: some View {
+        Button(action: action) {
+            label
+                .foregroundColor(foregroundColor)
+                .background(
+                    RoundedRectangle(cornerRadius: theme.radius.md)
+                        .fill(backgroundColor)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: theme.radius.md))
+                .overlay(
+                    RoundedRectangle(cornerRadius: theme.radius.md)
+                        .stroke(borderColor, lineWidth: borderWidth)
+                )
+                .opacity(model.isEnabled ? opacityDefaultLegacyButton : theme.opacity.disabled)
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Glass tint for variant
+    @available(iOS 26.0, *)
+    private var glassTintForVariant: Color {
+        switch model.variant {
+        case .primary:
+            return theme.colors.primary.resolved(scheme)
+        case .secondary, .tertiary:
+            return theme.colors.primary.resolved(scheme)
+        }
+    }
+    
+    // MARK: - Background glass effect:
+    @ViewBuilder
+    private var backgroundView: some View {
+        switch model.variant {
+        case .primary:
+            RoundedRectangle(cornerRadius: theme.radius.md)
+                .fill(backgroundColor)
+
+        case .secondary:
+            RoundedRectangle(cornerRadius: theme.radius.md)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: theme.radius.md)
+                        .fill(theme.colors.surface.resolved(scheme).opacity(theme.opacity.glassBackground))
+                )
+
+        case .tertiary:
+            RoundedRectangle(cornerRadius: theme.radius.md)
+                .fill(Color.clear)
+        }
+    }
     
     // MARK: - Colors
-    
     private var backgroundColor: Color {
         switch model.variant {
         case .primary:
             return theme.colors.primary.resolved(scheme)
         case .secondary:
-            // Surface con un toque de glass, estilo Liquid Glass
             return theme.colors.surface.resolved(scheme)
                 .opacity(theme.opacity.glassBackground)
         case .tertiary:
@@ -66,6 +147,7 @@ public struct DSButton: View {
         }
     }
     
+    // MARK: - Foreground color
     private var foregroundColor: Color {
         switch model.variant {
         case .primary:
@@ -75,6 +157,7 @@ public struct DSButton: View {
         }
     }
     
+    // MARK: - Border color
     private var borderColor: Color {
         switch model.variant {
         case .primary:
@@ -82,12 +165,13 @@ public struct DSButton: View {
         case .secondary:
             return theme.colors.primary
                 .resolved(scheme)
-                .opacity(0.9)
+                .opacity(borderSizeDefault)
         case .tertiary:
             return .clear
         }
     }
     
+    // MARK: - Border with
     private var borderWidth: CGFloat {
         switch model.variant {
         case .secondary:
@@ -98,13 +182,14 @@ public struct DSButton: View {
     }
 }
 
+// MARK: - Extension DSButton
 public extension DSButton {
     static func primary(
         _ title: String,
         systemImage: String? = nil,
         isFullWidth: Bool = true,
         isEnabled: Bool = true,
-        minHeight: CGFloat = 44,
+        minHeight: CGFloat = 30,
         action: @escaping () -> Void
     ) -> DSButton {
         DSButton(
@@ -125,7 +210,7 @@ public extension DSButton {
         systemImage: String? = nil,
         isFullWidth: Bool = true,
         isEnabled: Bool = true,
-        minHeight: CGFloat = 44,
+        minHeight: CGFloat = 30,
         action: @escaping () -> Void
     ) -> DSButton {
         DSButton(
@@ -146,7 +231,7 @@ public extension DSButton {
         systemImage: String? = nil,
         isFullWidth: Bool = false,
         isEnabled: Bool = true,
-        minHeight: CGFloat = 44,
+        minHeight: CGFloat = 30,
         action: @escaping () -> Void
     ) -> DSButton {
         DSButton(
