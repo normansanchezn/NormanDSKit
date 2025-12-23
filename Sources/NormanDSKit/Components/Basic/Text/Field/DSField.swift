@@ -27,8 +27,6 @@ public struct DSField: View {
     
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
-            
-            // Label tipo Liquid Glass pill, igual que DSMultilineField
             if let label = model.label {
                 DSLabel(label)
                     .padding(.horizontal, theme.spacing.lg)
@@ -43,38 +41,49 @@ public struct DSField: View {
                     )
             }
             
-            // Campo de texto single-line
-            TextField(
-                model.placeholder,
-                text: $text,
-                prompt: Text(model.placeholder)
-                    .foregroundColor(
-                        theme.colors.textCaption.resolved(scheme)
-                    )
-            )
-            .focused($isFocused)
-            .disabled(!model.isEnabled)
-            .font(theme.typography.body.font)
-            .foregroundColor(
-                theme.colors.textBody.resolved(scheme)
-            )
-            .padding(.horizontal, theme.spacing.lg)
-            .padding(.vertical, theme.spacing.sm)
-            .frame(minHeight: model.minHeight)
-            .background(
-                RoundedRectangle(cornerRadius: theme.radius.md)
-                    .fill(fieldBackgroundColor)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.radius.md)
-                    .stroke(borderColor, lineWidth: 1)
-            )
-            .opacity(model.isEnabled ? 1 : theme.opacity.disabled)
+            inputField
+                .focused($isFocused)
+                .disabled(!model.isEnabled)
+                .font(theme.typography.body.font)
+                .foregroundColor(theme.colors.textBody.resolved(scheme))
+                .padding(.horizontal, theme.spacing.lg)
+                .padding(.vertical, theme.spacing.sm)
+                .frame(minHeight: model.minHeight)
+                .background(
+                    RoundedRectangle(cornerRadius: theme.radius.md)
+                        .fill(fieldBackgroundColor)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: theme.radius.md)
+                        .stroke(borderColor, lineWidth: 1)
+                )
+                .opacity(model.isEnabled ? 1 : theme.opacity.disabled)
+                .applySubmitLabelIfNeeded(model.submitLabel)
             
             helperOrErrorText
         }
         .padding(.horizontal, theme.spacing.xs)
     }
+    
+    // MARK: - TextField
+    @ViewBuilder
+    private var inputField: some View {
+        let prompt = Text(model.placeholder)
+            .foregroundColor(theme.colors.textCaption.resolved(scheme))
+
+        Group {
+            if model.isSecure {
+                SecureField(model.placeholder, text: $text, prompt: prompt)
+            } else {
+                TextField(model.placeholder, text: $text, prompt: prompt)
+            }
+        }
+        .keyboardType(model.keyboardType)
+        .textContentType(model.textContentType)
+        .textInputAutocapitalization(model.autocapitalization)
+        .autocorrectionDisabled(model.autocorrectionDisabled)
+    }
+
     
     // MARK: - Subviews
     
@@ -127,6 +136,17 @@ public struct DSField: View {
                     .resolved(scheme)
                     .opacity(theme.opacity.subtle)
             }
+        }
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func applySubmitLabelIfNeeded(_ label: SubmitLabel?) -> some View {
+        if let label {
+            self.submitLabel(label)
+        } else {
+            self
         }
     }
 }

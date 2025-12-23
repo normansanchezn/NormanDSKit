@@ -21,6 +21,12 @@ public struct DSFieldModel {
     public let minHeight: CGFloat
     public let isEnabled: Bool
     public let state: State
+    public var keyboardType: UIKeyboardType
+    public var textContentType: UITextContentType?
+    public var submitLabel: SubmitLabel?
+    public var autocapitalization: TextInputAutocapitalization?
+    public var autocorrectionDisabled: Bool
+    public var isSecure: Bool
     
     public init(
         label: DSLabelModel? = nil,
@@ -29,7 +35,13 @@ public struct DSFieldModel {
         errorText: String? = nil,
         minHeight: CGFloat = 44,
         isEnabled: Bool = true,
-        state: State = .normal
+        state: State = .normal,
+        keyboardType: UIKeyboardType = .default,
+        textContentType: UITextContentType? = nil,
+        submitLabel: SubmitLabel? = nil,
+        autocapitalization: TextInputAutocapitalization? = nil,
+        autocorrectionDisabled: Bool = false,
+        isSecure: Bool = false
     ) {
         self.label = label
         self.placeholder = placeholder
@@ -38,5 +50,11 @@ public struct DSFieldModel {
         self.minHeight = minHeight
         self.isEnabled = isEnabled
         self.state = state
+        self.keyboardType = keyboardType
+        self.textContentType = textContentType
+        self.submitLabel = submitLabel
+        self.autocapitalization = autocapitalization
+        self.autocorrectionDisabled = autocorrectionDisabled
+        self.isSecure = isSecure
     }
 }
