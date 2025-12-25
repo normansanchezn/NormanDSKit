@@ -22,19 +22,12 @@ let package = Package(
             url: "https://github.com/airbnb/lottie-spm.git",
             from: "4.5.2"
         ),
-        
-        // LoremSwiftum (faker generator)
-        .package(
-            url: "https://github.com/lukaskubanek/LoremSwiftum.git",
-            from: "2.3.0"
-        ),
     ],
     targets: [
         .target(
             name: "NormanDSKit",
             dependencies: [
                 .product(name: "Lottie", package: "lottie-spm"),
-                .product(name: "LoremSwiftum", package: "loremswiftum")
             ],
             path: "Sources/NormanDSKit",
             resources: [
