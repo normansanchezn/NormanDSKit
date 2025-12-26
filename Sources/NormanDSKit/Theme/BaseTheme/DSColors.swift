@@ -175,7 +175,7 @@ public extension DSColors {
             dark:  Color(hex: "#9CA3AF")  // caption dark
         ),
         
-        // MARK: - States (pueden quedarse como estaban, ya son buenos)
+        // MARK: - States
         success: DSDynamicColor(
             light: Color(hex: "#22C55E"),
             dark:  Color(hex: "#4ADE80")
@@ -186,7 +186,7 @@ public extension DSColors {
         ),
         error: DSDynamicColor(
             light: Color(hex: "#EF4444"),
-            dark:  Color(hex: "#FCA5A5")
+            dark:  Color(hex: "#EF4444")
         )
     )
     

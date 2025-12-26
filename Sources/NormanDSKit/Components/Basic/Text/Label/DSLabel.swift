@@ -7,20 +7,34 @@
 
 import SwiftUI
 
+/// A design-system label that renders styled text (and optional icon) using theme typography.
+///
+/// `DSLabel` displays text according to a `DSLabelModel`, mapping the model's style
+/// to design-system typography and colors. It supports an optional SF Symbols icon,
+/// bold styling, and alignment.
+///
+/// ### Example
+/// ```swift
+/// DSLabel(DSLabelModel(text: "Hello", style: .title, systemImage: "star"))
+/// ```
 public struct DSLabel: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
     
     private let model: DSLabelModel
     
+    /// Creates a label with the given configuration model.
+    /// - Parameter model: The label configuration (text, style, icon, alignment, color).
     public init(_ model: DSLabelModel) {
         self.model = model
     }
     
+    /// The content and layout of the label.
     public var body: some View {
         content
     }
     
+    /// The internal content that conditionally composes an icon with the text.
     @ViewBuilder
     private var content: some View {
         if let systemImage = model.systemImage, !systemImage.isEmpty {
@@ -38,8 +52,7 @@ public struct DSLabel: View {
         }
     }
     
-    // MARK: - Text View Base
-    
+    /// The base text view applying alignment, wrapping, and bold styling from the model.
     private var textView: some View {
         Text(model.text)
             .multilineTextAlignment(model.alignment)
@@ -48,11 +61,12 @@ public struct DSLabel: View {
             .fontWeight(model.isBold ? .bold : nil)
     }
     
-    // MARK: - Font & Color
+    /// Resolves the font from the design-system typography for the selected style.
     private var textFont: Font {
         textStyle(for: model.style).font
     }
     
+    /// Resolves the text color from the theme, with special handling for accent and muted styles.
     private var textColor: Color {
         switch model.style {
         case .accent:
@@ -64,6 +78,7 @@ public struct DSLabel: View {
         }
     }
     
+    /// Maps a `DSLabelModel.Style` to a design-system typography style.
     private func textStyle(for style: DSLabelModel.Style) -> DSTypography.TextStyle {
         switch style {
         case .h1:
@@ -85,3 +100,4 @@ public struct DSLabel: View {
         }
     }
 }
+

@@ -7,42 +7,14 @@
 
 import SwiftUI
 
-/// A decorative background that renders random SF Symbols behind your content.
+/// A decorative, theme-friendly background that renders random SF Symbols behind your content.
 ///
-/// `DSBackground` paints a solid background color and lays out a set of
-/// randomly distributed SF Symbols ("doodles") while avoiding basic collisions
-/// between them. Your provided `content` is rendered on top of that canvas.
+/// `DSBackground` paints a solid color and lays out a set of randomly distributed
+/// SF Symbols ("doodles") while avoiding basic collisions. Your provided `content`
+/// is rendered on top.
 ///
-/// Use this view for welcome screens, empty states, or sections that benefit
-/// from a subtle visual texture without stealing focus from the main content.
-///
-/// - Note: Doodles are generated when the view first appears and whenever the
-///   container size changes meaningfully. The generation runs in a `.task(id:)`
-///   keyed by the container size.
-///
-/// ### Topics
-/// - Initialization:
-///   - ``init(backgroundColor:doodleColor:doodleCount:doodles:content:)``
-/// - Usage:
-///   Provide a color for the doodles and the desired count; the content is
-///   placed on top in a `ZStack`.
-///
-/// ### Example
-/// ```swift
-/// DSBackground(
-///     backgroundColor: .black,
-///     doodleColor: Color(hex: "#00C2FF"),
-///     doodleCount: 120
-/// ) {
-///     VStack {
-///         Text("Hello")
-///             .font(.largeTitle)
-///             .foregroundStyle(.white)
-///         Text("This is a background with doodles")
-///             .foregroundStyle(.white.opacity(0.8))
-///     }
-/// }
-/// ```
+/// - SeeAlso: ``DSBackgroundLayer`` for a lightweight, layer-only variant intended
+///   to be placed behind other views or used with container backgrounds.
 public struct DSBackground<Content: View>: View {
     @Environment(\.colorScheme) private var scheme
     private var doodleOpacity: Double {
@@ -103,6 +75,7 @@ public struct DSBackground<Content: View>: View {
         self.content = content
     }
 
+    /// The composed background and foreground content.
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -129,7 +102,8 @@ public struct DSBackground<Content: View>: View {
         }
     }
 
-    /// Re-generate doodles if needed for the given container size.
+    /// Regenerates doodles when the container size changes.
+    /// - Parameter size: The available container size used for layout.
     @MainActor
     private func regenerateIfNeeded(in size: CGSize) async {
         guard size.width > 0, size.height > 0 else { return }
@@ -138,7 +112,9 @@ public struct DSBackground<Content: View>: View {
         doodlePositions = generateDoodles(in: size)
     }
 
-    /// Generate a list of non-overlapping doodles within the given size.
+    /// Generates non-overlapping doodles within the given container size.
+    /// - Parameter size: The size in which to layout doodles.
+    /// - Returns: A list of placed doodles including symbol, position, rotation, and size.
     private func generateDoodles(in size: CGSize) -> [DoodleData] {
         let source = (doodlesOverride?.isEmpty == false) ? doodlesOverride! : self.defaultDoodles
 
@@ -204,3 +180,4 @@ public struct DSBackground<Content: View>: View {
         EmptyView()
     }
 }
+

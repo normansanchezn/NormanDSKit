@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+/// A design-system button that adapts styling based on `DSButtonVariant` and theme.
+///
+/// `DSButton` renders as a glass-style button on supported OS versions and as a
+/// themed legacy button otherwise. It supports full-width layout, optional SF
+/// Symbols, and disabled state, all driven by `DSButtonModel`.
+///
+/// ### Example
+/// ```swift
+/// DSButton(
+///     model: DSButtonModel(title: "Continue", systemImage: "arrow.right", variant: .primary)
+/// ) {
+///     // Handle tap
+/// }
+/// ```
 public struct DSButton: View {
     
     @Environment(\.dsTheme) private var theme
@@ -20,6 +34,11 @@ public struct DSButton: View {
     private let minHightDefault: CGFloat = 30
     
     // MARK: - Init
+    /// Creates a design-system button.
+    ///
+    /// - Parameters:
+    ///   - model: The configuration describing content, variant, and sizing.
+    ///   - action: The closure executed when the button is tapped.
     public init(
         model: DSButtonModel,
         action: @escaping () -> Void
@@ -29,6 +48,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Body
+    /// The content and layout for the button.
     public var body: some View {
         Group {
             if #available(iOS 26.0, *) {
@@ -41,6 +61,7 @@ public struct DSButton: View {
     }
 
     // MARK: - Label
+    /// The internal label view combining optional icon and title with spacing and sizing.
     private var label: some View {
         HStack(spacing: theme.spacing.xs) {
             if let systemImage = model.systemImage, !systemImage.isEmpty {
@@ -57,6 +78,7 @@ public struct DSButton: View {
     }
 
     // MARK: - Button glass effect
+    /// The glass-styled button for newer OS versions, varying by `variant`.
     @available(iOS 26.0, *)
     @ViewBuilder
     private var glassButton: some View {
@@ -83,6 +105,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Legacy button
+    /// The legacy-styled button for older OS versions with manual background/border.
     private var legacyButton: some View {
         Button(action: action) {
             label
@@ -102,6 +125,7 @@ public struct DSButton: View {
     }
 
     // MARK: - Glass tint for variant
+    /// The tint color used by glass button styles for each variant.
     @available(iOS 26.0, *)
     private var glassTintForVariant: Color {
         switch model.variant {
@@ -113,6 +137,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Background glass effect:
+    /// The background shape and material used by the legacy/glass fallback.
     @ViewBuilder
     private var backgroundView: some View {
         switch model.variant {
@@ -135,6 +160,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Colors
+    /// The background color for the legacy button by variant.
     private var backgroundColor: Color {
         switch model.variant {
         case .primary:
@@ -148,6 +174,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Foreground color
+    /// The foreground (text/icon) color for the legacy button by variant.
     private var foregroundColor: Color {
         switch model.variant {
         case .primary:
@@ -158,6 +185,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Border color
+    /// The border color for the legacy button by variant.
     private var borderColor: Color {
         switch model.variant {
         case .primary:
@@ -172,6 +200,7 @@ public struct DSButton: View {
     }
     
     // MARK: - Border with
+    /// The border width for the legacy button by variant.
     private var borderWidth: CGFloat {
         switch model.variant {
         case .secondary:
@@ -184,6 +213,8 @@ public struct DSButton: View {
 
 // MARK: - Extension DSButton
 public extension DSButton {
+    /// Creates a primary variant button with optional system image.
+    /// - Parameters mirror `DSButtonModel` and an `action` closure.
     static func primary(
         _ title: String,
         systemImage: String? = nil,
@@ -205,6 +236,8 @@ public extension DSButton {
         )
     }
     
+    /// Creates a secondary variant button with optional system image.
+    /// - Parameters mirror `DSButtonModel` and an `action` closure.
     static func secondary(
         _ title: String,
         systemImage: String? = nil,
@@ -226,6 +259,8 @@ public extension DSButton {
         )
     }
     
+    /// Creates a tertiary variant button with optional system image.
+    /// - Parameters mirror `DSButtonModel` and an `action` closure.
     static func tertiary(
         _ title: String,
         systemImage: String? = nil,

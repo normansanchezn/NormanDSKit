@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+/// A custom toggle style used by `DSToggle`, providing a themed track and thumb.
+///
+/// `DSToggleStyle` animates state changes with a spring, provides light haptic
+/// feedback on tap, and resolves its colors from the design system theme.
 public struct DSToggleStyle: ToggleStyle {
     
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
     
+    /// Creates a new toggle style.
     public init() {}
     
+    /// Creates the toggle's body.
+    /// - Parameter configuration: The current toggle configuration (binding, label).
+    /// - Returns: A view representing the styled toggle.
     public func makeBody(configuration: Configuration) -> some View {
         let isOn = configuration.isOn
         
@@ -53,6 +61,9 @@ public struct DSToggleStyle: ToggleStyle {
         .buttonStyle(.plain)
     }
     
+    /// Resolves the background track color based on the on/off state.
+    /// - Parameter isOn: Whether the toggle is on.
+    /// - Returns: The track color for the given state.
     private func trackColor(isOn: Bool) -> Color {
         if isOn {
             return theme.colors.primary
@@ -65,3 +76,4 @@ public struct DSToggleStyle: ToggleStyle {
         }
     }
 }
+

@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+/// A design-system card with optional trailing content (e.g., toggle, actions).
+///
+/// `DSCard` displays a title, optional subtitle, and an optional avatar image.
+/// You can also provide trailing content (like a toggle or buttons). When an
+/// action is provided in the model, the entire card becomes tappable.
+///
+/// ### Example
+/// ```swift
+/// DSCard(model: DSCardModel(
+///     title: DSLabelModel(text: "Norman Sanchez", style: .body),
+///     subtitle: DSLabelModel(text: "iOS Engineer", style: .caption),
+///     imageURL: "https://example.com/avatar.jpg",
+///     imageSize: 72
+/// ))
+/// ```
 public struct DSCard<Trailing: View>: View {
     
     @Environment(\.dsTheme) private var theme
@@ -15,6 +30,10 @@ public struct DSCard<Trailing: View>: View {
     private let model: DSCardModel
     private let trailing: Trailing
     
+    /// Creates a card with optional trailing content.
+    /// - Parameters:
+    ///   - model: The configuration describing title, subtitle, image, and optional action.
+    ///   - trailing: A builder for the trailing view (e.g., toggle, buttons).
     public init(
         model: DSCardModel,
         @ViewBuilder trailing: () -> Trailing
@@ -23,12 +42,14 @@ public struct DSCard<Trailing: View>: View {
         self.trailing = trailing()
     }
     
-    // Convenience cuando no quieres trailing
+    /// Creates a card without trailing content.
+    /// - Parameter model: The configuration describing title, subtitle, image, and optional action.
     public init(model: DSCardModel) where Trailing == EmptyView {
         self.model = model
         self.trailing = EmptyView()
     }
     
+    /// The content and layout of the card.
     public var body: some View {
         content
     }
@@ -93,8 +114,9 @@ public struct DSCard<Trailing: View>: View {
         }
     }
     
-    // MARK: - Avatar
-    
+    /// Renders the optional circular avatar image using `AsyncImage`.
+    /// - Parameter urlString: The remote image URL string.
+    /// - Returns: A circular avatar view with a subtle border.
     @ViewBuilder
     private func avatarView(urlString: String) -> some View {
         let size = model.imageSize ?? 56

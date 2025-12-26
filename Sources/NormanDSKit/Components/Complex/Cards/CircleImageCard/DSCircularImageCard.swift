@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+/// A design-system card that displays a circular image with a name and description.
+///
+/// `DSCircularImageCard` renders an avatar using `DSCircularImage` and shows a
+/// name and description in a lightweight glass-styled container.
+///
+/// ### Example
+/// ```swift
+/// DSCircularImageCard(
+///     model: DSCircularImageCardModel(
+///         imageURL: "https://example.com/avatar.jpg",
+///         name: "Norman",
+///         description: "iOS Engineer",
+///         imageSize: 90
+///     )
+/// )
+/// ```
 public struct DSCircularImageCard: View {
     
     @Environment(\.dsTheme) private var theme
@@ -14,10 +30,13 @@ public struct DSCircularImageCard: View {
     
     private let model: DSCircularImageCardModel
     
+    /// Creates a circular image card.
+    /// - Parameter model: The configuration describing the image URL, name, description, and size.
     public init(model: DSCircularImageCardModel) {
         self.model = model
     }
     
+    /// The content and layout of the circular image card.
     public var body: some View {
         VStack(spacing: theme.spacing.md) {
             
@@ -62,3 +81,4 @@ public struct DSCircularImageCard: View {
         }
     }
 }
+

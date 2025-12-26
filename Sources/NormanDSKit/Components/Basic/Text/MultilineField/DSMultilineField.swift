@@ -7,6 +7,25 @@
 
 import SwiftUI
 
+/// A design-system multiline text field with themed styling and validation states.
+///
+/// `DSMultilineField` displays a `TextEditor` with a pill-style label, helper/error
+/// messaging, and focus/validation-aware borders using the current theme.
+///
+/// ### Example
+/// ```swift
+/// @State private var notes = ""
+///
+/// var body: some View {
+///     DSMultilineField(
+///         model: DSMultilineFieldModel(
+///             label: DSLabelModel(text: "Notes", style: .overline, isBold: true),
+///             helperText: "Add more details if needed"
+///         ),
+///         text: $notes
+///     )
+/// }
+/// ```
 public struct DSMultilineField: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
@@ -16,6 +35,10 @@ public struct DSMultilineField: View {
     
     @FocusState private var isFocused: Bool
     
+    /// Creates a multiline design-system text field.
+    /// - Parameters:
+    ///   - model: The configuration describing label, helper/error text, sizing, and state.
+    ///   - text: A binding to the field's text content.
     public init(
         model: DSMultilineFieldModel,
         text: Binding<String>
@@ -24,6 +47,7 @@ public struct DSMultilineField: View {
         self._text = text
     }
     
+    /// The content and layout of the multiline field.
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
             
@@ -68,6 +92,7 @@ public struct DSMultilineField: View {
     
     // MARK: - Helper / Error
     
+    /// Displays helper text in normal state or error text in error state, styled by theme.
     @ViewBuilder
     private var helperOrErrorText: some View {
         switch model.state {
@@ -90,6 +115,7 @@ public struct DSMultilineField: View {
     
     // MARK: - Colors (LiquidGlass style)
     
+    /// Resolves the background color for the text editor based on enabled and theme state.
     private var fieldBackgroundColor: Color {
         if !model.isEnabled {
             return theme.colors.surfaceSecondary
@@ -99,10 +125,12 @@ public struct DSMultilineField: View {
         return theme.colors.surfaceSecondary.resolved(scheme)
     }
     
+    /// Resolves the text color for the text editor.
     private var fieldTextColor: Color {
         theme.colors.textBody.resolved(scheme)
     }
     
+    /// Resolves the border color, reflecting focus and validation state.
     private var borderColor: Color {
         if !model.isEnabled {
             return theme.colors.textCaption
@@ -126,3 +154,4 @@ public struct DSMultilineField: View {
         }
     }
 }
+
