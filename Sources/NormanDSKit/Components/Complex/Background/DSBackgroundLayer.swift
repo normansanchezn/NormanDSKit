@@ -7,11 +7,43 @@
 
 import SwiftUI
 
+/// A decorative background layer that fills the screen with a solid color and a grid of non-overlapping doodle icons.
+///
+/// `DSBackgroundLayer` is intended to be placed behind your content to add subtle visual interest without
+/// intercepting user interactions. It renders a full-screen background color and overlays a set of randomly
+/// positioned, non-overlapping SF Symbol doodles. The overlay automatically regenerates its layout when the
+/// container size changes (e.g., on rotation or size class changes).
+///
+/// The view disables hit testing so it does not block taps or gestures on content above it.
+///
+/// Example usage:
+/// ```swift
+/// ZStack {
+///     DSBackgroundLayer(
+///         backgroundColor: .black,
+///         doodleColor: .white.opacity(0.5),
+///         doodleCount: 24
+///     )
+///
+///     // Foreground content goes here
+///     ContentView()
+/// }
+/// ```
+///
+/// - Note: Doodles are generated using a fixed set of SF Symbols and are placed to avoid overlap
+///   using a simple distance-based heuristic. Generation occurs off the main actor to keep the UI responsive.
 public struct DSBackgroundLayer: View {
     private let backgroundColor: Color
     private let doodleColor: Color
     private let doodleCount: Int
 
+    /// Creates a `DSBackgroundLayer` with the provided colors and number of doodles.
+    ///
+    /// - Parameters:
+    ///   - backgroundColor: The full-screen background color. Defaults to `.black`.
+    ///   - doodleColor: The tint color used to render the doodle icons.
+    ///   - doodleCount: The total number of doodles to display. Higher values increase visual density
+    ///     and may require more time to compute non-overlapping positions.
     public init(
         backgroundColor: Color = .black,
         doodleColor: Color,
@@ -34,7 +66,7 @@ public struct DSBackgroundLayer: View {
                 )
             }
         }
-        .allowsHitTesting(false) // importante para que no bloquee taps
+        .allowsHitTesting(false)
     }
 }
 
@@ -89,8 +121,6 @@ private struct DSDoodlesOverlay: View {
         guard size.width > 0, size.height > 0 else { return }
         guard size != lastSize else { return }
         lastSize = size
-
-        // Genera off-main para no trabar UI si count es alto
         Task.detached(priority: .utility) {
             let positions = await generateNonOverlappingDoodles(in: size)
             await MainActor.run {
@@ -138,3 +168,4 @@ private struct DSDoodlesOverlay: View {
         return placed
     }
 }
+
