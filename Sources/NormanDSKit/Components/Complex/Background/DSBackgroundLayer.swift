@@ -36,7 +36,8 @@ public struct DSBackgroundLayer: View {
     private let backgroundColor: Color
     private let doodleColor: Color
     private let doodleCount: Int
-
+    private let doodles: [String]?
+    
     /// Creates a `DSBackgroundLayer` with the provided colors and number of doodles.
     ///
     /// - Parameters:
@@ -47,21 +48,24 @@ public struct DSBackgroundLayer: View {
     public init(
         backgroundColor: Color = .black,
         doodleColor: Color,
-        doodleCount: Int
+        doodleCount: Int,
+        doodles: [String]? = nil
     ) {
         self.backgroundColor = backgroundColor
         self.doodleColor = doodleColor
         self.doodleCount = doodleCount
+        self.doodles = doodles
     }
-
+    
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
                 backgroundColor.ignoresSafeArea()
-
+                
                 DSDoodlesOverlay(
                     color: doodleColor,
                     count: doodleCount,
+                    doodles: doodles,
                     containerSize: geometry.size
                 )
             }
@@ -70,13 +74,16 @@ public struct DSBackgroundLayer: View {
     }
 }
 
-// MARK: - Shared doodles overlay (extraído de tu DSBackground)
+// MARK: - Shared doodles overlay
 private struct DSDoodlesOverlay: View {
+    @Environment(\.colorScheme) private var scheme
+    
     let color: Color
     let count: Int
+    let doodles: [String]?
     let containerSize: CGSize
-
-    private let doodles = [
+    
+    private static let defaultDoodles: [String] = [
         "book.fill",
         "person.2.fill",
         "lightbulb.fill",
@@ -86,10 +93,10 @@ private struct DSDoodlesOverlay: View {
         "bubble.left.and.bubble.right.fill",
         "hand.raised.fill"
     ]
-
+    
     @State private var doodlePositions: [DoodleData] = []
     @State private var lastSize: CGSize = .zero
-
+    
     struct DoodleData: Identifiable {
         let id = UUID()
         let name: String
@@ -97,7 +104,15 @@ private struct DSDoodlesOverlay: View {
         let rotation: Double
         let size: CGFloat
     }
-
+    
+    private var doodleOpacity: Double {
+        scheme == .dark ? 0.10 : 0.6
+    }
+    
+    private var doodleBlendMode: BlendMode {
+        scheme == .dark ? .plusLighter : .normal
+    }
+    
     var body: some View {
         ZStack {
             ForEach(doodlePositions) { doodle in
@@ -105,10 +120,12 @@ private struct DSDoodlesOverlay: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: doodle.size, height: doodle.size)
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                     .rotationEffect(.degrees(doodle.rotation))
                     .position(doodle.position)
-                    .opacity(0.5)
+                    .opacity(doodleOpacity)
+                    .blendMode(doodleBlendMode)
+                    .allowsHitTesting(false)
             }
         }
         .onAppear { regenerateIfNeeded(for: containerSize) }
@@ -116,55 +133,68 @@ private struct DSDoodlesOverlay: View {
             regenerateIfNeeded(for: newSize)
         }
     }
-
+    
     private func regenerateIfNeeded(for size: CGSize) {
         guard size.width > 0, size.height > 0 else { return }
         guard size != lastSize else { return }
         lastSize = size
+        
         Task.detached(priority: .utility) {
-            let positions = await generateNonOverlappingDoodles(in: size)
-            await MainActor.run {
-                doodlePositions = positions
-            }
+            let positions = await generateDoodles(in: size)
+            await MainActor.run { doodlePositions = positions }
         }
     }
-
-    private func generateNonOverlappingDoodles(in size: CGSize) -> [DoodleData] {
+    
+    private func generateDoodles(in size: CGSize) -> [DoodleData] {
+        let symbols = (doodles?.isEmpty == false) ? doodles! : Self.defaultDoodles
+        
         var placed: [DoodleData] = []
+        
         let doodleSize: CGFloat = 45
-        let minDistance = doodleSize * 1.2
-
+        let minDistance = doodleSize * 0.8
+        let maxAttempts = 25
+        
+        let xMin = doodleSize / 2
+        let yMin = doodleSize / 2
+        let xMax = max(xMin, size.width - xMin)
+        let yMax = max(yMin, size.height - yMin)
+        
         for _ in 0..<count {
             var attempts = 0
-            var didPlace = false
-
-            while !didPlace && attempts < 50 {
-                let x = CGFloat.random(in: 0...size.width)
-                let y = CGFloat.random(in: 0...size.height)
-                let newPos = CGPoint(x: x, y: y)
-
+            var chosen = CGPoint(
+                x: CGFloat.random(in: xMin...xMax),
+                y: CGFloat.random(in: yMin...yMax)
+            )
+            
+            while attempts < maxAttempts {
+                let candidate = CGPoint(
+                    x: CGFloat.random(in: xMin...xMax),
+                    y: CGFloat.random(in: yMin...yMax)
+                )
+                
                 let collision = placed.contains { existing in
-                    let dx = existing.position.x - newPos.x
-                    let dy = existing.position.y - newPos.y
+                    let dx = existing.position.x - candidate.x
+                    let dy = existing.position.y - candidate.y
                     return sqrt(dx*dx + dy*dy) < minDistance
                 }
-
+                
                 if !collision {
-                    placed.append(
-                        DoodleData(
-                            name: doodles.randomElement() ?? "star.fill",
-                            position: newPos,
-                            rotation: Double.random(in: 0...360),
-                            size: doodleSize
-                        )
-                    )
-                    didPlace = true
+                    chosen = candidate
+                    break
                 }
-
                 attempts += 1
             }
+            
+            placed.append(
+                DoodleData(
+                    name: symbols.randomElement() ?? "star.fill",
+                    position: chosen,
+                    rotation: Double.random(in: 0...360),
+                    size: doodleSize
+                )
+            )
         }
-
+        
         return placed
     }
 }
