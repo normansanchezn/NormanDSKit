@@ -32,7 +32,7 @@ public struct DSVerticalCarousel<Element, Content: View>: View {
             }
         }
         .padding(.vertical, theme.spacing.lg)
-        .padding(.horizontal, theme.spacing.lg)
+        .padding(.horizontal, theme.spacing.md)
         .background(
             RoundedRectangle(cornerRadius: theme.radius.lg)
                 .fill(
@@ -41,7 +41,11 @@ public struct DSVerticalCarousel<Element, Content: View>: View {
                         .opacity(theme.opacity.glassBackground)
                 )
         )
-        .padding(.horizontal, theme.spacing.lg)
     }
 }
 
+#Preview {
+    DSVerticalCarousel(items: [1, 2, 3, 4, 5]) { _ in
+        Text("Hello")
+    }
+}

@@ -18,8 +18,8 @@ public struct DSLabelModel {
         case body
         case caption
         case overline
-        case accent      // para cosas que quieras resaltar con primary
-        case muted       // texto más apagado
+        case accent
+        case muted
     }
     
     public let text: String
@@ -27,18 +27,21 @@ public struct DSLabelModel {
     public let systemImage: String?
     public let isBold: Bool
     public let alignment: TextAlignment
+    public let textColor: Color?
     
     public init(
         text: String,
         style: Style = .body,
         systemImage: String? = nil,
         isBold: Bool = false,
-        alignment: TextAlignment = .leading
+        alignment: TextAlignment = .leading,
+        textColor: Color? = Color.primary
     ) {
         self.text = text
         self.style = style
         self.systemImage = systemImage
         self.isBold = isBold
         self.alignment = alignment
+        self.textColor = textColor
     }
 }

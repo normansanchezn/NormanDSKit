@@ -23,7 +23,6 @@ public struct DSLabel: View {
     
     @ViewBuilder
     private var content: some View {
-        // Si hay ícono → usamos Label
         if let systemImage = model.systemImage, !systemImage.isEmpty {
             Label {
                 textView
@@ -31,9 +30,8 @@ public struct DSLabel: View {
                 Image(systemName: systemImage)
             }
             .font(textFont)
-            .foregroundColor(textColor)
+            .foregroundColor(model.textColor)
         } else {
-            // Si no hay icon → sólo el texto
             textView
                 .font(textFont)
                 .foregroundColor(textColor)
@@ -51,7 +49,6 @@ public struct DSLabel: View {
     }
     
     // MARK: - Font & Color
-    
     private var textFont: Font {
         textStyle(for: model.style).font
     }
