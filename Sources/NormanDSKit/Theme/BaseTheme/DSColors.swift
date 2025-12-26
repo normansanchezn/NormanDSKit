@@ -5,36 +5,83 @@
 //  Created by Norman Sanchez on 05/11/25.
 //
 
+/// NormanDSKit Colors
+///
+/// This file defines the design system color tokens for NormanDSKit.
+/// Use `DSColors` to access dynamic, light/dark-aware colors for brand,
+/// decorative accents, backgrounds, text, and semantic states.
+
 import SwiftUI
 
 // MARK: - DS Colors
+/// A collection of design-system color tokens.
+///
+/// `DSColors` groups dynamic colors used across the app, organized by
+/// brand, decorative, background, text, and state categories.
+/// Each color is represented by `DSDynamicColor`, which adapts to light
+/// and dark appearances.
+///
+/// Use the `default` palette for a ready-to-use vibrant and professional look,
+/// or create your own instance to customize the theme.
 public struct DSColors: Sendable {
-    // Brand
+    /// Primary brand color used for key actions and highlights.
     public let primary: DSDynamicColor
+    /// Secondary brand color used for tags, chips, or secondary emphasis.
     public let secondary: DSDynamicColor
+    /// Tertiary accent color used for subtle accents and details.
     public let tertiary: DSDynamicColor
     
-    // Backgrounds
+    /// Decorative accent color for illustrations and decorative elements.
+    public let decorativeDoodle: DSDynamicColor
+    
+    /// App background color.
     public let background: DSDynamicColor
+    /// Primary surface color for cards and containers.
     public let surface: DSDynamicColor
+    /// Secondary surface color for nested or less prominent containers.
     public let surfaceSecondary: DSDynamicColor
+    /// Foreground color used on top of the background (e.g., primary text).
     public let onBackground: DSDynamicColor
     
-    // Text
+    /// Text color for titles.
     public let textTitle: DSDynamicColor
+    /// Text color for subtitles.
     public let textSubtitle: DSDynamicColor
+    /// Text color for body content.
     public let textBody: DSDynamicColor
+    /// Text color for captions and metadata.
     public let textCaption: DSDynamicColor
     
-    // States
+    /// Semantic color indicating success.
     public let success: DSDynamicColor
+    /// Semantic color indicating warnings.
     public let warning: DSDynamicColor
+    /// Semantic color indicating errors.
     public let error: DSDynamicColor
     
+    /// Creates a `DSColors` palette.
+    ///
+    /// - Parameters:
+    ///   - primary: Primary brand color used for key actions and highlights.
+    ///   - secondary: Secondary brand color used for tags, chips, or secondary emphasis.
+    ///   - tertiary: Tertiary accent color used for subtle accents and details.
+    ///   - decorativeDoodle: Decorative accent color for illustrations and decorative elements.
+    ///   - background: App background color.
+    ///   - surface: Primary surface color for cards and containers.
+    ///   - surfaceSecondary: Secondary surface color for nested or less prominent containers.
+    ///   - onBackground: Foreground color used on top of the background (e.g., primary text).
+    ///   - textTitle: Text color for titles.
+    ///   - textSubtitle: Text color for subtitles.
+    ///   - textBody: Text color for body content.
+    ///   - textCaption: Text color for captions and metadata.
+    ///   - success: Semantic color indicating success.
+    ///   - warning: Semantic color indicating warnings.
+    ///   - error: Semantic color indicating errors.
     public init(
         primary: DSDynamicColor,
         secondary: DSDynamicColor,
         tertiary: DSDynamicColor,
+        decorativeDoodle: DSDynamicColor,
         background: DSDynamicColor,
         surface: DSDynamicColor,
         surfaceSecondary: DSDynamicColor,
@@ -50,6 +97,7 @@ public struct DSColors: Sendable {
         self.primary = primary
         self.secondary = secondary
         self.tertiary = tertiary
+        self.decorativeDoodle = decorativeDoodle
         self.background = background
         self.surface = surface
         self.surfaceSecondary = surfaceSecondary
@@ -66,6 +114,10 @@ public struct DSColors: Sendable {
 
 // MARK: - Default Vibrant + Professional Palette
 public extension DSColors {
+    /// The default vibrant and professional color palette.
+    ///
+    /// This palette provides balanced contrast for light and dark modes,
+    /// with brand-forward blues, clear surface hierarchy, and readable text colors.
     static let `default` = DSColors(
         // MARK: - Brand
         primary: DSDynamicColor(
@@ -79,6 +131,12 @@ public extension DSColors {
         tertiary: DSDynamicColor(
             light: Color(hex: "#00C2FF"), // azul celeste / detalle
             dark:  Color(hex: "#4FD5FF")  // celeste brillante
+        ),
+        
+        // MARK: - Decorative
+        decorativeDoodle: DSDynamicColor(
+            light: Color(hex: "#CFEAFF"),  // accent azul
+            dark:  Color(hex: "#4FD5FF")   // tertiary dark (accent-like)
         ),
         
         // MARK: - Backgrounds
@@ -131,10 +189,16 @@ public extension DSColors {
             dark:  Color(hex: "#FCA5A5")
         )
     )
-
+    
 }
 
 public extension Color {
+    /// Creates a `Color` from a hexadecimal string.
+    ///
+    /// Accepts strings in the form `"#RRGGBB"` or `"RRGGBB"`.
+    /// If the string can't be parsed, the resulting color defaults to black.
+    ///
+    /// - Parameter hex: A hex string representing the color components.
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
             .replacingOccurrences(of: "#", with: "")

@@ -44,6 +44,13 @@ import SwiftUI
 /// }
 /// ```
 public struct DSBackground<Content: View>: View {
+    @Environment(\.colorScheme) private var scheme
+    private var doodleOpacity: Double {
+        scheme == .dark ? 0.10 : 0.6
+    }
+    private var doodleBlendMode: BlendMode {
+        scheme == .dark ? .plusLighter : .normal
+    }
     private let backgroundColor: Color
     private let doodleColor: Color
     private let doodleCount: Int
@@ -106,11 +113,11 @@ public struct DSBackground<Content: View>: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: doodle.size, height: doodle.size)
-                        .foregroundColor(doodleColor)
+                        .foregroundStyle(doodleColor)
                         .rotationEffect(.degrees(doodle.rotation))
                         .position(doodle.position)
-                        .opacity(0.18)
-                        .blendMode(.plusLighter)
+                        .opacity(doodleOpacity)
+                        .blendMode(doodleBlendMode)
                         .allowsHitTesting(false)
                 }
 
@@ -192,8 +199,8 @@ public struct DSBackground<Content: View>: View {
     @Previewable @Environment(\.dsTheme)  var theme
     @Previewable @Environment(\.colorScheme)  var scheme
     DSBackground(
-        doodleColor: Color(hex: "#00C2FF"), doodleCount: 500
+        doodleColor: Color(hex: "#00C2FF"), doodleCount: 30
     ) {
-
+        EmptyView()
     }
 }

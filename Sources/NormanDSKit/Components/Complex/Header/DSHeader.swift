@@ -5,19 +5,49 @@
 //  Created by Norman Sanchez on 16/11/25.
 //
 
+/// NormanDSKit Header Component
+///
+/// `DSHeader` is a reusable, theme-aware header view that supports
+/// back/close actions, an optional trailing area, and dynamic styling
+/// (including a liquid-glass background) based on the current theme
+/// and color scheme.
 import SwiftUI
 
+/// A themed header view with optional back/close buttons and trailing content.
+///
+/// `DSHeader` renders a compact or large title style (depending on the
+/// provided `DSHeaderModel`), and can show a back button, a close button,
+/// and a caller-provided trailing view (e.g. actions or status).
+///
+/// The header uses liquid-glass styling and adapts to the current
+/// color scheme via the design system theme from the `dsTheme` environment.
+///
+/// - Generic parameter Trailing: The type of the trailing view content.
 public struct DSHeader<Trailing: View>: View {
     
+    /// The design system theme from the environment.
     @Environment(\.dsTheme) private var theme
+    /// The current color scheme (light or dark).
     @Environment(\.colorScheme) private var scheme
+    /// Action used to dismiss the current presentation.
     @Environment(\.dismiss) private var dismiss
     
+    /// Header configuration (title, subtitle, style, and visibility of controls).
     private let model: DSHeaderModel
+    /// Optional handler for the back action. Falls back to `dismiss()` when nil.
     private let onBack: (() -> Void)?
+    /// Optional handler for the close action. Falls back to `dismiss()` when nil.
     private let onClose: (() -> Void)?
+    /// Caller-provided trailing content (e.g., buttons). Empty when not provided.
     private let trailing: Trailing
     
+    /// Creates a header with a trailing content view.
+    ///
+    /// - Parameters:
+    ///   - model: Header configuration describing title, subtitle, style, and controls.
+    ///   - onBack: Optional callback invoked when the back button is tapped.
+    ///   - onClose: Optional callback invoked when the close button is tapped.
+    ///   - trailing: A builder returning the trailing view shown on the right.
     public init(
         model: DSHeaderModel,
         onBack: (() -> Void)? = nil,
@@ -30,7 +60,12 @@ public struct DSHeader<Trailing: View>: View {
         self.trailing = trailing()
     }
     
-    // Convenience cuando no hay trailing
+    /// Creates a header without trailing content.
+    ///
+    /// - Parameters:
+    ///   - model: Header configuration describing title, subtitle, style, and controls.
+    ///   - onBack: Optional callback invoked when the back button is tapped.
+    ///   - onClose: Optional callback invoked when the close button is tapped.
     public init(
         model: DSHeaderModel,
         onBack: (() -> Void)? = nil,
@@ -42,6 +77,7 @@ public struct DSHeader<Trailing: View>: View {
         self.trailing = EmptyView()
     }
     
+    /// The view hierarchy for the header.
     public var body: some View {
         ZStack {
             background
@@ -51,6 +87,7 @@ public struct DSHeader<Trailing: View>: View {
     
     // MARK: - Background Liquid Glass
     
+    /// The liquid-glass background, blending material with theme colors.
     private var background: some View {
         ZStack {
             Rectangle()
@@ -66,6 +103,7 @@ public struct DSHeader<Trailing: View>: View {
     
     // MARK: - Content
     
+    /// Header content layout including leading buttons, title block, and trailing area.
     private var content: some View {
         VStack(spacing: theme.spacing.xs) {
             HStack(spacing: theme.spacing.sm) {
@@ -91,6 +129,7 @@ public struct DSHeader<Trailing: View>: View {
     
     // MARK: - Leading
     
+    /// Leading control area with optional back and close buttons.
     @ViewBuilder
     private var leadingButtons: some View {
         HStack(spacing: theme.spacing.xs) {
@@ -132,6 +171,7 @@ public struct DSHeader<Trailing: View>: View {
     
     // MARK: - Title block
     
+    /// Title and subtitle block, including an optional system image.
     @ViewBuilder
     private var titleBlock: some View {
         VStack(alignment: .leading, spacing: theme.spacing.xs / 2) {
@@ -165,3 +205,4 @@ public struct DSHeader<Trailing: View>: View {
         }
     }
 }
+
