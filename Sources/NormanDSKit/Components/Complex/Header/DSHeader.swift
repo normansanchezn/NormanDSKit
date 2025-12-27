@@ -5,7 +5,12 @@
 //  Created by Norman Sanchez on 16/11/25.
 //
 
-/// NormanDSKit Header Component
+/// A theme-aware header with optional back/close buttons and trailing content.
+///
+/// `DSHeader` renders a compact or large title based on `DSHeaderModel.style`. It can
+/// display back and close buttons and an optional trailing view (such as actions).
+/// The header uses a liquid-glass background and adapts to the current color scheme
+/// via the `dsTheme` environment.
 ///
 /// `DSHeader` is a reusable, theme-aware header view that supports
 /// back/close actions, an optional trailing area, and dynamic styling

@@ -129,7 +129,7 @@ private struct DSDoodlesOverlay: View {
             }
         }
         .onAppear { regenerateIfNeeded(for: containerSize) }
-        .onChange(of: containerSize) { _, newSize in
+        .onChange(of: containerSize) { newSize in
             regenerateIfNeeded(for: newSize)
         }
     }

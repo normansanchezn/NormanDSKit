@@ -7,6 +7,27 @@
 
 import SwiftUI
 
+/// A selectable chip that toggles visual state based on selection.
+///
+/// `DSChoiceChip` renders a capsule-shaped control that highlights when selected
+/// and invokes `onTap` when pressed. It adapts its colors using the design-system
+/// theme and current color scheme.
+///
+/// ### Example
+/// ```swift
+/// DSChoiceChip(title: "iOS", isSelected: true) {
+///     print("Selected iOS")
+/// }
+/// ```
+///
+/// - Parameters:
+///   - title: The chip text.
+///   - isSelected: Whether the chip is currently selected.
+///   - onTap: Action invoked when the chip is tapped.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for spacing, colors, and radii.
+///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
 public struct DSChoiceChip: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme

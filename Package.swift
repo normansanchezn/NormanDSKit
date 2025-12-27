@@ -7,7 +7,7 @@ let package = Package(
     name: "NormanDSKit",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v17),
+        .iOS(.v15),
         .macOS(.v14)
     ],
     products: [

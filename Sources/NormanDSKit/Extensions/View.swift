@@ -36,3 +36,24 @@ public extension View {
     }
 }
 
+extension View {
+    @ViewBuilder
+    func applyScrollClipDisabledIfAvailable() -> some View {
+        if #available(iOS 17.0, *) {
+            self.scrollClipDisabled()
+        } else {
+            self
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func styledText(_ text: Text, isBold: Bool) -> some View {
+        if isBold {
+            text.bold()
+        } else {
+            text
+        }
+    }
+}

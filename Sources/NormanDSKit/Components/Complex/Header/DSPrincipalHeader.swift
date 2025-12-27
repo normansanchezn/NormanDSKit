@@ -7,6 +7,33 @@
 
 import SwiftUI
 
+/// A prominent hero-style header that showcases a background image and profile info.
+///
+/// `DSPrincipalHeader` renders a large, rounded hero image with a bottom-left overlay
+/// containing rating and identity details (name and job title). It adapts to the
+/// design-system theme and current color scheme.
+///
+/// ### Example
+/// ```swift
+/// DSPrincipalHeader(dsPrincipalHeaderModel: .init(
+///     imageUrl: "https://example.com/photo.jpg",
+///     name: "Norman",
+///     lastName: "Sanchez",
+///     email: "norman@example.com",
+///     jobDescription: "Mentor & iOS Engineer",
+///     jobTitle: "iOS Engineer",
+///     jobType: "Full-time",
+///     personalDescription: "Passionate about building great apps.",
+///     skills: ["Swift", "SwiftUI", "Design Systems"]
+/// ))
+/// ```
+///
+/// - Parameters:
+///   - dsPrincipalHeaderModel: The data model specifying the background image and profile fields.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for spacing, colors, and radii.
+///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
 public struct DSPrincipalHeader: View {
     
     @Environment(\.dsTheme) private var theme
@@ -85,3 +112,4 @@ public struct DSPrincipalHeader: View {
         }
     }
 }
+

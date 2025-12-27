@@ -7,6 +7,27 @@
 
 import SwiftUI
 
+/// A horizontally scrolling group of `DSChoiceChip` items.
+///
+/// `DSChoiceChipGroup` displays a row of chips allowing a single selection. It
+/// calls `onItemSelected` when the user selects a chip.
+///
+/// ### Example
+/// ```swift
+/// DSChoiceChipGroup(
+///     items: ["Beginner", "Intermediate", "Advanced"],
+///     selectedItem: "Intermediate",
+///     onItemSelected: { print($0) }
+/// )
+/// ```
+///
+/// - Parameters:
+///   - items: The list of chip titles.
+///   - selectedItem: The currently selected chip title.
+///   - onItemSelected: Callback invoked when a chip is selected.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for spacing, colors, and radii.
 public struct DSChoiceChipGroup: View {
     @Environment(\.dsTheme) private var theme
 
@@ -26,7 +47,7 @@ public struct DSChoiceChipGroup: View {
 
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: theme.spacing.xs) {
+            HStack(spacing: theme.spacing.xl) {
                 ForEach(items, id: \.self) { item in
                     let isSelected = (item == selectedItem)
                     DSChoiceChip(
@@ -40,3 +61,4 @@ public struct DSChoiceChipGroup: View {
         }
     }
 }
+

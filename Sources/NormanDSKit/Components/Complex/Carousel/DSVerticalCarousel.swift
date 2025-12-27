@@ -7,8 +7,25 @@
 
 import SwiftUI
 
-import SwiftUI
-
+/// A vertical carousel container that stacks items with design-system spacing and styling.
+///
+/// `DSVerticalCarousel` renders a vertical list of views generated from the provided
+/// `items` collection. It applies DS theme spacing and a subtle glass-like background.
+///
+/// - Generics:
+///   - `Element`: The data type of each item in the carousel.
+///   - `Content`: The SwiftUI view produced for each element.
+///
+/// ### Example
+/// ```swift
+/// DSVerticalCarousel(items: ["One", "Two", "Three"]) { item in
+///     Text(item)
+/// }
+/// ```
+///
+/// - Parameters:
+///   - items: The data source used to build each row of the carousel.
+///   - content: A view builder that creates a `Content` view for each element.
 public struct DSVerticalCarousel<Element, Content: View>: View {
     
     @Environment(\.dsTheme) private var theme

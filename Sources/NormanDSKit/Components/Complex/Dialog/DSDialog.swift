@@ -7,6 +7,39 @@
 
 import SwiftUI
 
+/// A themed dialog card with optional image, title, subtitle, content, and actions.
+///
+/// `DSDialog` displays an optional rounded image, a title and subtitle, a caller
+/// provided content area, and two actions (primary and close). It uses the
+/// design-system theme and a liquid-glass background style.
+///
+/// ### Example
+/// ```swift
+/// DSDialog(
+///     title: "Confirm",
+///     subtitle: "This action cannot be undone.",
+///     imageUrl: nil,
+///     primaryButtonTitle: "OK",
+///     onClose: { /* dismiss */ },
+///     onPrimaryAction: { /* confirm */ }
+/// ) {
+///     Text("Are you sure?")
+/// }
+/// ```
+///
+/// - Parameters:
+///   - title: Optional title shown at the top of the dialog.
+///   - subtitle: Optional subtitle shown below the title.
+///   - imageUrl: Optional image URL displayed as a rounded banner.
+///   - primaryButtonTitle: Title for the primary action button.
+///   - closeButtonTitle: Title for the close button. Defaults to "Close".
+///   - onClose: Closure executed when the close button is tapped.
+///   - onPrimaryAction: Closure executed when the primary button is tapped.
+///   - content: A builder that provides additional content inside the dialog.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for spacing, colors, and radii.
+///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
 public struct DSDialog<Content: View>: View {
     
     @Environment(\.dsTheme) private var theme

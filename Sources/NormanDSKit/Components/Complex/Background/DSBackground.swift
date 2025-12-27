@@ -169,15 +169,3 @@ public struct DSBackground<Content: View>: View {
         return placed
     }
 }
-
-
-#Preview {
-    @Previewable @Environment(\.dsTheme)  var theme
-    @Previewable @Environment(\.colorScheme)  var scheme
-    DSBackground(
-        doodleColor: Color(hex: "#00C2FF"), doodleCount: 30
-    ) {
-        EmptyView()
-    }
-}
-

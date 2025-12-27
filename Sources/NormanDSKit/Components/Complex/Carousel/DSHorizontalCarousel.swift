@@ -7,6 +7,28 @@
 
 import SwiftUI
 
+/// A horizontal carousel that lazily scrolls items with design-system spacing.
+///
+/// `DSHorizontalCarousel` displays a horizontally scrolling list of views generated
+/// from the provided `items`. It adds leading/trailing padding to the first and
+/// last items and disables scroll clipping for better glass effects.
+///
+/// - Generics:
+///   - `Element`: The data type of each item in the carousel.
+///   - `Content`: The SwiftUI view produced for each element.
+///
+/// ### Example
+/// ```swift
+/// DSHorizontalCarousel(items: Array(1...5)) { value in
+///     Text("Item \(value)")
+///         .padding(12)
+///         .background(Capsule().fill(Color.blue.opacity(0.2)))
+/// }
+/// ```
+///
+/// - Parameters:
+///   - items: The data source used to build each item in the carousel.
+///   - content: A view builder that creates a `Content` view for each element.
 public struct DSHorizontalCarousel<Element, Content: View>: View {
     
     @Environment(\.dsTheme) private var theme
@@ -32,7 +54,7 @@ public struct DSHorizontalCarousel<Element, Content: View>: View {
                 }
             }
         }
-        .scrollClipDisabled()   // ← importante para Liquid Glass
+        .applyScrollClipDisabledIfAvailable()
     }
 }
 

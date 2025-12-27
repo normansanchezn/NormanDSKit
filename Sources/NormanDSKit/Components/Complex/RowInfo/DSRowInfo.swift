@@ -7,7 +7,31 @@
 
 import SwiftUI
 
-public struct RowInfo: View {
+/// A card-style row showing a date range, title, duration, and participants.
+///
+/// `DSRowInfo` renders a styled container with a header (date range), a bold title,
+/// a small duration chip, and up to three participant avatars plus an optional
+/// extra count. Swipe actions allow deletion when `onDelete` is provided.
+///
+/// ### Example
+/// ```swift
+/// DSRowInfo(.init(
+///     dateRange: "25/11/19 - 25/11/29",
+///     title: "Task name example",
+///     durationText: "Two weeks",
+///     avatarURLs: ["https://example.com/a.jpg"],
+///     extraCount: 3,
+///     onDelete: { print("Deleted") }
+/// ))
+/// ```
+///
+/// - Parameters:
+///   - rowInfoModel: The model containing date range, title, duration, avatars, extra count, and callbacks.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for colors, spacing, and radii.
+///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
+public struct DSRowInfo: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
     
@@ -23,7 +47,7 @@ public struct RowInfo: View {
     
     // MARK: - Init
     public init(
-        _ rowInfoModel: RowInfoModel
+        _ rowInfoModel: DSRowInfoModel
     ) {
         self.dateRange = rowInfoModel.dateRange
         self.title = rowInfoModel.title
@@ -150,7 +174,7 @@ public struct RowInfo: View {
 }
 
 #Preview {
-    RowInfo(
+    DSRowInfo(
         .init(
             dateRange: "25/11/19 - 25/11/29",
             title: "Task name example",

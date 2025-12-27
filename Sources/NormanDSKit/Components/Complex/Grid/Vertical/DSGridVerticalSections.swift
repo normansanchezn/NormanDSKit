@@ -89,7 +89,7 @@ public struct DSGridVerticalSections<
             .padding(.horizontal, theme.spacing.lg)
             .padding(.vertical, theme.spacing.lg)
         }
-        .scrollClipDisabled()
+        .applyScrollClipDisabledIfAvailable()
     }
     
     private var groupedKeys: [SectionID] {

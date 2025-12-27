@@ -48,7 +48,7 @@ public struct DSLabel: View {
         } else {
             textView
                 .font(textFont)
-                .foregroundColor(textColor)
+                .foregroundColor(model.textColor)
         }
     }
     
@@ -58,7 +58,7 @@ public struct DSLabel: View {
             .multilineTextAlignment(model.alignment)
             .lineLimit(nil)
             .fixedSize(horizontal: false, vertical: true)
-            .fontWeight(model.isBold ? .bold : nil)
+            .styledText(Text(model.text), isBold: model.isBold)
     }
     
     /// Resolves the font from the design-system typography for the selected style.

@@ -7,6 +7,36 @@
 
 import SwiftUI
 
+/// An action card from the design system that shows a system icon and a title.
+///
+/// `DSIconCard` renders a square button with a system image and a title below it.
+/// When tapped, it triggers the action provided by the model and produces a light
+/// haptic feedback.
+///
+/// The appearance (spacing, corner radius, colors, and shadows) comes from the
+/// theme exposed in the environment (`dsTheme`) and adapts to the current
+/// `colorScheme`.
+///
+/// ### Example
+/// ```swift
+/// let model = DSIconCardModel(
+///     title: "Create task",
+///     systemImage: "document.badge.plus",
+///     size: .large
+/// ) {
+///     // Action to perform
+/// }
+///
+/// DSIconCard(model: model)
+/// ```
+///
+/// - Parameters:
+///   - model: Configuration that defines the title, the SF Symbol (`systemImage`),
+///     the card size, and the action to perform on tap.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for colors, typography, spacing, and radii.
+///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
 public struct DSIconCard: View {
     
     @Environment(\.dsTheme) private var theme
@@ -70,3 +100,4 @@ public struct DSIconCard: View {
         .buttonStyle(DSPressableStyle(isPressed: $isPressed))
     }
 }
+

@@ -7,6 +7,30 @@
 
 import SwiftUI
 
+/// A horizontally scrolling date picker-style carousel.
+///
+/// `DSDateCarousel` renders a row of date chips. The currently selected date is
+/// highlighted and tapping a chip updates the bound `selectedDate` and calls
+/// `onSelect`.
+///
+/// ### Example
+/// ```swift
+/// DSDateCarousel(
+///     dates: (0..<7).compactMap { Calendar.current.date(byAdding: .day, value: $0, to: .now) },
+///     selectedDate: $selected,
+///     dayText: { DateFormatter.localizedString(from: $0, dateStyle: .none, timeStyle: .none) },
+///     weekdayText: { DateFormatter.localizedString(from: $0, dateStyle: .full, timeStyle: .none) }
+/// ) { date in
+///     print("Selected: \(date)")
+/// }
+/// ```
+///
+/// - Parameters:
+///   - dates: The list of dates to display.
+///   - selectedDate: A binding to the currently selected date.
+///   - dayText: A formatter closure that returns the day text (e.g., day number).
+///   - weekdayText: A formatter closure that returns the weekday text.
+///   - onSelect: A closure called when the user taps a date.
 public struct DSDateCarousel: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
@@ -80,3 +104,4 @@ public struct DSDateCarousel: View {
         }
     }
 }
+

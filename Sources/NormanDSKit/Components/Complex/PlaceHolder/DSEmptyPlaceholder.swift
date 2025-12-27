@@ -7,6 +7,26 @@
 
 import SwiftUI
 
+/// An empty state placeholder with an animation and a message.
+///
+/// `DSEmptyPlaceholder` shows a Lottie animation and a centered message styled with
+/// the design system. Use this component to communicate empty or loading states.
+///
+/// ### Example
+/// ```swift
+/// DSEmptyPlaceholder(dsPlaceHolderModel: .init(
+///     animationHight: 180,
+///     placeHolderSize: 260,
+///     placeHolderText: "No results found",
+///     animationSource: "empty_state"
+/// ))
+/// ```
+///
+/// - Parameters:
+///   - dsPlaceHolderModel: The configuration describing the animation and text.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for spacing and colors.
 public struct DSEmptyPlaceholder: View {
     @Environment(\.dsTheme) private var theme
     

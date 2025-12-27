@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+/// A compact metric pill showing an icon, a title, and a subtitle.
+///
+/// `DSMetricPill` displays a small capsule-like view with an icon and two lines of
+/// text. It uses the design-system theme for colors, spacing, and glass effects.
+///
+/// ### Example
+/// ```swift
+/// DSMetricPill(title: "Sessions", subtitle: "12 this month", systemImage: "clock")
+/// ```
+///
+/// - Parameters:
+///   - title: The primary metric label.
+///   - subtitle: The secondary metric label.
+///   - systemImage: The SF Symbols name to display.
+///
+/// - Environment:
+///   - dsTheme: Design system theme used for spacing, colors, and radii.
+///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
 public struct DSMetricPill: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
@@ -47,3 +65,4 @@ public struct DSMetricPill: View {
         .accessibilityLabel("\(subtitle): \(title)")
     }
 }
+
