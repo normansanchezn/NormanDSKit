@@ -25,6 +25,8 @@ import SwiftUI
 /// )
 /// ```
 public struct DSRoundedImage: View {
+    @Environment(\.dsTheme) private var theme
+    @Environment(\.colorScheme) private var scheme
     
     /// The configuration model describing URL, size, corner radius, and background style.
     private let model: DSRoundedImageModel
@@ -37,16 +39,29 @@ public struct DSRoundedImage: View {
     
     /// The content and layout of the rounded image.
     public var body: some View {
-        AsyncImage(url: URL(string: model.imageURL)) { phase in
+        let trimmed = model.imageURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        let url = URL(string: trimmed)
+
+        AsyncImage(url: url) { phase in
             switch phase {
             case .empty:
                 placeholder
+                    .onAppear {
+                        if url == nil {
+                            print("❌ Invalid URL:", trimmed)
+                        }
+                    }
+
             case .success(let image):
                 image
                     .resizable()
                     .scaledToFill()
-            case .failure(_):
+
+            case .failure(let error):
                 errorPlaceholder
+                    .onAppear {
+                        print("❌ AsyncImage failed:", error.localizedDescription, "url:", trimmed)
+                    }
 
             @unknown default:
                 errorPlaceholder
@@ -71,6 +86,8 @@ public struct DSRoundedImage: View {
         )
         .contentShape(Rectangle())
     }
+
+
     
     // MARK: - Background
     

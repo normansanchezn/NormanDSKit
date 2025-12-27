@@ -28,6 +28,8 @@ import SwiftUI
 ///   - dsTheme: Design system theme used for colors, spacing, and radii.
 ///   - colorScheme: The current color scheme (light/dark) used to resolve colors.
 public struct DSCircularImage: View {
+    @Environment(\.dsTheme) private var theme
+    @Environment(\.colorScheme) private var scheme
     
     /// The configuration model describing the image URL, size, and border visibility.
     private let model: DSCircularImageModel
