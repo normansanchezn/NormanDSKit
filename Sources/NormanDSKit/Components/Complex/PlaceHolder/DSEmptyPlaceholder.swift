@@ -9,22 +9,22 @@ import SwiftUI
 
 /// An empty state placeholder with an animation and a message.
 ///
-/// `DSEmptyPlaceholder` shows a Lottie animation and a centered message styled with
-/// the design system. Use this component to communicate empty or loading states.
+/// `DSEmptyPlaceholder` shows an animation (e.g., a Lottie resource) and a centered message
+/// styled with the design system. Use this component to communicate empty or loading states.
 ///
 /// ### Example
 /// ```swift
-/// DSEmptyPlaceholder(dsPlaceHolderModel: .init(
-///     animationHight: 180,
-///     placeHolderSize: 260,
-///     placeHolderText: "No results found",
-///     animationSource: "empty_state"
-/// ))
+/// DSEmptyPlaceholder(
+///     dsPlaceHolderModel: .init(
+///         animationSource: "empty_state",
+///         placeHolderText: "No results found",
+///         animationHight: 180,
+///         placeHolderSize: 260
+///     )
+/// )
 /// ```
 ///
-/// - Parameters:
-///   - dsPlaceHolderModel: The configuration describing the animation and text.
-///
+/// - Parameter dsPlaceHolderModel: The configuration describing the animation and text.
 /// - Environment:
 ///   - dsTheme: Design system theme used for spacing and colors.
 public struct DSEmptyPlaceholder: View {
@@ -35,7 +35,7 @@ public struct DSEmptyPlaceholder: View {
     public let placeHolderText: String
     public let animationName: String
     
-    init(dsPlaceHolderModel: DSEmptyPlaceHolderModel) {
+    public init(dsPlaceHolderModel: DSEmptyPlaceHolderModel) {
         self.animationHight = dsPlaceHolderModel.animationHight
         self.placeHolderSize = dsPlaceHolderModel.placeHolderSize
         self.placeHolderText = dsPlaceHolderModel.placeHolderText
@@ -45,7 +45,7 @@ public struct DSEmptyPlaceholder: View {
     public var body: some View {
         LazyVStack(alignment: .center) {
             DSLottie(
-                animationName: placeHolderText,
+                animationName: animationName,
                 height: animationHight
             )
             .padding(.top, theme.spacing.xl)
