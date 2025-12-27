@@ -52,7 +52,7 @@ public struct DSUserCard: View {
         VStack(spacing: theme.spacing.sm) {
             ZStack {
                 RoundedRectangle(cornerRadius: theme.radius.lg)
-                    .fill(personalCardModel.colorBackground.opacity(opacityBackground))
+                    .fill(personalCardModel.colorBackground)
                     .frame(width: rectangleWidth, height: rectangleHeight)
                     .rotationEffect(.degrees(rotationDegreesBackground))
 

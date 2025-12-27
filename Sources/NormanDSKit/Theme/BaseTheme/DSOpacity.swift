@@ -49,7 +49,7 @@ public extension DSOpacity {
         disabled: 0.38,
         pressed: 0.12,
         overlay: 0.20,
-        glassBackground: 0.14,
+        glassBackground: 0.5,
         glassBorder: 0.28,
         elevatedSurface: 0.08,
         focus: 0.24,

@@ -82,9 +82,7 @@ public struct DSCard<Trailing: View>: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
-                .fill(
-                    theme.colors.surface.resolved(scheme)
-                )
+                .fill(theme.colors.primary.resolved(scheme))
                 .shadow(
                     color: theme.colors.onBackground
                         .resolved(scheme)

@@ -74,7 +74,6 @@ public struct DSRoundedImage: View {
                 style: .continuous
             )
         )
-        .background(backgroundGlass)
         .overlay(
             RoundedRectangle(cornerRadius: model.cornerRadius, style: .continuous)
                 .stroke(
