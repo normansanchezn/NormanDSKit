@@ -41,6 +41,7 @@ public struct DSIconCardModel {
     public let size: Size
     /// The action executed when the card is tapped.
     public let action: () -> Void
+    public let backgroundColor: Color
     
     /// Creates a model for `DSIconCard`.
     /// - Parameters:
@@ -52,12 +53,14 @@ public struct DSIconCardModel {
         title: String,
         systemImage: String,
         size: Size = .medium,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
+        backgroundColor: Color
     ) {
         self.title = title
         self.systemImage = systemImage
         self.size = size
         self.action = action
+        self.backgroundColor = backgroundColor
     }
 }
 

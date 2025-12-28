@@ -67,7 +67,7 @@ public struct DSIconCard: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
                         .fill(
-                            theme.colors.primary.resolved(scheme)
+                            model.backgroundColor
                                 .opacity(theme.opacity.glassBackground)
                         )
                         .frame(width: side, height: side)
