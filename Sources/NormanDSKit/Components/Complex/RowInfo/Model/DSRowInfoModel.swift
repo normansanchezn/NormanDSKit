@@ -36,6 +36,7 @@ public struct DSRowInfoModel: Identifiable {
     public let avatarURLs: [String]
     /// Additional participant count beyond the visible avatars.
     public let extraCount: Int
+    public var statusText: String
     /// Optional menu tap callback.
     public var onMenuTap: (() -> Void)?
     /// Optional delete callback used by swipe actions.
@@ -56,6 +57,7 @@ public struct DSRowInfoModel: Identifiable {
         durationText: String,
         avatarURLs: [String],
         extraCount: Int,
+        statusText: String,
         onMenuTap: (() -> Void)? = nil,
         onDelete: (() -> Void)? = nil
     ) {
@@ -64,6 +66,7 @@ public struct DSRowInfoModel: Identifiable {
         self.durationText = durationText
         self.avatarURLs = avatarURLs
         self.extraCount = extraCount
+        self.statusText = statusText
         self.onMenuTap = onMenuTap
         self.onDelete = onDelete
     }

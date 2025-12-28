@@ -44,20 +44,12 @@ public struct DSVerticalCarousel<Element, Content: View>: View {
     
     public var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.md) {
-            ForEach(Array(items.enumerated()), id: \.offset) { _, element in
-                content(element)
+            ForEach(
+                Array(items.enumerated()), id: \.offset) { _, element in
+                    content(element)
             }
         }
         .padding(.vertical, theme.spacing.lg)
-        .padding(.horizontal, theme.spacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: theme.radius.lg)
-                .fill(
-                    theme.colors.surface
-                        .resolved(scheme)
-                        .opacity(theme.opacity.glassBackground)
-                )
-        )
     }
 }
 

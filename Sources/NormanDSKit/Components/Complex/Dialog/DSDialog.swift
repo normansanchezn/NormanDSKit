@@ -76,14 +76,10 @@ public struct DSDialog<Content: View>: View {
     
     public var body: some View {
         VStack(spacing: theme.spacing.md) {
-            
-            // Imagen opcional (redondeada, estilo profile/banner)
             if let imageUrl, !imageUrl.isEmpty {
                 roundedImage(urlString: imageUrl, size: 110)
                     .padding(.bottom, theme.spacing.xs)
             }
-            
-            // Título
             if let title, !title.isEmpty {
                 DSLabel(
                     DSLabelModel(
@@ -94,8 +90,6 @@ public struct DSDialog<Content: View>: View {
                     )
                 )
             }
-            
-            // Subtítulo
             if let subtitle, !subtitle.isEmpty {
                 DSLabel(
                     DSLabelModel(
@@ -106,10 +100,7 @@ public struct DSDialog<Content: View>: View {
                 )
             }
             
-            // Contenido extra inyectado (fields, labels, lo que quieras)
             content()
-            
-            // Botones
             HStack(spacing: theme.spacing.sm) {
                 DSButton.tertiary(closeButtonTitle, isFullWidth: true, action: onClose)
                 
@@ -121,7 +112,6 @@ public struct DSDialog<Content: View>: View {
         .padding(theme.spacing.lg)
         .frame(maxWidth: 340)
         .background(
-            // Liquid Glass: material + tint suave del DS
             RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
                 .fill(.ultraThinMaterial)
                 .background(

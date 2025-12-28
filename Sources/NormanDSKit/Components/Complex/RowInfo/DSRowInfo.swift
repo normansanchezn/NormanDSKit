@@ -41,6 +41,7 @@ public struct DSRowInfo: View {
     public let durationText: String
     public let avatarURLs: [String]
     public let extraCount: Int
+    public let statusText: String?
     
     // Callbacks
     public var onDelete: (() -> Void)?
@@ -54,59 +55,62 @@ public struct DSRowInfo: View {
         self.durationText = rowInfoModel.durationText
         self.avatarURLs = rowInfoModel.avatarURLs
         self.extraCount = rowInfoModel.extraCount
+        self.statusText = rowInfoModel.statusText
         self.onDelete = rowInfoModel.onDelete
     }
     
     // MARK: - Body
     public var body: some View {
         content
-            // Asegura que todo el card tenga área de hit para gestos (tap y swipe)
             .contentShape(Rectangle())
-            // Swipe to delete
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button(role: .destructive) {
                     onDelete?()
                 } label: {
                     Label("Delete", systemImage: "trash")
                 }
-                // Un poco más de área de toque para el botón
                 .contentShape(Rectangle())
                 .padding(.vertical, 2)
             }
-            // Accesibilidad
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text(title))
-            .accessibilityHint(Text("Swipe left to delete"))
-            .accessibilityAddTraits(.isButton)
     }
     
     // MARK: - Content
     private var content: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
-            // Top row: time range
             HStack {
-                DSLabel(.init(text: dateRange, style: .caption, isBold: false))
-                    .foregroundStyle(theme.colors.textCaption.resolved(scheme))
-                Spacer(minLength: 0)
+                DSLabel(
+                    .init(
+                        text: dateRange,
+                        style: .caption,
+                        isBold: false,
+                        textColor: .white
+                    )
+                )
+                .foregroundStyle(
+                    theme.colors.textCaption.resolved(scheme)
+                )
             }
             
-            // Title
-            DSLabel(.init(text: title, style: .h2, isBold: true))
-                .foregroundStyle(theme.colors.textTitle.resolved(scheme))
+            DSLabel(
+                .init(
+                    text: title,
+                    style: .h2,
+                    isBold: true,
+                    textColor: .white
+                )
+            )
+            .foregroundStyle(
+                theme.colors.textTitle.resolved(scheme)
+            )
             
             HStack {
-                // Duration chip
                 Text(durationText)
                     .font(.caption)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
                         Capsule()
-                            .fill(
-                                theme.colors.primary
-                                    .resolved(scheme)
-                                    .opacity(0.2)
-                            )
+                            .fill(theme.colors.decorativeDoodle.resolved(scheme))
                     )
                     .overlay(
                         Capsule()
@@ -121,7 +125,6 @@ public struct DSRowInfo: View {
                 
                 Spacer()
                 
-                // Avatares + contador
                 HStack(spacing: -12) {
                     ForEach(Array(avatarURLs.prefix(3)).indices, id: \.self) { index in
                         DSCircularImage(
@@ -160,34 +163,26 @@ public struct DSRowInfo: View {
                             .accessibilityHidden(true)
                     }
                 }
-                .accessibilityLabel(Text("Participants"))
-                .accessibilityHint(Text("\(avatarURLs.count) people"))
             }
         }
         .padding(.horizontal, theme.spacing.lg)
         .padding(.vertical, theme.spacing.md)
         .background(
             RoundedRectangle(cornerRadius: theme.radius.lg)
-                .fill(theme.colors.surfaceSecondary.resolved(scheme))
+                .fill(
+                    theme.colors.primary.resolved(scheme)
+                        .opacity(theme.opacity.glassBackground)
+                )
         )
+        .overlay(alignment: .topTrailing) {
+            if let statusText, !statusText.isEmpty {
+                DSStatusPill(
+                    text: statusText,
+                    status: .init(from: statusText)
+                )
+                .padding(.top, 10)
+                .padding(.trailing, 10)
+            }
+        }
     }
-}
-
-#Preview {
-    DSRowInfo(
-        .init(
-            dateRange: "25/11/19 - 25/11/29",
-            title: "Task name example",
-            durationText: "Two weeks",
-            avatarURLs: [
-                "https://uiskaogodllxicvnfdab.supabase.co/storage/v1/object/public/General%20assets/someone_one.jpg",
-                "https://uiskaogodllxicvnfdab.supabase.co/storage/v1/object/public/General%20assets/someone_two.jpg",
-                "https://uiskaogodllxicvnfdab.supabase.co/storage/v1/object/public/General%20assets/someone_three.jpg",
-            ],
-            extraCount: 3,
-            onDelete: { print("Deleted") }
-        )
-    )
-    .padding()
-    .preferredColorScheme(.dark)
 }

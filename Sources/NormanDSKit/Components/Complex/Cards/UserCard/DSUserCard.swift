@@ -52,33 +52,56 @@ public struct DSUserCard: View {
         VStack(spacing: theme.spacing.sm) {
             ZStack {
                 RoundedRectangle(cornerRadius: theme.radius.lg)
-                    .fill(personalCardModel.colorBackground)
-                    .frame(width: rectangleWidth, height: rectangleHeight)
-                    .rotationEffect(.degrees(rotationDegreesBackground))
+                    .fill(
+                        personalCardModel.colorBackground
+                            .opacity(theme.opacity.glassBackground)
+                    )
+                    .frame(
+                        width: rectangleWidth,
+                        height: rectangleHeight
+                    )
+                    .rotationEffect(
+                        .degrees(rotationDegreesBackground)
+                    )
 
-                DSRoundedImage(.init(imageURL: personalCardModel.imageURL, size: imageSize))
+                DSRoundedImage(
+                    .init(
+                        imageURL: personalCardModel.imageURL,
+                        size: imageSize)
+                )
             }
 
             VStack(spacing: theme.spacing.xs) {
                 DSLabel(
                     .init(
-                        text: personalCardModel.name, style: .accent
+                        text: personalCardModel.name,
+                        style: .accent
                     )
                 )
                 .padding(.top, theme.spacing.xs)
 
                 DSLabel(
                     .init(
-                        text: personalCardModel.jobDescription, style: .caption
+                        text: personalCardModel.jobDescription,
+                        style: .caption
                     )
                 )
                 .multilineTextAlignment(.center)
             }
         }
-        .frame(width: personalCardModel.widthSize, height: personalCardModel.heightSize, alignment: .top)
-        .padding(.trailing, theme.spacing.md)
+        .frame(
+            width: personalCardModel.widthSize,
+            height: personalCardModel.heightSize,
+            alignment: .top
+        )
+        .padding(
+            .trailing,
+            theme.spacing.md
+        )
         .contentShape(Rectangle())
-        .onTapGesture { personalCardModel.actionCallback() }
+        .onTapGesture {
+            personalCardModel.actionCallback()
+        }
     }
 }
 

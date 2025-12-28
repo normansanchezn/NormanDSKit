@@ -31,8 +31,7 @@ let package = Package(
             ],
             path: "Sources/NormanDSKit",
             resources: [
-                // Añadir assets si los tienes
-                // .process("Resources")
+                .process("Resources")
             ]
         ),
         .testTarget(

@@ -57,32 +57,30 @@ public struct DSCard<Trailing: View>: View {
     @ViewBuilder
     private var content: some View {
         let card = HStack(spacing: theme.spacing.md) {
-            
-            // Avatar opcional
             if let urlString = model.imageURL,
                !urlString.isEmpty {
                 avatarView(urlString: urlString)
             }
-            
-            // Textos
             VStack(alignment: .leading, spacing: theme.spacing.xs) {
-                DSLabel(model.title)
+                DSLabel(
+                    model.title
+                )
                 
                 if let subtitle = model.subtitle {
                     DSLabel(subtitle)
                 }
             }
-            
             Spacer(minLength: theme.spacing.md)
-            
-            // Trailing (toggle, icon, etc.)
             trailing
         }
         .padding(theme.spacing.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
-                .fill(theme.colors.primary.resolved(scheme))
+                .fill(
+                    theme.colors.primary.resolved(scheme)
+                        .opacity(theme.opacity.glassBackground)
+                )
                 .shadow(
                     color: theme.colors.onBackground
                         .resolved(scheme)
@@ -119,7 +117,6 @@ public struct DSCard<Trailing: View>: View {
     private func avatarView(urlString: String) -> some View {
         let size = model.imageSize ?? 56
         
-        // Placeholder simple; tú aquí puedes luego meter un DSCircularImage
         AsyncImage(url: URL(string: urlString)) { phase in
             switch phase {
             case .success(let image):
