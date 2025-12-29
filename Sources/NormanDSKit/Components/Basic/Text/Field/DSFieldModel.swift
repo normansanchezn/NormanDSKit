@@ -46,7 +46,7 @@ public struct DSFieldModel {
     /// Optional error text shown when `state` is `.error`.
     public let errorText: String?
     /// The minimum height of the input area, in points. Defaults to 44.
-    public let minHeight: CGFloat
+    public var minHeight: CGFloat
     /// A Boolean value that indicates whether the field is enabled for input.
     public let isEnabled: Bool
     /// The current validation/visual state for the field.
@@ -63,6 +63,7 @@ public struct DSFieldModel {
     public var autocorrectionDisabled: Bool
     /// Whether the field should obscure input (secure entry).
     public var isSecure: Bool
+
     
     /// Creates a new field model.
     ///
@@ -81,19 +82,19 @@ public struct DSFieldModel {
     ///   - autocorrectionDisabled: Whether to disable autocorrection. Default is `false`.
     ///   - isSecure: Whether input is obscured (secure entry). Default is `false`.
     public init(
-        label: DSLabelModel? = nil,
         placeholder: String,
+        label: DSLabelModel? = nil,
         helperText: String? = nil,
-        errorText: String? = nil,
-        minHeight: CGFloat = 44,
-        isEnabled: Bool = true,
         state: State = .normal,
+        errorText: String? = nil,
+        minHeight: CGFloat = 120,
         keyboardType: UIKeyboardType = .default,
         textContentType: UITextContentType? = nil,
-        submitLabel: SubmitLabel? = nil,
-        autocapitalization: TextInputAutocapitalization? = nil,
+        autocapitalization: TextInputAutocapitalization = .sentences,
         autocorrectionDisabled: Bool = false,
-        isSecure: Bool = false
+        isSecure: Bool = false,
+        isEnabled: Bool = true,
+        submitLabel: SubmitLabel? = nil
     ) {
         self.label = label
         self.placeholder = placeholder
@@ -108,6 +109,7 @@ public struct DSFieldModel {
         self.autocapitalization = autocapitalization
         self.autocorrectionDisabled = autocorrectionDisabled
         self.isSecure = isSecure
+        self.minHeight = minHeight
     }
 }
 

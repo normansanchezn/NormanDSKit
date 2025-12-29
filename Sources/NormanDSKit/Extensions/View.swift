@@ -98,3 +98,16 @@ extension View {
         }
     }
 }
+
+public extension View {
+    /// Hides the default scroll/text-editor background when available (iOS 16+).
+    @ViewBuilder
+    func dsHideScrollContentBackground() -> some View {
+        if #available(iOS 16.0, *) {
+            self.scrollContentBackground(.hidden)
+        } else {
+            self
+        }
+    }
+}
+
