@@ -78,6 +78,7 @@ public struct DSCard<Trailing: View>: View {
         .background(
             RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
                 .fill(
+                    model.backgroundColor ??
                     theme.colors.primary.resolved(scheme)
                         .opacity(theme.opacity.glassBackground)
                 )

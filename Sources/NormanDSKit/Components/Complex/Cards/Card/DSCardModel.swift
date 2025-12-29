@@ -23,6 +23,8 @@ import SwiftUI
 /// )
 /// ```
 public struct DSCardModel {
+    @Environment(\.dsTheme) private var theme
+    @Environment(\.colorScheme) private var scheme
     /// The primary label displayed as the card title.
     public let title: DSLabelModel
     /// An optional secondary label displayed below the title.
@@ -35,6 +37,7 @@ public struct DSCardModel {
     
     /// An optional closure executed when the card is tapped.
     public let action: (() -> Void)?
+    public let backgroundColor: Color?
     
     /// Creates a card model.
     /// - Parameters:
@@ -48,12 +51,14 @@ public struct DSCardModel {
         subtitle: DSLabelModel? = nil,
         imageURL: String? = nil,
         imageSize: CGFloat? = nil,
-        action: (() -> Void)? = nil
+        action: (() -> Void)? = nil,
+        backgroundColor: Color? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
         self.imageURL = imageURL
         self.imageSize = imageSize
         self.action = action
+        self.backgroundColor = backgroundColor
     }
 }

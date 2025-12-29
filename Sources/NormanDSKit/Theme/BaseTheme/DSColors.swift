@@ -58,6 +58,8 @@ public struct DSColors: Sendable {
     public let warning: DSDynamicColor
     /// Semantic color indicating errors.
     public let error: DSDynamicColor
+    public let h1: DSDynamicColor
+    public let h3: DSDynamicColor
     
     /// Creates a `DSColors` palette.
     ///
@@ -92,7 +94,9 @@ public struct DSColors: Sendable {
         textCaption: DSDynamicColor,
         success: DSDynamicColor,
         warning: DSDynamicColor,
-        error: DSDynamicColor
+        error: DSDynamicColor,
+        h1: DSDynamicColor,
+        h3: DSDynamicColor
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -109,6 +113,8 @@ public struct DSColors: Sendable {
         self.success = success
         self.warning = warning
         self.error = error
+        self.h1 = h1
+        self.h3 = h3
     }
 }
 
@@ -187,6 +193,14 @@ public extension DSColors {
         error: DSDynamicColor(
             light: Color(hex: "#EF4444"),
             dark:  Color(hex: "#EF4444")
+        ),
+        h1: DSDynamicColor(
+            light: Color(hex: "#007FFF"),
+            dark: Color(hex: "#339DFF")
+        ),
+        h3: DSDynamicColor(
+            light: Color(hex: "#000000"),
+            dark: Color(hex: "#FFFFFF")
         )
     )
     

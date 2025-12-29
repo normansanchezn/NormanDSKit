@@ -17,6 +17,7 @@ public struct DSOpacity: Sendable {
     public let subtle: Double
     public let strong: Double
     public let tinted: Double
+    public let background: Double
     
     public init(
         disabled: Double,
@@ -28,7 +29,8 @@ public struct DSOpacity: Sendable {
         focus: Double,
         subtle: Double,
         strong: Double,
-        tinted: Double
+        tinted: Double,
+        background: Double
     ) {
         self.disabled = disabled
         self.pressed = pressed
@@ -40,6 +42,7 @@ public struct DSOpacity: Sendable {
         self.subtle = subtle
         self.strong = strong
         self.tinted = tinted
+        self.background = background
     }
 }
 
@@ -55,6 +58,7 @@ public extension DSOpacity {
         focus: 0.24,
         subtle: 0.06,
         strong: 0.16,
-        tinted: 0.12
+        tinted: 0.12,
+        background: 0.8
     )
 }
