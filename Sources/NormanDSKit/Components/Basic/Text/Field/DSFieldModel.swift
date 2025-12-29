@@ -87,7 +87,7 @@ public struct DSFieldModel {
         helperText: String? = nil,
         state: State = .normal,
         errorText: String? = nil,
-        minHeight: CGFloat = 120,
+        minHeight: CGFloat = 44,
         keyboardType: UIKeyboardType = .default,
         textContentType: UITextContentType? = nil,
         autocapitalization: TextInputAutocapitalization = .sentences,
