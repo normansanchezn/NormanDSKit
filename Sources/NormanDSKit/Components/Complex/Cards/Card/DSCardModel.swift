@@ -23,8 +23,6 @@ import SwiftUI
 /// )
 /// ```
 public struct DSCardModel {
-    @Environment(\.dsTheme) private var theme
-    @Environment(\.colorScheme) private var scheme
     /// The primary label displayed as the card title.
     public let title: DSLabelModel
     /// An optional secondary label displayed below the title.
