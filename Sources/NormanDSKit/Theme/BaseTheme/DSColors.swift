@@ -60,6 +60,7 @@ public struct DSColors: Sendable {
     public let error: DSDynamicColor
     public let h1: DSDynamicColor
     public let h3: DSDynamicColor
+    public let dialogBackgroundColor: DSDynamicColor
     
     /// Creates a `DSColors` palette.
     ///
@@ -96,7 +97,8 @@ public struct DSColors: Sendable {
         warning: DSDynamicColor,
         error: DSDynamicColor,
         h1: DSDynamicColor,
-        h3: DSDynamicColor
+        h3: DSDynamicColor,
+        dialogBackgroundColor: DSDynamicColor
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -115,6 +117,7 @@ public struct DSColors: Sendable {
         self.error = error
         self.h1 = h1
         self.h3 = h3
+        self.dialogBackgroundColor = dialogBackgroundColor
     }
 }
 
@@ -201,6 +204,10 @@ public extension DSColors {
         h3: DSDynamicColor(
             light: Color(hex: "#000000"),
             dark: Color(hex: "#FFFFFF")
+        ),
+        dialogBackgroundColor: DSDynamicColor(
+            light: Color(hex: "#FFFFFF"),
+            dark: Color(hex: "#000A17")
         )
     )
     
