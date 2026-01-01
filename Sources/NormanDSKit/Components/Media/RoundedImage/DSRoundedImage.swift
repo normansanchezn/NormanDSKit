@@ -41,7 +41,7 @@ public struct DSRoundedImage: View {
     public var body: some View {
         let trimmed = model.imageURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let url = URL(string: trimmed)
-
+        
         AsyncImage(url: url) { phase in
             switch phase {
             case .empty:
@@ -51,18 +51,23 @@ public struct DSRoundedImage: View {
                             print("❌ Invalid URL:", trimmed)
                         }
                     }
-
+                
             case .success(let image):
                 image
                     .resizable()
                     .scaledToFill()
-
+                
             case .failure(let error):
-                errorPlaceholder
-                    .onAppear {
-                        print("❌ AsyncImage failed:", error.localizedDescription, "url:", trimmed)
-                    }
-
+                if (error as? URLError)?.code == .cancelled || error is CancellationError {
+                    placeholder
+                } else {
+                    errorPlaceholder
+                        .onAppear {
+                            print("❌ AsyncImage failed:", error.localizedDescription, "url:", trimmed)
+                        }
+                }
+                
+                
             @unknown default:
                 errorPlaceholder
             }
@@ -85,11 +90,9 @@ public struct DSRoundedImage: View {
         )
         .contentShape(Rectangle())
     }
-
-
     
     // MARK: - Background
-    
+
     /// Optional glass-like background that blends with the theme.
     private var backgroundGlass: some View {
         Group {
