@@ -46,6 +46,7 @@ public struct DSPrincipalHeaderModel: Sendable {
     public var personalDescription: String
     /// List of skills to display.
     public var skills: [String]
+    public var rank: String?
     
     /// Creates a principal header model.
     /// - Parameters:
@@ -58,7 +59,18 @@ public struct DSPrincipalHeaderModel: Sendable {
     ///   - jobType: Job type (e.g., "Full-time").
     ///   - personalDescription: Short personal description.
     ///   - skills: List of skills to display.
-    public init(imageUrl: String, name: String, lastName: String, email: String, jobDescription: String, jobTitle: String, jobType: String, personalDescription: String, skills: [String]) {
+    public init(
+        imageUrl: String,
+        name: String,
+        lastName: String,
+        email: String,
+        jobDescription: String,
+        jobTitle: String,
+        jobType: String,
+        personalDescription: String,
+        skills: [String],
+        rank: String? = nil
+    ) {
         self.imageUrl = imageUrl
         self.name = name
         self.lastName = lastName
@@ -68,6 +80,7 @@ public struct DSPrincipalHeaderModel: Sendable {
         self.jobType = jobType
         self.personalDescription = personalDescription
         self.skills = skills
+        self.rank = rank
     }
     
 }

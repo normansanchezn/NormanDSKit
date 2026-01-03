@@ -72,7 +72,13 @@ public struct DSPrincipalHeader: View {
                     Image(systemName: "star.fill")
                         .foregroundStyle(theme.colors.warning.resolved(scheme))
                         .font(.caption)
-                    Text("4.6")
+                    DSLabel(
+                        .init(
+                            text: dsPrincipalHeaderModel.rank ?? "N/A",
+                            style: DSLabelModel.Style.caption,
+                            textColor: theme.colors.h1.resolved(scheme)
+                        )
+                    )
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(theme.colors.textBody.resolved(scheme))
                     
@@ -92,20 +98,28 @@ public struct DSPrincipalHeader: View {
                 DSLabel(
                     .init(
                         text: dsPrincipalHeaderModel.name,
-                        style: .h2,
-                        isBold: true
+                        style: DSLabelModel.Style.h2,
+                        isBold: true,
+                        textColor: theme.colors.textTitle.resolved(scheme)
                     )
                 )
-                DSLabel(.init(text: dsPrincipalHeaderModel.jobTitle, style: .body))
-                    .foregroundStyle(theme.colors.textCaption.resolved(scheme))
-                    .padding(.trailing, theme.spacing.xl)
+                DSLabel(
+                    .init(
+                        text: dsPrincipalHeaderModel.jobDescription,
+                        style: DSLabelModel.Style.body,
+                        textColor: .white
+                    )
+                )
+                .foregroundStyle(theme.colors.textCaption.resolved(scheme))
+                .padding(.trailing, theme.spacing.xl)
             }
-            .padding(.leading, theme.spacing.xl)
+            .padding(.horizontal, theme.spacing.xl)
             .padding(.bottom, theme.spacing.md)
             .background {
                 RoundedRectangle(cornerRadius: 40.0)
                     .fill(
-                        theme.colors.surfaceSecondary.resolved(scheme).opacity(theme.opacity.glassBorder)
+                        theme.colors.primary.resolved(scheme)
+                            .opacity(theme.opacity.background)
                     )
             }
             .padding(.trailing, theme.spacing.xl)
