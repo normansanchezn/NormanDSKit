@@ -68,7 +68,7 @@ public struct DSIconCard: View {
                     RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
                         .fill(
                             model.backgroundColor
-                                .opacity(theme.opacity.glassBackground)
+                                .opacity(theme.opacity.background)
                         )
                         .frame(width: side, height: side)
                         .shadow(

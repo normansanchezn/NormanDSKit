@@ -37,19 +37,19 @@ public struct DSPill: View {
 
     private var background: Color {
         switch kind {
-        case .neutral: return theme.colors.surface.resolved(scheme).opacity(0.9)
-        case .success: return theme.colors.success.resolved(scheme).opacity(0.18)
-        case .warning: return Color.orange.opacity(0.18)
-        case .error: return theme.colors.error.resolved(scheme).opacity(0.18)
+            case .neutral: return theme.colors.surface.resolved(scheme).opacity(0.9)
+            case .success: return theme.colors.success.resolved(scheme).opacity(0.18)
+            case .warning: return Color.orange.opacity(0.18)
+            case .error: return theme.colors.error.resolved(scheme).opacity(0.18)
         }
     }
 
     private var foreground: Color {
         switch kind {
-        case .neutral: return theme.colors.textCaption.resolved(scheme)
-        case .success: return theme.colors.success.resolved(scheme)
-        case .warning: return Color.orange
-        case .error: return theme.colors.error.resolved(scheme)
+            case .neutral: return theme.colors.textCaption.resolved(scheme)
+            case .success: return theme.colors.success.resolved(scheme)
+            case .warning: return Color.orange
+            case .error: return theme.colors.error.resolved(scheme)
         }
     }
 }

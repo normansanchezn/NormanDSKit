@@ -100,7 +100,7 @@ public struct DSPrincipalHeader: View {
                         text: dsPrincipalHeaderModel.name,
                         style: DSLabelModel.Style.h2,
                         isBold: true,
-                        textColor: theme.colors.textTitle.resolved(scheme)
+                        textColor: .white
                     )
                 )
                 DSLabel(

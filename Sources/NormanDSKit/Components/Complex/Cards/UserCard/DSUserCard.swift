@@ -54,7 +54,7 @@ public struct DSUserCard: View {
                 RoundedRectangle(cornerRadius: theme.radius.lg)
                     .fill(
                         personalCardModel.colorBackground
-                            .opacity(theme.opacity.glassBackground)
+                            .opacity(theme.opacity.background)
                     )
                     .frame(
                         width: rectangleWidth,
@@ -75,7 +75,7 @@ public struct DSUserCard: View {
                 DSLabel(
                     .init(
                         text: personalCardModel.name,
-                        style: .accent
+                        style: DSLabelModel.Style.accent
                     )
                 )
                 .padding(.top, theme.spacing.xs)
@@ -83,7 +83,7 @@ public struct DSUserCard: View {
                 DSLabel(
                     .init(
                         text: personalCardModel.jobDescription,
-                        style: .caption
+                        style: DSLabelModel.Style.caption
                     )
                 )
                 .multilineTextAlignment(.center)

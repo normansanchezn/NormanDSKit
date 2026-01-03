@@ -80,7 +80,7 @@ public struct DSCard<Trailing: View>: View {
                 .fill(
                     model.backgroundColor ??
                     theme.colors.primary.resolved(scheme)
-                        .opacity(theme.opacity.glassBackground)
+                        .opacity(theme.opacity.background)
                 )
                 .shadow(
                     color: theme.colors.onBackground

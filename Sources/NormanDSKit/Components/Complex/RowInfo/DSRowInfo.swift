@@ -61,13 +61,16 @@ public struct DSRowInfo: View {
     
     // MARK: - Body
     public var body: some View {
-        content
+        createRowContent
             .contentShape(Rectangle())
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button(role: .destructive) {
                     onDelete?()
                 } label: {
-                    Label("Delete", systemImage: "trash")
+                    Label(
+                        pkgString("common.delete"),
+                        systemImage: "trash"
+                    )
                 }
                 .contentShape(Rectangle())
                 .padding(.vertical, 2)
@@ -75,13 +78,13 @@ public struct DSRowInfo: View {
     }
     
     // MARK: - Content
-    private var content: some View {
+    private var createRowContent: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
             HStack {
                 DSLabel(
                     .init(
                         text: dateRange,
-                        style: .caption,
+                        style: DSLabelModel.Style.caption,
                         isBold: false,
                         textColor: .white
                     )
@@ -94,7 +97,7 @@ public struct DSRowInfo: View {
             DSLabel(
                 .init(
                     text: title,
-                    style: .h2,
+                    style: DSLabelModel.Style.h3,
                     isBold: true,
                     textColor: .white
                 )
@@ -171,7 +174,7 @@ public struct DSRowInfo: View {
             RoundedRectangle(cornerRadius: theme.radius.lg)
                 .fill(
                     theme.colors.primary.resolved(scheme)
-                        .opacity(theme.opacity.glassBackground)
+                        .opacity(theme.opacity.background)
                 )
         )
         .overlay(alignment: .topTrailing) {
