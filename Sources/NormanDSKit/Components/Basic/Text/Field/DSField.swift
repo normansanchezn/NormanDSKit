@@ -50,7 +50,8 @@ public struct DSField: View {
     /// - Note: Changes to this binding are reflected by the field and propagated
     ///   back to the source of truth.
     @Binding public var text: String
-    
+    private let inputTransform: ((String) -> String)?
+
     @FocusState private var isFocused: Bool
     
     /// Creates a new design-system text field.
@@ -60,10 +61,12 @@ public struct DSField: View {
     ///   - text: A binding to the text the field displays and edits.
     public init(
         model: DSFieldModel,
-        text: Binding<String>
+        text: Binding<String>,
+        inputTransform: ((String) -> String)? = nil
     ) {
         self.model = model
         self._text = text
+        self.inputTransform = inputTransform
     }
     
     /// The content and layout of the field.
@@ -117,11 +120,23 @@ public struct DSField: View {
         let prompt = Text(model.placeholder)
             .foregroundColor(theme.colors.textCaption.resolved(scheme))
 
+        let sanitizedBinding = Binding<String>(
+            get: { text },
+            set: { newValue in
+                let transformed = inputTransform?(newValue) ?? newValue
+                if transformed != text {
+                    text = transformed
+                } else {
+                    text = newValue
+                }
+            }
+        )
+
         Group {
             if model.isSecure {
-                SecureField(model.placeholder, text: $text, prompt: prompt)
+                SecureField(model.placeholder, text: sanitizedBinding, prompt: prompt)
             } else {
-                TextField(model.placeholder, text: $text, prompt: prompt)
+                TextField(model.placeholder, text: sanitizedBinding, prompt: prompt)
             }
         }
         .keyboardType(model.keyboardType)
@@ -129,7 +144,6 @@ public struct DSField: View {
         .textInputAutocapitalization(model.autocapitalization)
         .autocorrectionDisabled(model.autocorrectionDisabled)
     }
-
     
     /// Displays helper text in normal state, or error text in error state, styled
     /// according to the current theme.
@@ -182,20 +196,6 @@ public struct DSField: View {
                     .resolved(scheme)
                     .opacity(theme.opacity.subtle)
             }
-        }
-    }
-}
-
-private extension View {
-    /// Applies a submit label to the text input when one is provided.
-    /// - Parameter label: The optional `SubmitLabel` to apply.
-    /// - Returns: A view with the appropriate submit label applied when available.
-    @ViewBuilder
-    func applySubmitLabelIfNeeded(_ label: SubmitLabel?) -> some View {
-        if let label {
-            self.submitLabel(label)
-        } else {
-            self
         }
     }
 }

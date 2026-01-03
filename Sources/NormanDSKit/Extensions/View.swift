@@ -284,3 +284,17 @@ public extension View {
         }
     }
 }
+
+public extension View {
+    /// Applies a submit label to the text input when one is provided.
+    /// - Parameter label: The optional `SubmitLabel` to apply.
+    /// - Returns: A view with the appropriate submit label applied when available.
+    @ViewBuilder
+    func applySubmitLabelIfNeeded(_ label: SubmitLabel?) -> some View {
+        if let label {
+            self.submitLabel(label)
+        } else {
+            self
+        }
+    }
+}
