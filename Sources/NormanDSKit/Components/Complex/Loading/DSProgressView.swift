@@ -47,7 +47,7 @@ public struct DSProgressView: View {
     @State private var currentIndex: Int = 0
     @State private var isAnimating: Bool = false
     
-    /// Iconos por defecto (coherentes con DSBackground)
+    /// Default icons.
     private let defaultIcons: [String] = [
         "star.fill",
         "brain.head.profile",
@@ -77,8 +77,8 @@ public struct DSProgressView: View {
     }
     
     // MARK: - Computed Logic
-    /// Calcula el color del icono basado en el índice actual.
-    /// Secuencia: Primary -> Secondary -> Tertiary -> (Repetir)
+    /// Calculates the icon color based on the current index.
+    /// Sequence: Primary -> Secondary -> Tertiary -> (Repeat)
     private var currentIconColor: Color {
         let cycleIndex = currentIndex % 2
         switch cycleIndex {
