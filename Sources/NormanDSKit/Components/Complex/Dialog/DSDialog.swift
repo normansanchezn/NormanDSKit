@@ -117,8 +117,7 @@ public struct DSDialog<Content: View>: View {
                 .background(
                     RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
                         .fill(
-                            theme.colors.surface
-                                .resolved(scheme)
+                            theme.colors.dialogBackgroundColor.resolved(scheme)
                                 .opacity(theme.opacity.glassBackground)
                         )
                 )
