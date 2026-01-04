@@ -83,11 +83,11 @@ public struct DSProgressView: View {
         let cycleIndex = currentIndex % 2
         switch cycleIndex {
         case 0:
-            return theme.colors.primary.resolved(scheme)
+            return theme.colors.decorativeDoodle.resolved(scheme)
         case 1:
             return theme.colors.tertiary.resolved(scheme)
         default:
-            return theme.colors.primary.resolved(scheme)
+            return theme.colors.decorativeDoodle.resolved(scheme)
         }
     }
     
