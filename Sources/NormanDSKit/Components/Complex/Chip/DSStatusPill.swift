@@ -59,15 +59,17 @@ public struct DSStatusPill: View {
     private var backgroundCapsule: some View {
         switch status {
         case .completed:
-            Capsule().fill(theme.colors.success.resolved(scheme))
+            Capsule().fill(theme.colors.success.resolved(scheme)).mcGlassEffectIfAvailable()
         case .inProcess:
-            Capsule().fill(theme.colors.secondary.resolved(scheme))
+            Capsule().fill(theme.colors.secondary.resolved(scheme)).mcGlassEffectIfAvailable()
         case .started:
-            Capsule().fill(theme.colors.tertiary.resolved(scheme))
+            Capsule().fill(theme.colors.tertiary.resolved(scheme)).mcGlassEffectIfAvailable()
         case .pending:
-            Capsule().fill(theme.colors.warning.resolved(scheme))
+            Capsule().fill(theme.colors.warning.resolved(scheme)).mcGlassEffectIfAvailable()
+        case .error:
+            Capsule().fill(theme.colors.error.resolved(scheme)).mcGlassEffectIfAvailable()
         case nil:
-            Capsule().fill(theme.colors.primary.resolved(scheme))
+            Capsule().fill(theme.colors.primary.resolved(scheme)).mcGlassEffectIfAvailable()
         }
     }
 

@@ -117,6 +117,7 @@ public extension DSStatus {
         case .inProcess: return pkgString("tasks.status.in_process")
         case .started:   return pkgString("tasks.status.started")
         case .pending:   return pkgString("tasks.status.pending")
+        case .error: return pkgString("task.status.error")
         }
     }
 }

@@ -12,6 +12,7 @@ public enum DSStatus: String, Codable, CaseIterable, Identifiable {
     case inProcess
     case started
     case pending
+    case error
 
     public var id: String { rawValue }
 }
@@ -31,12 +32,13 @@ public extension DSStatus {
             .lowercased()
 
         switch cleaned {
-            case "completed": return "completed"
-            case "inprocess", "inprogress": return "inProcess"
-            case "started": return "started"
-            case "pending": return "pending"
-            default:
-                return s.trimmingCharacters(in: .whitespacesAndNewlines)
-            }
+                case "completed": return "Completed"
+                case "inprocess", "In process": return "In process"
+                case "started": return "Started"
+                case "pending": return "Pending"
+                case "error": return "Error"
+                default:
+                    return s.trimmingCharacters(in: .whitespacesAndNewlines)
+                }
     }
 }

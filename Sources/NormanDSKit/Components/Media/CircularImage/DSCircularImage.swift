@@ -64,6 +64,7 @@ public struct DSCircularImage: View {
                 ProgressView()
             }
         }
+        .mcGlassEffectIfAvailable()
         .frame(width: model.size, height: model.size)
         .clipShape(Circle())
         .overlay(

@@ -65,22 +65,13 @@ public struct DSIconCard: View {
         } label: {
             VStack(spacing: theme.spacing.xs) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
-                        .fill(
-                            model.backgroundColor
-                                .opacity(theme.opacity.background)
-                        )
-                        .frame(width: side, height: side)
-                        .shadow(
-                            color: theme.colors.onBackground
-                                .resolved(scheme)
-                                .opacity(isPressed ? 0.08 : 0.16),
-                            radius: isPressed ? 4 : 8,
-                            y: isPressed ? 2 : 4
-                        )
+                    Capsule()
+                        .fill(theme.colors.primary.resolved(scheme).opacity(theme.opacity.background))
+                        .frame(width: side, height: side - 20)
+                        .mcGlassEffectIfAvailable()
                     
                     Image(systemName: model.systemImage)
-                        .font(.system(size: side * 0.38, weight: .medium))
+                        .font(.system(size: side * 0.25, weight: .medium))
                         .foregroundColor(
                             theme.colors.surface.resolved(scheme)
                         )

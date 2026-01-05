@@ -62,7 +62,11 @@ public struct DSRowInfo: View {
     // MARK: - Body
     public var body: some View {
         createRowContent
-            .contentShape(Rectangle())
+            .background(
+                RoundedRectangle(cornerRadius: theme.radius.full)
+                    .mcGlassEffectIfAvailable()
+                    .foregroundColor(theme.colors.primary.resolved(scheme).opacity(theme.opacity.glassBackground))
+            )
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button(role: .destructive) {
                     onDelete?()
@@ -72,120 +76,134 @@ public struct DSRowInfo: View {
                         systemImage: "trash"
                     )
                 }
-                .contentShape(Rectangle())
                 .padding(.vertical, 2)
             }
     }
     
-    // MARK: - Content
-    private var createRowContent: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.sm) {
-            HStack {
-                DSLabel(
-                    .init(
-                        text: dateRange,
-                        style: DSLabelModel.Style.caption,
-                        isBold: false,
-                        textColor: .white
-                    )
-                )
-                .foregroundStyle(
-                    theme.colors.textCaption.resolved(scheme)
-                )
-            }
-            
+    private func createDateRangeView() -> some View {
+        HStack {
             DSLabel(
                 .init(
-                    text: title,
-                    style: DSLabelModel.Style.h3,
-                    isBold: true,
-                    textColor: .white
+                    text: dateRange,
+                    style: DSLabelModel.Style.caption,
+                    isBold: false,
+                    textColor: theme.colors.textCaption.resolved(scheme)
                 )
             )
             .foregroundStyle(
-                theme.colors.textTitle.resolved(scheme)
+                theme.colors.textCaption.resolved(scheme)
             )
+        }
+    }
+    
+    private func createTitleView() -> some View {
+        DSLabel(
+            .init(
+                text: title,
+                style: DSLabelModel.Style.h3,
+                isBold: true,
+                textColor: .white
+            )
+        )
+        .foregroundStyle(
+            theme.colors.textTitle.resolved(scheme)
+        )
+    }
+    
+    private func createReviewersView() -> some View {
+        HStack(spacing: -12) {
+            ForEach(Array(avatarURLs.prefix(3)).indices, id: \.self) { index in
+                DSCircularImage(
+                    .init(
+                        imageURL: avatarURLs[index],
+                        size: 28,
+                        showsBorder: true
+                    )
+                )
+                .zIndex(Double(3 - index))
+            }
             
-            HStack {
-                Text(durationText)
-                    .font(.caption)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
+            if extraCount > 0 {
+                Text("+\(extraCount)")
+                    .font(.caption2.weight(.semibold))
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 4)
                     .background(
-                        Capsule()
-                            .fill(theme.colors.decorativeDoodle.resolved(scheme))
+                        Circle()
+                            .fill(
+                                theme.colors.textSubtitle
+                                    .resolved(scheme)
+                                    .opacity(0.6)
+                            )
                     )
                     .overlay(
-                        Capsule()
+                        Circle()
                             .stroke(
-                                theme.colors.surfaceSecondary
+                                theme.colors.primary
                                     .resolved(scheme)
-                                    .opacity(0.35),
+                                    .opacity(theme.opacity.glassBorder),
                                 lineWidth: 1
                             )
                     )
-                    .accessibilityLabel(Text("Duration \(durationText)"))
-                
-                Spacer()
-                
-                HStack(spacing: -12) {
-                    ForEach(Array(avatarURLs.prefix(3)).indices, id: \.self) { index in
-                        DSCircularImage(
-                            .init(
-                                imageURL: avatarURLs[index],
-                                size: 28,
-                                showsBorder: true
-                            )
-                        )
-                        .zIndex(Double(3 - index))
-                    }
-                    
-                    if extraCount > 0 {
-                        Text("+\(extraCount)")
-                            .font(.caption2.weight(.semibold))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 4)
-                            .background(
-                                Circle()
-                                    .fill(
-                                        theme.colors.textSubtitle
-                                            .resolved(scheme)
-                                            .opacity(0.6)
-                                    )
-                            )
-                            .overlay(
-                                Circle()
-                                    .stroke(
-                                        theme.colors.primary
-                                            .resolved(scheme)
-                                            .opacity(theme.opacity.glassBorder),
-                                        lineWidth: 1
-                                    )
-                            )
-                            .padding(.leading, 6)
-                            .accessibilityHidden(true)
-                    }
-                }
+                    .padding(.leading, 6)
+                    .accessibilityHidden(true)
             }
         }
-        .padding(.horizontal, theme.spacing.lg)
-        .padding(.vertical, theme.spacing.md)
-        .background(
-            RoundedRectangle(cornerRadius: theme.radius.lg)
-                .fill(
-                    theme.colors.primary.resolved(scheme)
-                        .opacity(theme.opacity.background)
-                )
-        )
-        .overlay(alignment: .topTrailing) {
-            if let statusText, !statusText.isEmpty {
+    }
+    
+    private func createDurationView() -> some View {
+        Text(durationText)
+            .font(.caption)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(
+                Capsule()
+                    .fill(theme.colors.decorativeDoodle.resolved(scheme))
+                    .mcGlassEffectIfAvailable()
+            )
+            .accessibilityLabel(Text("Duration \(durationText)"))
+    }
+    
+    private func createStatusView() -> some View {
+        if let statusText, !statusText.isEmpty {
+            return AnyView(
                 DSStatusPill(
                     text: statusText,
                     status: .init(from: statusText)
                 )
                 .padding(.top, 10)
                 .padding(.trailing, 10)
+            )
+        } else {
+            return AnyView(EmptyView())
+        }
+    }
+    
+    // MARK: - Content
+    private var createRowContent: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.sm) {
+            
+            createDateRangeView()
+                .padding(.horizontal, theme.spacing.xl)
+            
+            createTitleView()
+                .padding(.horizontal, theme.spacing.md)
+            
+            HStack {
+                createDurationView()
+                
+                Spacer()
+                
+                createReviewersView()
             }
+            .padding(.horizontal, theme.spacing.md)
+        }
+        .padding(.horizontal, theme.spacing.lg)
+        .padding(.vertical, theme.spacing.md)
+        .overlay(alignment: .topTrailing) {
+            createStatusView()
+                .padding(.trailing, theme.spacing.xl)
         }
     }
 }
+

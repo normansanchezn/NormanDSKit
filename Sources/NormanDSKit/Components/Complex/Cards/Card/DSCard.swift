@@ -68,6 +68,13 @@ public struct DSCard<Trailing: View>: View {
                 
                 if let subtitle = model.subtitle {
                     DSLabel(subtitle)
+                        .padding(.horizontal, theme.spacing.lg)
+                        .padding(.vertical, theme.spacing.sm)
+                        .background(
+                            Capsule().fill(
+                                theme.colors.primary.resolved(scheme)
+                            ).mcGlassEffectIfAvailable()
+                        )
                 }
             }
             Spacer(minLength: theme.spacing.md)
@@ -76,28 +83,21 @@ public struct DSCard<Trailing: View>: View {
         .padding(theme.spacing.lg)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
+            Capsule()
                 .fill(
                     model.backgroundColor ??
-                    theme.colors.primary.resolved(scheme)
-                        .opacity(theme.opacity.background)
+                      theme.colors.primary.resolved(scheme)
+                          .opacity(theme.opacity.background)
                 )
-                .shadow(
-                    color: theme.colors.onBackground
-                        .resolved(scheme)
-                        .opacity(theme.opacity.elevatedSurface),
-                    radius: 8,
-                    y: 4
-                )
+                .mcGlassEffectIfAvailable()
+                .opacity(theme.opacity.background)
         )
-        .overlay(
-            RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
-                .stroke(
-                    theme.colors.onBackground
-                        .resolved(scheme)
-                        .opacity(theme.opacity.subtle),
-                    lineWidth: 0.5
-                )
+        .shadow(
+            color: theme.colors.onBackground
+                .resolved(scheme)
+                .opacity(theme.opacity.elevatedSurface),
+            radius: 8,
+            y: 4
         )
         .padding(.horizontal, theme.spacing.xs)
         .padding(.vertical, theme.spacing.xs)

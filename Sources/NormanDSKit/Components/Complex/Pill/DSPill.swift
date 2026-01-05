@@ -22,34 +22,26 @@ public struct DSPill: View {
     }
 
     public var body: some View {
-        DSLabel(.init(
-            text: text,
-            style: .caption,
-            textColor: foreground
-        ))
-        .padding(.horizontal, theme.spacing.sm)
-        .padding(.vertical, 6)
+        DSLabel(
+            .init(
+                text: text,
+                style: DSLabelModel.Style.caption,
+                textColor: .white
+            )
+        )
+        .padding(.horizontal, theme.spacing.md)
+        .padding(.vertical, theme.spacing.sm)
         .background(
-            RoundedRectangle(cornerRadius: theme.radius.lg)
-                .fill(background)
+            background
         )
     }
 
-    private var background: Color {
+    private var background: some View {
         switch kind {
-            case .neutral: return theme.colors.surface.resolved(scheme).opacity(0.9)
-            case .success: return theme.colors.success.resolved(scheme).opacity(0.18)
-            case .warning: return Color.orange.opacity(0.18)
-            case .error: return theme.colors.error.resolved(scheme).opacity(0.18)
-        }
-    }
-
-    private var foreground: Color {
-        switch kind {
-            case .neutral: return theme.colors.textCaption.resolved(scheme)
-            case .success: return theme.colors.success.resolved(scheme)
-            case .warning: return Color.orange
-            case .error: return theme.colors.error.resolved(scheme)
+            case .neutral: return Capsule().fill(theme.colors.tertiary.resolved(scheme)).mcGlassEffectIfAvailable()
+            case .success: return Capsule().fill(theme.colors.success.resolved(scheme)).mcGlassEffectIfAvailable()
+            case .warning: return Capsule().fill(theme.colors.warning.resolved(scheme)).mcGlassEffectIfAvailable()
+            case .error: return Capsule().fill(theme.colors.error.resolved(scheme)).mcGlassEffectIfAvailable()
         }
     }
 }
