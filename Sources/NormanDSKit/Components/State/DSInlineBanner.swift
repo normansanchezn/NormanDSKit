@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct DSInlineBanner: View {
-    public enum Kind { case error, info, success }
+    public enum Kind { case error, info, success, tap, swipe }
 
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
@@ -24,22 +24,23 @@ public struct DSInlineBanner: View {
     public var body: some View {
         HStack(spacing: theme.spacing.sm) {
             Image(systemName: icon)
-                .foregroundStyle(color)
+                .frame(width: 16, height: 16)
+                .foregroundStyle(.white)
 
-            DSLabel(.init(
-                text: text,
-                style: .caption,
-                textColor: color
-            ))
+            DSLabel(
+                .init(
+                    text: text,
+                    style: DSLabelModel.Style.caption,
+                    textColor: .white
+                )
+            )
         }
         .padding(theme.spacing.md)
         .background(
-            RoundedRectangle(cornerRadius: theme.radius.md)
-                .fill(theme.colors.surfaceSecondary.resolved(scheme).opacity(0.75))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: theme.radius.md)
-                .stroke(color.opacity(0.25), lineWidth: 1)
+            Capsule()
+                .fill(color.opacity(theme.opacity.background))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .cornerRadius(40)
         )
     }
 
@@ -48,14 +49,18 @@ public struct DSInlineBanner: View {
         case .error: return theme.colors.error.resolved(scheme)
         case .success: return theme.colors.success.resolved(scheme)
         case .info: return theme.colors.primary.resolved(scheme)
+        case .tap: return theme.colors.primary.resolved(scheme)
+        case .swipe: return theme.colors.primary.resolved(scheme)
         }
     }
 
     private var icon: String {
         switch kind {
-        case .error: return "exclamationmark.triangle.fill"
-        case .success: return "checkmark.seal.fill"
-        case .info: return "info.circle.fill"
+            case .error: return "exclamationmark.triangle.fill"
+            case .success: return "checkmark.seal.fill"
+            case .info: return "info.circle.fill"
+            case .tap: return "hand.rays.fill"
+            case .swipe: return "hand.draw.fill"
         }
     }
 }

@@ -63,9 +63,10 @@ public struct DSRowInfo: View {
     public var body: some View {
         createRowContent
             .background(
-                RoundedRectangle(cornerRadius: theme.radius.full)
+                Capsule()
+                    .fill(theme.colors.primary.resolved(scheme).opacity(theme.opacity.glassBackground))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .mcGlassEffectIfAvailable()
-                    .foregroundColor(theme.colors.primary.resolved(scheme).opacity(theme.opacity.glassBackground))
             )
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button(role: .destructive) {
