@@ -71,7 +71,7 @@ public struct DSPicker<Option: Identifiable & Equatable>: View {
                             .foregroundStyle(theme.colors.textCaption.resolved(scheme))
                     }
                     
-                    Text(selection.map(display) ?? placeholder)
+                    Text(resolveText())
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .foregroundStyle(theme.colors.textBody.resolved(scheme))
                         .lineLimit(1)
@@ -90,6 +90,16 @@ public struct DSPicker<Option: Identifiable & Equatable>: View {
         }
         .sheet(isPresented: $isSheetPresented) { sheet }
         .animation(.spring(response: 0.35, dampingFraction: 0.9), value: selection?.id)
+    }
+    
+    private func resolveText() -> String {
+        let selection = self.selection.map(display)
+        
+        return selection?.capitalizingFirstLetter() ?? placeholder
+    }
+    
+    private func resolveOptionText(opt: Option) -> String {
+        display(opt).capitalizingFirstLetter()
     }
     
     private var sheet: some View {
@@ -153,7 +163,7 @@ public struct DSPicker<Option: Identifiable & Equatable>: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(display(opt))
+                    Text(resolveOptionText(opt: opt))
                         .font(.system(.body, design: .rounded).weight(.semibold))
                         .foregroundStyle(theme.colors.textBody.resolved(scheme))
                     
