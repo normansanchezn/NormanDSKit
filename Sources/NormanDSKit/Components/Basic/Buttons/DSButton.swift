@@ -62,15 +62,21 @@ public struct DSButton: View {
 
     // MARK: - Label
     /// The internal label view combining optional icon and title with spacing and sizing.
-    private var label: some View {
+    private func createLabel(_ foregroundColor: Color) -> some View {
         HStack(spacing: theme.spacing.xs) {
             if let systemImage = model.systemImage, !systemImage.isEmpty {
                 Image(systemName: systemImage)
             }
 
-            Text(model.title)
-                .font(theme.typography.body.font.weight(.semibold))
-                .lineLimit(1)
+            DSLabel(
+                .init(
+                    text: model.title,
+                    style: DSLabelModel.Style.body,
+                    isBold: true,
+                    textColor: foregroundColor
+                )
+            )
+            .lineLimit(1)
         }
         .frame(maxWidth: model.isFullWidth ? .infinity : nil)
         .frame(minHeight: model.minHeight)
@@ -84,20 +90,19 @@ public struct DSButton: View {
     private var glassButton: some View {
         switch model.variant {
         case .primary:
-            Button(action: action) { label }
+            Button(action: action) { createLabel(foregroundColor) }
                 .buttonStyle(.glassProminent)
-                .tint(
-                    theme.colors.primary.resolved(scheme).opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
+                .tint(theme.colors.primary.resolved(scheme).opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
 
         case .secondary:
-            Button(action: action) { label }
+            Button(action: action) { createLabel(foregroundColor) }
                 .buttonStyle(.glass)
                 .tint(
                     theme.colors.primary.resolved(scheme)
                         .opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
 
         case .tertiary:
-            Button(action: action) { label }
+            Button(action: action) { createLabel(foregroundColor) }
                 .buttonStyle(.plain)
                 .foregroundStyle(theme.colors.primary.resolved(scheme).opacity(model.isEnabled ? opacityDefaulButton : theme.opacity.disabled))
 
@@ -108,8 +113,7 @@ public struct DSButton: View {
     /// The legacy-styled button for older OS versions with manual background/border.
     private var legacyButton: some View {
         Button(action: action) {
-            label
-                .foregroundColor(foregroundColor)
+            createLabel(foregroundColor)
                 .background(
                     RoundedRectangle(cornerRadius: theme.radius.md)
                         .fill(backgroundColor)
@@ -179,7 +183,9 @@ public struct DSButton: View {
         switch model.variant {
         case .primary:
             return .white
-        case .secondary, .tertiary:
+        case .secondary:
+            return theme.colors.onPrimary.resolved(scheme)
+        case .tertiary:
             return theme.colors.primary.resolved(scheme)
         }
     }

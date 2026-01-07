@@ -48,82 +48,95 @@ public struct DSPrincipalHeader: View {
     // MARK: - Body
     public var body: some View {
         ZStack(alignment: .bottomLeading) {
-            GeometryReader { proxy in
-                let width = max(proxy.size.width, 200)
-                DSRoundedImage(
-                    .init(
-                        imageURL: dsPrincipalHeaderModel.imageUrl,
-                        size: width,
-                        cornerRadius: 0,
-                        showsGlassBackground: false
-                    )
-                )
-                .frame(width: proxy.size.width, height: 280)
-                .clipped()
-                .clipShape(
-                    RoundedCorner(radius: 40.0, corners: [.bottomLeft, .bottomRight])
-                )
-                .contentShape(Rectangle())
-            }
-            .frame(height: 280)
+            createRoundedImageBackground()
+                .zIndex(0)
             
-            VStack(alignment: .leading, spacing: theme.spacing.xs) {
-                HStack {
-                    Image(systemName: "star.fill")
-                        .foregroundStyle(theme.colors.warning.resolved(scheme))
-                        .font(.caption)
-                    DSLabel(
-                        .init(
-                            text: dsPrincipalHeaderModel.rank ?? "N/A",
-                            style: DSLabelModel.Style.caption,
-                            textColor: theme.colors.h1.resolved(scheme)
-                        )
-                    )
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(theme.colors.textBody.resolved(scheme))
-                    
-                }
+            createInformationContainer()
+                .zIndex(1)
                 .padding(.horizontal, theme.spacing.md)
-                .padding(.vertical, theme.spacing.sm)
-                .background(
-                    Capsule()
-                        .fill(
-                            theme.colors.surface
-                                .resolved(scheme)
-                                .opacity(theme.opacity.glassBackground)
-                        )
-                )
-                .padding(.vertical, theme.spacing.sm)
-                
-                DSLabel(
-                    .init(
-                        text: dsPrincipalHeaderModel.name,
-                        style: DSLabelModel.Style.h2,
-                        isBold: true,
-                        textColor: .white
-                    )
-                )
-                DSLabel(
-                    .init(
-                        text: dsPrincipalHeaderModel.jobDescription,
-                        style: DSLabelModel.Style.body,
-                        textColor: .white
-                    )
-                )
-                .foregroundStyle(theme.colors.textCaption.resolved(scheme))
-                .padding(.trailing, theme.spacing.xl)
-            }
-            .padding(.horizontal, theme.spacing.xl)
-            .padding(.bottom, theme.spacing.md)
-            .background {
-                RoundedRectangle(cornerRadius: 40.0)
-                    .fill(
-                        theme.colors.primary.resolved(scheme)
-                            .opacity(theme.opacity.background)
-                    )
-            }
-            .padding(.trailing, theme.spacing.xl)
         }
+    }
+    
+    private func createInformationContainer() -> some View {
+        VStack(alignment: .leading, spacing: theme.spacing.xs) {
+            createRankingView()
+                .padding(.horizontal, theme.spacing.lg)
+            
+            DSLabel(
+                .init(
+                    text: dsPrincipalHeaderModel.name,
+                    style: DSLabelModel.Style.h2,
+                    isBold: true,
+                    textColor: .white
+                )
+            )
+            .padding(.horizontal, theme.spacing.lg)
+            DSLabel(
+                .init(
+                    text: dsPrincipalHeaderModel.jobDescription,
+                    style: DSLabelModel.Style.body,
+                    textColor: .white
+                )
+            )
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, theme.spacing.lg)
+        }
+        .padding(.horizontal, theme.spacing.xl)
+        .padding(.bottom, theme.spacing.md)
+        .background { backgroundInformationView() }
+        .padding(.trailing, theme.spacing.xl)
+    }
+    
+    private func backgroundInformationView() -> some View {
+        Capsule().fill(theme.colors.primary.resolved(scheme).opacity(theme.opacity.background))
+        .mcGlassEffectIfAvailable()
+    }
+    
+    private func createRoundedImageBackground() -> some View {
+        GeometryReader { proxy in
+            let width = max(proxy.size.width, 200)
+            DSRoundedImage(
+                .init(
+                    imageURL: dsPrincipalHeaderModel.imageUrl,
+                    size: width,
+                    cornerRadius: 0,
+                    showsGlassBackground: false
+                )
+            )
+            .frame(width: proxy.size.width, height: 250)
+            .clipped()
+            .clipShape(
+                RoundedCorner(radius: 100, corners: [.bottomLeft, .bottomRight])
+            )
+            .contentShape(Rectangle())
+        }
+        .frame(height: 250)
+    }
+    
+    private func createRankingView() -> some View {
+        HStack {
+            Image(systemName: "star.fill")
+                .foregroundStyle(theme.colors.warning.resolved(scheme))
+                .font(.caption)
+            DSLabel(
+                .init(
+                    text: dsPrincipalHeaderModel.rank ?? "N/A",
+                    style: DSLabelModel.Style.caption,
+                    textColor: theme.colors.h1.resolved(scheme)
+                )
+            )
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(theme.colors.textBody.resolved(scheme))
+            
+        }
+        .padding(.horizontal, theme.spacing.md)
+        .padding(.vertical, theme.spacing.sm)
+        .background(
+            Capsule()
+                .fill(theme.colors.surface.resolved(scheme).opacity(theme.opacity.background))
+                .mcGlassEffectIfAvailable()
+        )
+        .padding(.vertical, theme.spacing.sm)
     }
 }
 
