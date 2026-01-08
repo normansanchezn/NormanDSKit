@@ -59,6 +59,6 @@ public extension DSOpacity {
         subtle: 0.06,
         strong: 0.16,
         tinted: 0.12,
-        background: 0.8
+        background: 0.6
     )
 }

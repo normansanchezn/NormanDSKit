@@ -209,8 +209,8 @@ public extension DSColors {
             dark: Color(hex: "#FFFFFF")
         ),
         dialogBackgroundColor: DSDynamicColor(
-            light: Color(hex: "#FFFFFF"),
-            dark: Color(hex: "#000A17")
+            light: Color(hex: "#dee9ff"),
+            dark: Color(hex: "#0046a1")
         ),
         onPrimary: DSDynamicColor(
             light: Color(hex: "#339DFF"),

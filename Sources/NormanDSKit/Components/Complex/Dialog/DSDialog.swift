@@ -50,9 +50,10 @@ public struct DSDialog<Content: View>: View {
     private let imageUrl: String?
     private let primaryButtonTitle: String
     private let closeButtonTitle: String
-    private let onClose: () -> Void
+    private let onClose: (() -> Void)?
     private let onPrimaryAction: () -> Void
     private let content: () -> Content
+    private let emojiType: EmojiType?
     
     public init(
         title: String? = nil,
@@ -60,8 +61,9 @@ public struct DSDialog<Content: View>: View {
         imageUrl: String? = nil,
         primaryButtonTitle: String,
         closeButtonTitle: String = "Close",
-        onClose: @escaping () -> Void,
+        onClose: (() -> Void)? = nil,
         onPrimaryAction: @escaping () -> Void,
+        emojiType: EmojiType? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.title = title
@@ -71,57 +73,95 @@ public struct DSDialog<Content: View>: View {
         self.closeButtonTitle = closeButtonTitle
         self.onClose = onClose
         self.onPrimaryAction = onPrimaryAction
+        self.emojiType = emojiType
         self.content = content
     }
     
-    public var body: some View {
-        VStack(spacing: theme.spacing.md) {
-            if let imageUrl, !imageUrl.isEmpty {
-                roundedImage(urlString: imageUrl, size: 110)
-                    .padding(.bottom, theme.spacing.xs)
-            }
-            if let title, !title.isEmpty {
-                DSLabel(
-                    DSLabelModel(
-                        text: title,
-                        style: .title,
-                        isBold: true,
-                        alignment: .center
-                    )
-                )
-            }
-            if let subtitle, !subtitle.isEmpty {
-                DSLabel(
-                    DSLabelModel(
-                        text: subtitle,
-                        style: .body,
-                        alignment: .center
-                    )
-                )
-            }
-            
-            content()
-            HStack(spacing: theme.spacing.sm) {
-                DSButton.tertiary(closeButtonTitle, isFullWidth: true, action: onClose)
-                
-                DSButton.primary(primaryButtonTitle, isFullWidth: true, action: onPrimaryAction)
-            }
-            .padding(.top, theme.spacing.sm)
-            
+    @ViewBuilder
+    private func couldShowImageDialog(size: CGFloat = 60) -> some View {
+        if emojiType != nil {
+            Image(resolveEmojiImage(), bundle: .module)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFill()
+                .scaleEffect(1.15)
+                .frame(width: size, height: size)
+                .clipped()
+                .accessibilityHidden(true)
         }
-        .padding(theme.spacing.lg)
-        .frame(maxWidth: 340)
-        .background(
-            RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .background(
-                    RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
-                        .fill(
-                            theme.colors.dialogBackgroundColor.resolved(scheme)
-                                .opacity(theme.opacity.glassBackground)
-                        )
+    }
+    
+    @ViewBuilder
+    private func couldShowImage() -> some View {
+        if let imageUrl, !imageUrl.isEmpty {
+            roundedImage(urlString: imageUrl, size: 110)
+                .padding(.bottom, theme.spacing.xs)
+        }
+    }
+    
+    @ViewBuilder
+    private func couldShowTitle() -> some View {
+        if let title, !title.isEmpty {
+            DSLabel(
+                DSLabelModel(
+                    text: title,
+                    style: .subtitle,
+                    isBold: true,
+                    alignment: .leading
                 )
-        )
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    
+    @ViewBuilder
+    private func couldShowSubtitle() -> some View {
+        if let subtitle, !subtitle.isEmpty {
+            DSLabel(
+                DSLabelModel(
+                    text: subtitle,
+                    style: .body,
+                    alignment: .leading
+                )
+            )
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+    
+    private func showButtonActions() -> some View {
+        HStack(spacing: theme.spacing.sm) {
+            if onClose != nil {
+                DSButton.secondary(closeButtonTitle, isFullWidth: true, action: onClose!)
+            }
+            
+            DSButton.primary(primaryButtonTitle, isFullWidth: true, action: onPrimaryAction)
+        }
+        .padding(.top, theme.spacing.sm)
+    }
+    
+    public var body: some View {
+        VStack {
+            HStack(alignment: .center, spacing: theme.spacing.md) {
+                couldShowImageDialog(size: 110)
+
+                VStack(alignment: .leading, spacing: theme.spacing.xs) {
+                    couldShowImage()
+                    couldShowTitle()
+                    couldShowSubtitle()
+                    content()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .multilineTextAlignment(.leading)
+                .layoutPriority(1)
+            }
+
+
+            showButtonActions()
+        }
+        .padding(theme.spacing.md)
+        .frame(maxWidth: 340)
+        .background(backgroundView)
         .clipShape(RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous))
         .shadow(
             color: theme.colors.onBackground
@@ -131,6 +171,30 @@ public struct DSDialog<Content: View>: View {
             y: 8
         )
         .padding(theme.spacing.lg)
+    }
+    
+    private var backgroundView: some View {
+        RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
+            .fill(.ultraThinMaterial)
+            .background(
+                RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
+                    .fill(
+                        theme.colors.dialogBackgroundColor.resolved(scheme)
+                            .opacity(theme.opacity.background)
+                    )
+            )
+    }
+    
+    func resolveEmojiImage() -> String {
+        switch emojiType {
+            case .error: return ""
+            case .question: return "question_emoji"
+            case .info: return ""
+            case .success: return ""
+            case .tip: return ""
+            case .warning: return ""
+            default: return ""
+        }
     }
     
     // MARK: - Rounded Image helper
@@ -160,4 +224,13 @@ public struct DSDialog<Content: View>: View {
                 )
         )
     }
+}
+
+public enum EmojiType {
+    case question
+    case success
+    case error
+    case info
+    case warning
+    case tip
 }

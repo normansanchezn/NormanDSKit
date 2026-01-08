@@ -89,6 +89,38 @@ public extension View {
     }
 }
 
+
+public extension View {
+    func mcGlassBackground<S: InsettableShape>(
+        in shape: S,
+        tint: Color? = nil,
+        tintOpacity: Double = 0.12,
+        stroke: Color = .white,
+        strokeOpacity: Double = 0.16,
+        lineWidth: Double = 1
+    ) -> some View {
+        self.background {
+            ZStack {
+                if #available(iOS 26, *) {
+                    Rectangle()
+                        .fill(Color.white.opacity(0.001))
+                        .mask(shape)
+                } else {
+                    shape.fill(.regularMaterial)
+                }
+
+                if let tint {
+                    shape.fill(tint.opacity(tintOpacity))
+                }
+
+                shape.strokeBorder(stroke.opacity(strokeOpacity), lineWidth: lineWidth)
+            }
+            .compositingGroup()
+            .allowsHitTesting(false)
+        }
+    }
+}
+
 /// Disables scroll clipping when available on this OS version.
 ///
 /// On iOS 17 and later, applies `scrollClipDisabled()` to avoid clipping scrollable content.
