@@ -62,6 +62,7 @@ public struct DSColors: Sendable {
     public let h3: DSDynamicColor
     public let dialogBackgroundColor: DSDynamicColor
     public let onPrimary: DSDynamicColor
+    public let boxBackground: DSDynamicColor
     
     /// Creates a `DSColors` palette.
     ///
@@ -100,7 +101,8 @@ public struct DSColors: Sendable {
         h1: DSDynamicColor,
         h3: DSDynamicColor,
         dialogBackgroundColor: DSDynamicColor,
-        onPrimary: DSDynamicColor
+        onPrimary: DSDynamicColor,
+        boxBackground: DSDynamicColor
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -121,6 +123,7 @@ public struct DSColors: Sendable {
         self.h3 = h3
         self.dialogBackgroundColor = dialogBackgroundColor
         self.onPrimary = onPrimary
+        self.boxBackground = boxBackground
     }
 }
 
@@ -175,12 +178,12 @@ public extension DSColors {
             dark:  Color(hex: "#F5F7FF")  // títulos en dark
         ),
         textSubtitle: DSDynamicColor(
-            light: Color(hex: "#4B5563"), // subtítulos en light
+            light: Color(hex: "#0046a1"), // subtítulos en light
             dark:  Color(hex: "#C7D2F5")  // subtítulos gris-azulado en dark
         ),
         textBody: DSDynamicColor(
-            light: Color(hex: "#111827"), // cuerpo en light
-            dark:  Color(hex: "#E5E7EB")  // cuerpo en dark
+            light: Color(hex: "#edf3fa"), // cuerpo en light
+            dark:  Color(hex: "#edf3fa")  // cuerpo en dark
         ),
         textCaption: DSDynamicColor(
             light: Color(hex: "#6B7280"), // caption light
@@ -213,9 +216,14 @@ public extension DSColors {
             dark: Color(hex: "#0046a1")
         ),
         onPrimary: DSDynamicColor(
-            light: Color(hex: "#339DFF"),
-            dark: Color(hex: "#FFFFFF")
-        )
+            light: Color(hex: "#001f47"),
+            dark: Color(hex: "#3895ff")
+        ),
+        boxBackground:
+            DSDynamicColor(
+                light: Color(hex: "0e82ed"),
+                dark: Color(hex: "002547")
+            )
     )
     
 }
