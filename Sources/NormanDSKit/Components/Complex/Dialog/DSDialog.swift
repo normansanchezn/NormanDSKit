@@ -187,13 +187,15 @@ public struct DSDialog<Content: View>: View {
     
     func resolveEmojiImage() -> String {
         switch emojiType {
-            case .error: return ""
+            case .error: return "error_emoji"
             case .question: return "question_emoji"
-            case .info: return ""
-            case .success: return ""
-            case .tip: return ""
-            case .warning: return ""
-            default: return ""
+            case .info: return "info_emoji"
+            case .success: return "success_emoji"
+            case .tip: return "tip_emoji"
+            case .warning: return "warning_emoji"
+            case .greatJob: return "great_job_emoji"
+            case .cancel: return "cancel_emoji"
+                default: return ""
         }
     }
     
@@ -233,4 +235,6 @@ public enum EmojiType {
     case info
     case warning
     case tip
+    case cancel
+    case greatJob
 }

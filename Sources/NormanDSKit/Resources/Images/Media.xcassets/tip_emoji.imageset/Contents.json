@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "question_emoji.png",
+      "filename" : "idea_emoji.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "question_emoji 2.png",
+      "filename" : "idea_emoji 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "question_emoji 1.png",
+      "filename" : "idea_emoji 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
