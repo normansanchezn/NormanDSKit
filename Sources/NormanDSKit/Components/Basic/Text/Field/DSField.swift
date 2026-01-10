@@ -118,7 +118,10 @@ public struct DSField: View {
     @ViewBuilder
     private var inputField: some View {
         let prompt = Text(model.placeholder)
-            .foregroundColor(theme.colors.textCaption.resolved(scheme))
+            .foregroundColor(
+                theme.colors.onSecondary.resolved(scheme)
+                    .opacity(theme.opacity.glassBorder)
+            )
 
         let sanitizedBinding = Binding<String>(
             get: { text },
@@ -135,8 +138,10 @@ public struct DSField: View {
         Group {
             if model.isSecure {
                 SecureField(model.placeholder, text: sanitizedBinding, prompt: prompt)
+                    .foregroundColor(theme.colors.onTextEntry.resolved(scheme))
             } else {
                 TextField(model.placeholder, text: sanitizedBinding, prompt: prompt)
+                    .foregroundColor(theme.colors.onTextEntry.resolved(scheme))
             }
         }
         .keyboardType(model.keyboardType)
@@ -155,12 +160,14 @@ public struct DSField: View {
                 Text(error)
                     .font(theme.typography.caption.font)
                     .foregroundColor(theme.colors.error.resolved(scheme))
+                    .padding(.horizontal, theme.spacing.md)
             }
         default:
             if let helper = model.helperText, !helper.isEmpty {
                 Text(helper)
                     .font(theme.typography.caption.font)
                     .foregroundColor(theme.colors.textCaption.resolved(scheme))
+                    .padding(.horizontal, theme.spacing.md)
             }
         }
     }
@@ -192,7 +199,7 @@ public struct DSField: View {
             if isFocused {
                 return theme.colors.primary.resolved(scheme)
             } else {
-                return theme.colors.onBackground
+                return theme.colors.onSecondary
                     .resolved(scheme)
                     .opacity(theme.opacity.subtle)
             }

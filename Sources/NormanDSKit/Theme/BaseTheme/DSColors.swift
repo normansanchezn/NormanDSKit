@@ -63,6 +63,8 @@ public struct DSColors: Sendable {
     public let dialogBackgroundColor: DSDynamicColor
     public let onPrimary: DSDynamicColor
     public let boxBackground: DSDynamicColor
+    public let onSecondary: DSDynamicColor
+    public let onTextEntry: DSDynamicColor
     
     /// Creates a `DSColors` palette.
     ///
@@ -102,7 +104,9 @@ public struct DSColors: Sendable {
         h3: DSDynamicColor,
         dialogBackgroundColor: DSDynamicColor,
         onPrimary: DSDynamicColor,
-        boxBackground: DSDynamicColor
+        boxBackground: DSDynamicColor,
+        onSecondary: DSDynamicColor,
+        onTextEntry: DSDynamicColor
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -124,6 +128,8 @@ public struct DSColors: Sendable {
         self.dialogBackgroundColor = dialogBackgroundColor
         self.onPrimary = onPrimary
         self.boxBackground = boxBackground
+        self.onSecondary = onSecondary
+        self.onTextEntry = onTextEntry
     }
 }
 
@@ -219,11 +225,18 @@ public extension DSColors {
             light: Color(hex: "#001f47"),
             dark: Color(hex: "#3895ff")
         ),
-        boxBackground:
-            DSDynamicColor(
-                light: Color(hex: "0e82ed"),
-                dark: Color(hex: "002547")
-            )
+        boxBackground: DSDynamicColor(
+            light: Color(hex: "0E82ED"),
+            dark: Color(hex: "002547")
+        ),
+        onSecondary: DSDynamicColor(
+            light: Color(hex:"72B0E8"),
+            dark: Color(hex: "1991FF")
+        ),
+        onTextEntry: DSDynamicColor(
+            light: Color(hex: "1991FF"),
+            dark: Color(hex: "4CA7FC")
+        )
     )
     
 }

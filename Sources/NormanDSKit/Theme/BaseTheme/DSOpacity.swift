@@ -63,6 +63,6 @@ public extension DSOpacity {
         strong: 0.16,
         tinted: 0.12,
         background: 0.6,
-        boxBackground: 0.75
+        boxBackground: 0.75,
     )
 }
