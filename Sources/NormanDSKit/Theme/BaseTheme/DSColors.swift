@@ -188,7 +188,7 @@ public extension DSColors {
             dark:  Color(hex: "#C7D2F5")  // subtítulos gris-azulado en dark
         ),
         textBody: DSDynamicColor(
-            light: Color(hex: "#edf3fa"), // cuerpo en light
+            light: Color(hex: "#001f47"), // cuerpo en light
             dark:  Color(hex: "#edf3fa")  // cuerpo en dark
         ),
         textCaption: DSDynamicColor(

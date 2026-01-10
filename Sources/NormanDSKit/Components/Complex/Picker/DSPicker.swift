@@ -70,12 +70,15 @@ public struct DSPicker<Option: Identifiable & Equatable>: View {
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundStyle(theme.colors.textCaption.resolved(scheme))
                     }
-                    
-                    Text(resolveText())
-                        .font(.system(.body, design: .rounded).weight(.semibold))
-                        .foregroundStyle(theme.colors.textBody.resolved(scheme))
-                        .lineLimit(1)
-                    
+                    DSLabel(
+                        .init(
+                            text: resolveText(),
+                            style: DSLabelModel.Style.body,
+                            textColor: theme.colors.textBody.resolved(scheme)
+                        )
+                    )
+                    .lineLimit(1)
+
                     Spacer()
                     
                     Image(systemName: "chevron.up.chevron.down")
