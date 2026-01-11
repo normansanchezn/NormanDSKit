@@ -45,9 +45,7 @@ public struct DSRemoteAvatar: View {
     private var placeholder: some View {
         ZStack {
             theme.colors.surfaceSecondary.resolved(scheme)
-            Image(systemName: "person.crop.circle.fill")
-                .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(theme.colors.textCaption.resolved(scheme))
+            DSEmojiImageView(imgResName: "greeting_emoji", size: size - 3)
         }
     }
 }
