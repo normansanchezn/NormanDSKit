@@ -45,6 +45,7 @@ public struct DSIconCard: View {
     @State private var isPressed = false
     
     private let model: DSIconCardModel
+    private let pill = RoundedRectangle(cornerRadius: 40, style: .continuous)
     
     public init(model: DSIconCardModel) {
         self.model = model
@@ -64,30 +65,52 @@ public struct DSIconCard: View {
             model.action()
         } label: {
             VStack(spacing: theme.spacing.xs) {
-                ZStack {
-                    Capsule()
-                        .fill(theme.colors.primary.resolved(scheme).opacity(theme.opacity.background))
-                        .frame(width: side, height: side - 20)
-                        .mcGlassEffectIfAvailable()
-                    
-                    Image(systemName: model.systemImage)
-                        .font(.system(size: side * 0.25, weight: .medium))
-                        .foregroundColor(
-                            theme.colors.surface.resolved(scheme)
-                        )
-                }
-                
-                Text(model.title)
-                    .font(theme.typography.caption.font)
-                    .foregroundColor(
-                        theme.colors.textTitle.resolved(scheme)
-                    )
-                    .lineLimit(1)
+                createImageView()
+                createLabelView()
             }
-            .scaleEffect(isPressed ? 0.97 : 1)
+            .scaleEffect(resolveScaleEffect())
             .animation(.spring(response: 0.25, dampingFraction: 0.8), value: isPressed)
         }
         .buttonStyle(DSPressableStyle(isPressed: $isPressed))
+    }
+    
+    private func createImageView() -> some View {
+        Image(systemName: model.systemImage)
+            .font(.system(size: side * 0.25, weight: .medium))
+            .foregroundColor(
+                theme.colors.surface.resolved(scheme)
+            )
+            .frame(width: resolveSizeImage(), height: resolveSizeImage())
+            .padding(.horizontal, theme.spacing.lg)
+            .padding(.vertical, theme.spacing.md)
+            .mcGlassBackground(
+                in: pill,
+                tint: model.backgroundColor,
+                tintOpacity: theme.opacity.boxBackground
+            )
+    }
+    
+    private func resolveSizeImage() -> CGFloat {
+        switch model.size {
+        case .small: 56
+        case .medium: 72
+        case .large: 96
+        }
+    }
+    
+    private func createLabelView() -> some View {
+        DSLabel(
+            .init(
+                text: model.title,
+                style: DSLabelModel.Style.caption,
+                textColor: theme.colors.primary.resolved(scheme)
+            )
+        )
+        .lineLimit(1)
+    }
+        
+    private func resolveScaleEffect() -> CGFloat {
+        isPressed ? 0.97 : 1
     }
 }
 
