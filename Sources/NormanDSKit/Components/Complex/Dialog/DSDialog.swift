@@ -48,7 +48,7 @@ public struct DSDialog<Content: View>: View {
     private let title: String?
     private let subtitle: String?
     private let imageUrl: String?
-    private let primaryButtonTitle: String
+    private let primaryButtonTitle: String?
     private let closeButtonTitle: String
     private let onClose: (() -> Void)?
     private let onPrimaryAction: () -> Void
@@ -59,7 +59,7 @@ public struct DSDialog<Content: View>: View {
         title: String? = nil,
         subtitle: String? = nil,
         imageUrl: String? = nil,
-        primaryButtonTitle: String,
+        primaryButtonTitle: String?,
         closeButtonTitle: String = "Close",
         onClose: (() -> Void)? = nil,
         onPrimaryAction: @escaping () -> Void,
@@ -134,8 +134,9 @@ public struct DSDialog<Content: View>: View {
             if onClose != nil {
                 DSButton.secondary(closeButtonTitle, isFullWidth: true, action: onClose!)
             }
-            
-            DSButton.primary(primaryButtonTitle, isFullWidth: true, action: onPrimaryAction)
+            if primaryButtonTitle != nil {
+                DSButton.primary(primaryButtonTitle!, isFullWidth: true, action: onPrimaryAction)
+            }
         }
         .padding(.top, theme.spacing.sm)
     }
@@ -143,7 +144,7 @@ public struct DSDialog<Content: View>: View {
     public var body: some View {
         VStack {
             HStack(alignment: .center, spacing: theme.spacing.md) {
-                couldShowImageDialog(size: 110)
+                couldShowImageDialog(size: 100)
 
                 VStack(alignment: .leading, spacing: theme.spacing.xs) {
                     couldShowImage()
@@ -203,12 +204,56 @@ public struct DSDialog<Content: View>: View {
     
     @ViewBuilder
     private func roundedImage(urlString: String, size: CGFloat) -> some View {
+        if (urlString.isEmpty) {
+            DSEmojiImageView(imgResName: "cancel_emoji", size: size, scale: 1.1)
+                .setCircleAura(theme, scheme)
+        } else {
+            createSyncImage(urlString: urlString, size: size)
+        }
+    }
+    
+    @ViewBuilder
+    private func createSyncImage(urlString: String, size: CGFloat) -> some View {
         AsyncImage(url: URL(string: urlString)) { phase in
             switch phase {
             case .success(let image):
                 image
                     .resizable()
                     .scaledToFill()
+            case .empty:
+                Image(resolveEmojiImage(), bundle: .module)
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle().stroke(.white.opacity(0.18), lineWidth: 1)
+                    }
+                    .background {
+                        Circle()
+                            .fill(Color.white.opacity(0.001))
+                            .mcGlassEffectIfAvailable()
+                    }
+                    .shadow(color: .black.opacity(0.12), radius: 8, x: 0, y: 4)
+                    .accessibilityHidden(true)
+            case .failure( _):
+                Image(resolveEmojiImage(), bundle: .module)
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle().stroke(.white.opacity(0.18), lineWidth: 1)
+                    }
+                    .background {
+                        Circle()
+                            .fill(Color.white.opacity(0.001))
+                            .mcGlassEffectIfAvailable()
+                    }
+                    .shadow(color: .black.opacity(0.12), radius: 8, x: 0, y: 4)
+                    .accessibilityHidden(true)
             default:
                 theme.colors.surfaceSecondary
                     .resolved(scheme)

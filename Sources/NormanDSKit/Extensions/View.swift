@@ -330,3 +330,20 @@ public extension View {
         }
     }
 }
+
+extension View {
+    public func setCircleAura(
+        _ theme: DSTheme,
+        _ scheme: ColorScheme
+    ) -> some View {
+        self.background(
+            Circle()
+                .fill(
+                    theme.colors.onPrimary.dark
+                        .opacity(theme.opacity.background)
+                )
+                .frame(width: 115, height: 115)
+                .mcGlassEffectIfAvailable()
+        )
+    }
+}

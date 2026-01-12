@@ -60,7 +60,17 @@ public struct DSCard<Trailing: View>: View {
             if let urlString = model.imageURL,
                !urlString.isEmpty {
                 avatarView(urlString: urlString)
+            } else {
+                DSEmojiImageView(
+                    imgResName: "question_emoji",
+                    size: model.imageSize ?? 60,
+                    scale: 1.2
+                )
+                .setCircleAura(theme, scheme)
+                .padding(.leading, theme.spacing.lg)
+                    
             }
+            
             VStack(alignment: .leading, spacing: theme.spacing.xs) {
                 DSLabel(
                     model.title
@@ -77,6 +87,8 @@ public struct DSCard<Trailing: View>: View {
                         )
                 }
             }
+            .padding(.leading, theme.spacing.xl)
+            
             Spacer(minLength: theme.spacing.md)
             trailing
         }
@@ -133,7 +145,7 @@ public struct DSCard<Trailing: View>: View {
         .overlay(
             Circle()
                 .stroke(
-                    theme.colors.surface.resolved(scheme)
+                    theme.colors.boxBackground.resolved(scheme)
                         .opacity(theme.opacity.glassBorder),
                     lineWidth: 1
                 )

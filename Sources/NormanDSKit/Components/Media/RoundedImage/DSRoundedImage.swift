@@ -31,6 +31,9 @@ public struct DSRoundedImage: View {
     /// The configuration model describing URL, size, corner radius, and background style.
     private let model: DSRoundedImageModel
     
+    @State private var didTimeout = false
+    private let timeoutNanoseconds: UInt64 = 6_000_000_000
+    
     /// Creates a rounded image view.
     /// - Parameter model: The configuration describing URL, size, corner radius, and background.
     public init(_ model: DSRoundedImageModel) {
@@ -41,58 +44,66 @@ public struct DSRoundedImage: View {
     public var body: some View {
         let trimmed = model.imageURL.trimmingCharacters(in: .whitespacesAndNewlines)
         let url = URL(string: trimmed)
-        
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case .empty:
-                placeholder
-                    .onAppear {
-                        if url == nil {
-                            print("❌ Invalid URL:", trimmed)
+        if url == nil || url?.absoluteString == "" {
+            placeholder
+        } else {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                    case .empty:
+                        placeholder
+                    
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                        
+                    case .failure(let error):
+                        if (error as? URLError)?.code == .cancelled || error is CancellationError {
+                            placeholder
+                        } else {
+                            errorPlaceholder
+                                .onAppear {
+                                    print("❌ AsyncImage failed:", error.localizedDescription, "url:", trimmed)
+                                }
                         }
+                        
+                        
+                    @unknown default:
+                        errorPlaceholder
                     }
                 
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFill()
-                
-            case .failure(let error):
-                if (error as? URLError)?.code == .cancelled || error is CancellationError {
-                    placeholder
-                } else {
-                    errorPlaceholder
-                        .onAppear {
-                            print("❌ AsyncImage failed:", error.localizedDescription, "url:", trimmed)
-                        }
+            }
+            .frame(width: model.size, height: model.size)
+            .clipShape(
+                RoundedRectangle(
+                    cornerRadius: model.cornerRadius,
+                    style: .continuous
+                )
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: model.cornerRadius, style: .continuous)
+                    .stroke(
+                        theme.colors.surfaceSecondary
+                            .resolved(scheme)
+                            .opacity(theme.opacity.subtle),
+                        lineWidth: 1
+                    )
+            )
+            .contentShape(Rectangle())
+            .task(id: url?.absoluteString) {
+                didTimeout = false
+                do {
+                    try await Task.sleep(nanoseconds: timeoutNanoseconds)
+                    didTimeout = true
+                } catch {
+                    print("We have some issues.")
                 }
-                
-                
-            @unknown default:
-                errorPlaceholder
             }
         }
-        .frame(width: model.size, height: model.size)
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: model.cornerRadius,
-                style: .continuous
-            )
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: model.cornerRadius, style: .continuous)
-                .stroke(
-                    theme.colors.surfaceSecondary
-                        .resolved(scheme)
-                        .opacity(theme.opacity.subtle),
-                    lineWidth: 1
-                )
-        )
-        .contentShape(Rectangle())
     }
     
     // MARK: - Background
-
+    
     /// Optional glass-like background that blends with the theme.
     private var backgroundGlass: some View {
         Group {
@@ -117,21 +128,8 @@ public struct DSRoundedImage: View {
     
     /// Placeholder shown while the image is loading.
     private var placeholder: some View {
-        RoundedRectangle(
-            cornerRadius: model.cornerRadius,
-            style: .continuous
-        )
-        .fill(
-            theme.colors.surfaceSecondary
-                .resolved(scheme)
-                .opacity(theme.opacity.tinted)
-        )
-        .overlay(
-            ProgressView()
-                .tint(
-                    theme.colors.primary.resolved(scheme)
-                )
-        )
+        DSEmojiImageView(imgResName: "error_emoji", size: model.size, scale: 1.2)
+            .setCircleAura(theme, scheme)
     }
     
     // MARK: - Error Placeholder

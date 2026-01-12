@@ -19,12 +19,42 @@ public struct DSDetailsDialog: View {
 
     public var body: some View {
         DSDialog(
-            title: model.title,
             primaryButtonTitle: model.primaryTitle,
             onClose: model.onClose,
             onPrimaryAction: model.onPrimary,
             content: {
-                VStack(spacing: theme.spacing.lg) {
+                VStack(alignment: .leading, spacing: theme.spacing.lg) {
+                    DSLabel(
+                        .init(
+                            text: pkgString("task_dialog.title"),
+                            style: DSLabelModel.Style.h1,
+                            isBold: true,
+                            textColor: theme.colors.onPrimary.resolved(scheme)
+                        )
+                    )
+                    
+                    DSLabel(
+                        .init(
+                            text: pkgString("task_dialog.task.name.details"),
+                            style: DSLabelModel.Style.caption,
+                            textColor: theme.colors.textCaption.resolved(scheme)
+                        )
+                    )
+                    DSLabel(
+                        .init(
+                            text: model.title,
+                            style: DSLabelModel.Style.h3,
+                            isBold: true,
+                            textColor: theme.colors.textSubtitle.resolved(scheme)
+                        )
+                    )
+                    DSLabel(
+                        .init(
+                            text: pkgString("task_dialog.task.due_date"),
+                            style: DSLabelModel.Style.caption,
+                            textColor: theme.colors.textCaption.resolved(scheme)
+                        )
+                    )
                     DSLabel(
                         .init(
                             text: model.dateRange,
@@ -33,7 +63,13 @@ public struct DSDetailsDialog: View {
                             textColor: theme.colors.textCaption.resolved(scheme)
                         )
                     )
-
+                    DSLabel(
+                        .init(
+                            text: pkgString("task_dialog.task.duration_time"),
+                            style: DSLabelModel.Style.caption,
+                            textColor: theme.colors.textCaption.resolved(scheme)
+                        )
+                    )
                     DSLabel(
                         .init(
                             text: model.durationText,
@@ -62,9 +98,9 @@ public struct DSDetailsDialog: View {
             DSLabel(
                 .init(
                     text: pkgString("tasks.details.status"),
-                    style: DSLabelModel.Style.body,
+                    style: DSLabelModel.Style.caption,
                     isBold: true,
-                    textColor: theme.colors.textSubtitle.resolved(scheme)
+                    textColor: theme.colors.textCaption.resolved(scheme)
                 )
             )
 

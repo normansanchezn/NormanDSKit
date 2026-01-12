@@ -34,6 +34,10 @@ public struct DSCircularImage: View {
     /// The configuration model describing the image URL, size, and border visibility.
     private let model: DSCircularImageModel
     
+    @State private var didTimeout = false
+    
+    private let timeoutNanoseconds: UInt64 = 6_000_000_000
+    
     /// Creates a circular image view.
     /// - Parameter model: The configuration describing URL, size, and border.
     public init(_ model: DSCircularImageModel) {
@@ -42,32 +46,73 @@ public struct DSCircularImage: View {
     
     /// The content and layout of the circular image.
     public var body: some View {
-        AsyncImage(url: URL(string: model.imageURL)) { phase in
-            switch phase {
-            case .success(let image):
-                image
-                    .resizable()
-                    .scaledToFill()
-            case .failure(_):
-                // Placeholder de fallback
-                ZStack {
-                    theme.colors.surfaceSecondary
-                        .resolved(scheme)
-                    Image(systemName: "person.fill")
-                        .foregroundColor(
-                            theme.colors.textCaption.resolved(scheme)
-                        )
+        Group {
+            if let url = resolvedURL {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                        
+                    case .failure:
+                        placeholder
+                        
+                    case .empty:
+                        if didTimeout {
+                            placeholder
+                        } else {
+                            loading
+                        }
+                        
+                    @unknown default:
+                        placeholder
+                    }
                 }
-            case .empty:
-                ProgressView()
-            @unknown default:
-                ProgressView()
+                .task(id: resolvedURL?.absoluteString) {
+                    didTimeout = false
+                    do {
+                        try await Task.sleep(nanoseconds: timeoutNanoseconds)
+                        didTimeout = true
+                    } catch {
+                        print("We have some issues.")
+                    }
+                }
+            } else {
+                placeholder
             }
         }
         .mcGlassEffectIfAvailable()
         .frame(width: model.size, height: model.size)
         .clipShape(Circle())
-        .overlay(
+        .overlay(borderOverlay)
+    }
+    
+    private var resolvedURL: URL? {
+            let raw = model.imageURL.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !raw.isEmpty else { return nil }
+
+            if let url = URL(string: raw) { return url }
+
+            let escaped = raw.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
+            if let escaped, let url = URL(string: escaped) { return url }
+
+            return nil
+        }
+
+        private var loading: some View {
+            ZStack {
+                theme.colors.surfaceSecondary.resolved(scheme)
+                ProgressView()
+                    .tint(theme.colors.textCaption.resolved(scheme))
+            }
+        }
+
+        private var placeholder: some View {
+            DSEmojiImageView(imgResName: "error_emoji", size: 30, scale: 1)
+        }
+
+        private var borderOverlay: some View {
             Group {
                 if model.showsBorder {
                     Circle()
@@ -79,7 +124,6 @@ public struct DSCircularImage: View {
                         )
                 }
             }
-        )
-    }
+        }
 }
 

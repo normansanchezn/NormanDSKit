@@ -125,44 +125,51 @@ public struct DSRowInfo: View {
             }
             
             if extraCount > 0 {
-                Text("+\(extraCount)")
-                    .font(.caption2.weight(.semibold))
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 4)
-                    .background(
-                        Circle()
-                            .fill(
-                                theme.colors.textSubtitle
-                                    .resolved(scheme)
-                                    .opacity(0.6)
-                            )
+                DSLabel(
+                    .init(
+                        text: "+\(extraCount)",
+                        style: DSLabelModel.Style.title,
+                        textColor: theme.colors.textTitle.resolved(scheme)
                     )
-                    .overlay(
-                        Circle()
-                            .stroke(
-                                theme.colors.primary
-                                    .resolved(scheme)
-                                    .opacity(theme.opacity.glassBorder),
-                                lineWidth: 1
-                            )
-                    )
-                    .padding(.leading, 6)
-                    .accessibilityHidden(true)
+                )
+                .background(
+                    Circle()
+                        .fill(
+                            theme.colors.textSubtitle
+                                .resolved(scheme)
+                                .opacity(0.6)
+                        )
+                )
+                .overlay(
+                    Circle()
+                        .stroke(
+                            theme.colors.primary
+                                .resolved(scheme)
+                                .opacity(theme.opacity.glassBorder),
+                            lineWidth: 1
+                        )
+                )
+                .padding(.leading, 6)
+                .accessibilityHidden(true)
             }
         }
     }
     
     private func createDurationView() -> some View {
-        Text(durationText)
-            .font(.caption)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(
-                Capsule()
-                    .fill(theme.colors.decorativeDoodle.resolved(scheme))
-                    .mcGlassEffectIfAvailable()
+        DSLabel(
+            .init(
+                text: durationText,
+                style: DSLabelModel.Style.caption,
+                textColor: theme.colors.textTitle.resolved(scheme)
             )
-            .accessibilityLabel(Text("Duration \(durationText)"))
+        )
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(
+            Capsule()
+                .fill(theme.colors.decorativeDoodle.resolved(scheme))
+                .mcGlassEffectIfAvailable()
+        )
     }
     
     private func createStatusView() -> some View {
