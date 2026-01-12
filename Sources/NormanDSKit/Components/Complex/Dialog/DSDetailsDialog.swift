@@ -80,6 +80,7 @@ public struct DSDetailsDialog: View {
                     )
                     statusSection
                 }
+                .padding(.horizontal, theme.spacing.lg)
             }
         )
     }
