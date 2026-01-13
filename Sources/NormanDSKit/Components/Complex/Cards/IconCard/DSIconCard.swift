@@ -81,8 +81,6 @@ public struct DSIconCard: View {
                 theme.colors.surface.resolved(scheme)
             )
             .frame(width: resolveSizeImage(), height: resolveSizeImage())
-            .padding(.horizontal, theme.spacing.lg)
-            .padding(.vertical, theme.spacing.md)
             .mcGlassBackground(
                 in: pill,
                 tint: model.backgroundColor,

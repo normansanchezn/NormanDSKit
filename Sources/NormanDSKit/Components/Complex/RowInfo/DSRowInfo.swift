@@ -34,6 +34,7 @@ import SwiftUI
 public struct DSRowInfo: View {
     @Environment(\.dsTheme) private var theme
     @Environment(\.colorScheme) private var scheme
+    private let pill = RoundedRectangle(cornerRadius: 40, style: .continuous)
     
     // MARK: - Props
     public let dateRange: String
@@ -62,11 +63,10 @@ public struct DSRowInfo: View {
     // MARK: - Body
     public var body: some View {
         createRowContent
-            .background(
-                Capsule()
-                    .fill(theme.colors.primary.resolved(scheme).opacity(theme.opacity.glassBackground))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .mcGlassEffectIfAvailable()
+            .mcGlassBackground(
+                in: pill,
+                tint: theme.colors.boxBackground.resolved(scheme),
+                tintOpacity: theme.opacity.boxBackground
             )
             .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                 Button(role: .destructive) {
