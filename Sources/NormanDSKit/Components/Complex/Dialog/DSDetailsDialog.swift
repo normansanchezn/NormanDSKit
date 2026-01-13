@@ -13,138 +13,217 @@ public struct DSDetailsDialog: View {
 
     private let model: DSDetailsDialogModel
 
+    private var contentShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: theme.radius.lg, style: .continuous)
+    }
+
+    private var cardShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: theme.radius.md, style: .continuous)
+    }
+
+    private var fieldShape: RoundedRectangle {
+        RoundedRectangle(cornerRadius: theme.radius.md, style: .continuous)
+    }
+
     public init(model: DSDetailsDialogModel) {
         self.model = model
     }
 
     public var body: some View {
         DSDialog(
+            subtitle: nil,
             primaryButtonTitle: model.primaryTitle,
+            closeButtonTitle: pkgString("common.close"),
             onClose: model.onClose,
             onPrimaryAction: model.onPrimary,
-            content: {
-                VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                    DSLabel(
-                        .init(
-                            text: pkgString("task_dialog.title"),
-                            style: DSLabelModel.Style.h1,
-                            isBold: true,
-                            textColor: theme.colors.onPrimary.resolved(scheme)
-                        )
-                    )
-                    
-                    DSLabel(
-                        .init(
-                            text: pkgString("task_dialog.task.name.details"),
-                            style: DSLabelModel.Style.caption,
-                            textColor: theme.colors.textCaption.resolved(scheme)
-                        )
-                    )
-                    DSLabel(
-                        .init(
-                            text: model.title,
-                            style: DSLabelModel.Style.h3,
-                            isBold: true,
-                            textColor: theme.colors.textSubtitle.resolved(scheme)
-                        )
-                    )
-                    DSLabel(
-                        .init(
-                            text: pkgString("task_dialog.task.due_date"),
-                            style: DSLabelModel.Style.caption,
-                            textColor: theme.colors.textCaption.resolved(scheme)
-                        )
-                    )
-                    DSLabel(
-                        .init(
-                            text: model.dateRange,
-                            style: DSLabelModel.Style.accent,
-                            isBold: false,
-                            textColor: theme.colors.textCaption.resolved(scheme)
-                        )
-                    )
-                    DSLabel(
-                        .init(
-                            text: pkgString("task_dialog.task.duration_time"),
-                            style: DSLabelModel.Style.caption,
-                            textColor: theme.colors.textCaption.resolved(scheme)
-                        )
-                    )
-                    DSLabel(
-                        .init(
-                            text: model.durationText,
-                            style: DSLabelModel.Style.accent,
-                            isBold: false,
-                            textColor: theme.colors.textCaption.resolved(scheme)
-                        )
-                    )
-                    statusSection
-                }
-                .padding(.horizontal, theme.spacing.lg)
-            }
-        )
-    }
-    
-    private var statusBinding: Binding<DSStatus> {
-        Binding(
-            get: { model.status },
-            set: { model.onStatusChanged($0) }
-        )
-    }
+            emojiType: .info
+        ) {
+            VStack(alignment: .leading, spacing: theme.spacing.md) {
+                taskTitleSection
 
-    @ViewBuilder
-    private var statusSection: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.sm) {
-            
-            DSLabel(
-                .init(
-                    text: pkgString("tasks.details.status"),
-                    style: DSLabelModel.Style.caption,
-                    isBold: true,
-                    textColor: theme.colors.textCaption.resolved(scheme)
-                )
+                HStack(spacing: theme.spacing.sm) {
+                    infoPill(
+                        title: pkgString("task_dialog.task.due_date"),
+                        value: model.dateRange,
+                        systemImage: "calendar"
+                    )
+                    infoPill(
+                        title: pkgString("task_dialog.task.duration_time"),
+                        value: model.durationText,
+                        systemImage: "clock"
+                    )
+                }
+                .fixedSize(horizontal: false, vertical: true)
+
+                statusSection
+            }
+            .padding(theme.spacing.md)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .mcGlassBackground(
+                in: contentShape,
+                tint: theme.colors.boxBackground.resolved(scheme),
+                tintOpacity: theme.opacity.boxBackground
             )
-
-            Picker(
-                selection: statusBinding,
-                label: getStatusPickerFieldLabel(text: model.status.displayName)
-            ) {
-                ForEach(DSStatus.allCases) { status in
-                    Text(
-                        status.displayName
-                    )
-                    .tag(status)
-                }
+            .overlay {
+                contentShape.stroke(
+                    theme.colors.onBackground.resolved(scheme).opacity(theme.opacity.subtle),
+                    lineWidth: 1
+                )
             }
-            .pickerStyle(.menu)
+            .padding(.top, theme.spacing.xs)
         }
     }
-    
-    @ViewBuilder
-    func getStatusPickerFieldLabel(text : String) -> some View {
+
+    private var taskTitleSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            DSLabel(.init(
+                text: pkgString("task_dialog.task.name.details"),
+                style: .caption,
+                textColor: theme.colors.textCaption.resolved(scheme)
+            ))
+
+            DSLabel(.init(
+                text: model.title,
+                style: .subtitle,
+                isBold: true,
+                textColor: theme.colors.textTitle.resolved(scheme)
+            ))
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(theme.spacing.md)
+        .mcGlassBackground(
+            in: contentShape,
+            tint: theme.colors.boxBackground.resolved(scheme),
+            tintOpacity: theme.opacity.boxBackground
+        )
+        .overlay(cardBorder)
+        .clipShape(cardShape)
+    }
+
+    private func infoPill(title: String, value: String, systemImage: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                Image(systemName: systemImage)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(theme.colors.textCaption.resolved(scheme))
+
+                DSLabel(.init(
+                    text: title,
+                    style: .caption,
+                    textColor: theme.colors.textCaption.resolved(scheme)
+                ))
+
+                Spacer(minLength: 0)
+            }
+
+            DSLabel(.init(
+                text: value,
+                style: .accent,
+                textColor: theme.colors.textBody.resolved(scheme)
+            ))
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(theme.spacing.md)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .mcGlassBackground(
+            in: contentShape,
+            tint: theme.colors.boxBackground.resolved(scheme),
+            tintOpacity: theme.opacity.boxBackground
+        )
+        .overlay(cardBorder)
+        .clipShape(cardShape)
+    }
+
+    private var statusSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.sm) {
+            DSLabel(.init(
+                text: pkgString("tasks.details.status"),
+                style: .caption,
+                isBold: true,
+                textColor: theme.colors.textCaption.resolved(scheme)
+            ))
+
+            Menu {
+                ForEach(DSStatus.allCases) { status in
+                    Button {
+                        model.onStatusChanged(status)
+                    } label: {
+                        Label(status.displayName, systemImage: statusIcon(status))
+                    }
+                }
+            } label: {
+                statusFieldLabel
+            }
+            .buttonStyle(.plain)
+            .mcGlassBackground(
+                in: contentShape,
+                tint: theme.colors.boxBackground.resolved(scheme),
+                tintOpacity: theme.opacity.boxBackground
+            )
+        }
+    }
+
+    private var statusFieldLabel: some View {
         HStack(spacing: theme.spacing.sm) {
-            Text(text)
-                .font(.callout.weight(.semibold))
-                .foregroundStyle(theme.colors.textTitle.resolved(scheme))
+            DSStatusPill(text: model.status.displayName, status: model.status)
 
             Spacer()
 
-            Image(systemName: "chevron.down")
-                .font(.caption.weight(.semibold))
+            Image(systemName: "slider.horizontal.3")
+                .font(.system(size: 13, weight: .semibold))
                 .foregroundStyle(theme.colors.textCaption.resolved(scheme))
         }
         .padding(.horizontal, theme.spacing.md)
-        .padding(.vertical, theme.spacing.sm)
-        .background(
-            RoundedRectangle(cornerRadius: theme.radius.md)
-                .fill(theme.colors.surfaceSecondary.resolved(scheme))
+        .padding(.vertical, 12)
+        .mcGlassBackground(
+            in: contentShape,
+            tint: theme.colors.boxBackground.resolved(scheme),
+            tintOpacity: theme.opacity.boxBackground
         )
-        .overlay(
-            RoundedRectangle(cornerRadius: theme.radius.md)
-                .stroke(theme.colors.primary.resolved(scheme).opacity(0.6), lineWidth: 1)
+        .overlay(fieldBorder)
+        .clipShape(fieldShape)
+        .contentShape(Rectangle())
+    }
+
+    // MARK: - Backgrounds
+    private var cardBackground: some View {
+        theme.colors.surfaceSecondary
+            .resolved(scheme)
+            .opacity(theme.opacity.glassBackground)
+            .background(.ultraThinMaterial)
+    }
+
+    private var cardBorder: some View {
+        cardShape.stroke(
+            theme.colors.onBackground.resolved(scheme).opacity(theme.opacity.subtle),
+            lineWidth: 1
         )
     }
 
+    private var fieldBackground: some View {
+        theme.colors.surfaceSecondary
+            .resolved(scheme)
+            .opacity(theme.opacity.glassBackground)
+            .background(.ultraThinMaterial)
+    }
+
+    private var fieldBorder: some View {
+        fieldShape.stroke(
+            theme.colors.primary.resolved(scheme).opacity(0.35),
+            lineWidth: 1
+        )
+    }
+
+    private func statusIcon(_ status: DSStatus) -> String {
+        switch status {
+        case .pending:   return "hourglass"
+        case .started:   return "play.fill"
+        case .inProcess: return "arrow.triangle.2.circlepath"
+        case .completed: return "checkmark.seal.fill"
+        case .error:     return "exclamationmark.triangle.fill"
+        }
+    }
 }
 
 public extension DSStatus {
@@ -154,7 +233,8 @@ public extension DSStatus {
         case .inProcess: return pkgString("tasks.status.in_process")
         case .started:   return pkgString("tasks.status.started")
         case .pending:   return pkgString("tasks.status.pending")
-        case .error: return pkgString("task.status.error")
+        case .error:     return pkgString("task.status.error")
         }
     }
 }
+

@@ -184,15 +184,15 @@ public extension DSColors {
             dark:  Color(hex: "#F5F7FF")  // títulos en dark
         ),
         textSubtitle: DSDynamicColor(
-            light: Color(hex: "#0046a1"), // subtítulos en light
+            light: Color(hex: "#757575"), // subtítulos en light
             dark:  Color(hex: "#C7D2F5")  // subtítulos gris-azulado en dark
         ),
         textBody: DSDynamicColor(
-            light: Color(hex: "#001f47"), // cuerpo en light
+            light: Color(hex: "#050816"), // cuerpo en light
             dark:  Color(hex: "#edf3fa")  // cuerpo en dark
         ),
         textCaption: DSDynamicColor(
-            light: Color(hex: "#6B7280"), // caption light
+            light: Color(hex: "#bfd4ff"), // caption light
             dark:  Color(hex: "#9CA3AF")  // caption dark
         ),
         
@@ -226,7 +226,7 @@ public extension DSColors {
             dark: Color(hex: "#3895ff")
         ),
         boxBackground: DSDynamicColor(
-            light: Color(hex: "0E82ED"),
+            light: Color(hex: "62a1f5"),
             dark: Color(hex: "002547")
         ),
         onSecondary: DSDynamicColor(
